@@ -14,16 +14,252 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      properties: {
+        Row: {
+          address_line: string
+          bathrooms: number | null
+          bedrooms: number | null
+          city: string
+          claimed_by: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          property_type: string | null
+          square_feet: number | null
+          state: string
+          updated_at: string
+          year_built: number | null
+          zip: string
+        }
+        Insert: {
+          address_line: string
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city: string
+          claimed_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          property_type?: string | null
+          square_feet?: number | null
+          state: string
+          updated_at?: string
+          year_built?: number | null
+          zip: string
+        }
+        Update: {
+          address_line?: string
+          bathrooms?: number | null
+          bedrooms?: number | null
+          city?: string
+          claimed_by?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          property_type?: string | null
+          square_feet?: number | null
+          state?: string
+          updated_at?: string
+          year_built?: number | null
+          zip?: string
+        }
+        Relationships: []
+      }
+      property_records: {
+        Row: {
+          category: string
+          cost: number | null
+          created_at: string
+          description: string | null
+          id: string
+          performed_at: string | null
+          performed_by: string | null
+          property_id: string
+          submitted_by: string | null
+          submitter_role: Database["public"]["Enums"]["app_role"] | null
+          title: string
+          updated_at: string
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          category: string
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          performed_at?: string | null
+          performed_by?: string | null
+          property_id: string
+          submitted_by?: string | null
+          submitter_role?: Database["public"]["Enums"]["app_role"] | null
+          title: string
+          updated_at?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          category?: string
+          cost?: number | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          performed_at?: string | null
+          performed_by?: string | null
+          property_id?: string
+          submitted_by?: string | null
+          submitter_role?: Database["public"]["Enums"]["app_role"] | null
+          title?: string
+          updated_at?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_records_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      record_attachments: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_type: string | null
+          file_url: string
+          id: string
+          record_id: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_type?: string | null
+          file_url: string
+          id?: string
+          record_id: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          record_id?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "record_attachments_record_id_fkey"
+            columns: ["record_id"]
+            isOneToOne: false
+            referencedRelation: "property_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      share_links: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          expires_at: string | null
+          id: string
+          property_id: string
+          token: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          property_id: string
+          token: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          expires_at?: string | null
+          id?: string
+          property_id?: string
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "share_links_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "homeowner" | "realtor" | "contractor" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +386,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["homeowner", "realtor", "contractor", "admin"],
+    },
   },
 } as const
