@@ -33,10 +33,10 @@ const Index = () => {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button size="lg" variant="secondary" asChild>
-                <Link to="/search"><Search className="mr-2 h-5 w-5" />Search a property</Link>
+                <Link to="/demo"><FileText className="mr-2 h-5 w-5" />See a sample report</Link>
               </Button>
               <Button size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link to="/auth?mode=signup">Create free account<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                <Link to="/auth?mode=signup">Create My Report<ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
             </div>
           </div>
@@ -86,9 +86,14 @@ const Index = () => {
       <section className="container py-20 text-center">
         <h2 className="text-3xl font-bold md:text-4xl">Start documenting your home today.</h2>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">Free for homeowners. Trusted by realtors and contractors.</p>
-        <Button size="lg" className="mt-8" asChild>
-          <Link to="/auth?mode=signup">Create your free account<ArrowRight className="ml-2 h-4 w-4" /></Link>
-        </Button>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Button size="lg" asChild>
+            <Link to="/auth?mode=signup">Create My Report<ArrowRight className="ml-2 h-4 w-4" /></Link>
+          </Button>
+          <Button size="lg" variant="outline" asChild>
+            <Link to="/auth?mode=signup&role=realtor">Realtor Pro Trial</Link>
+          </Button>
+        </div>
       </section>
 
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
