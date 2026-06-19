@@ -7,6 +7,10 @@ import {
   Award, Building2, ArrowRight, Sparkles, Home, TrendingUp, CheckCircle2,
 } from "lucide-react";
 import { format } from "date-fns";
+import { computeHealthScore } from "@/lib/healthScore";
+import { computeRiskScores } from "@/lib/riskScores";
+import { HealthScoreCard } from "@/components/health/HealthScoreCard";
+import { RiskBadgeGrid } from "@/components/health/RiskBadgeGrid";
 
 const property = {
   address_line: "1428 Maple Ridge Lane",
@@ -27,6 +31,8 @@ const records = [
 const Demo = () => {
   const verifiedCount = records.filter((r) => r.verified).length;
   const totalSpent = records.reduce((s, r) => s + r.cost, 0);
+  const health = computeHealthScore(property, records);
+  const risks = computeRiskScores(property, records);
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
@@ -82,6 +88,12 @@ const Demo = () => {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Health + Risk */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <HealthScoreCard result={health} />
+            <RiskBadgeGrid risks={risks} />
           </div>
 
           {/* Summary */}
