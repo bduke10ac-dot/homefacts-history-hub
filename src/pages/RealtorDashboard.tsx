@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Search, Share2, Copy } from "lucide-react";
+import { ReportsMenu } from "@/components/reports/ReportsMenu";
 import { toast } from "sonner";
 import { format } from "date-fns";
 
@@ -57,6 +58,7 @@ const RealtorDashboard = () => {
                   <div className="flex gap-2">
                     <Button size="sm" variant="outline" onClick={() => copyLink(l.token)}><Copy className="mr-2 h-4 w-4" />Copy link</Button>
                     <Button size="sm" variant="outline" asChild><Link to={`/r/${l.token}`} target="_blank">Preview</Link></Button>
+                    <ReportsMenu propertyId={l.property_id} />
                   </div>
                 </li>
               ))}

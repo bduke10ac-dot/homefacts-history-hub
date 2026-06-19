@@ -186,6 +186,41 @@ export type Database = {
           },
         ]
       }
+      property_reports: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          payload: Json
+          property_id: string
+          report_type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          payload: Json
+          property_id: string
+          report_type: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          payload?: Json
+          property_id?: string
+          report_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_reports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       record_attachments: {
         Row: {
           created_at: string
