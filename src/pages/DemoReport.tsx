@@ -3,14 +3,15 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  MapPin, Calendar, ShieldCheck, FileText, Hammer, Wrench, FileSearch,
-  Award, Building2, ArrowRight, Sparkles, Home, TrendingUp, CheckCircle2,
+  MapPin, ShieldCheck, FileText, Award, ArrowRight, Sparkles, Home,
+  TrendingUp, CheckCircle2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { computeHealthScore } from "@/lib/healthScore";
 import { computeRiskScores } from "@/lib/riskScores";
 import { HealthScoreCard } from "@/components/health/HealthScoreCard";
 import { RiskBadgeGrid } from "@/components/health/RiskBadgeGrid";
+import { HomeTimeline } from "@/components/timeline/HomeTimeline";
 
 const property = {
   address_line: "1428 Maple Ridge Lane",
@@ -20,12 +21,12 @@ const property = {
 };
 
 const records = [
-  { id: "1", category: "renovation", icon: Building2, title: "Full kitchen remodel", description: "Custom shaker cabinetry, quartz countertops, new stainless appliances, recessed LED lighting, and tile backsplash. Permitted with city of Austin.", performed_by: "Hilltop Renovations LLC", cost: 38500, performed_at: "2024-08-12", verified: true },
-  { id: "2", category: "repair", icon: Hammer, title: "Roof replacement — architectural shingles", description: "Full tear-off and replacement with GAF Timberline HDZ shingles. 25-year transferable warranty included.", performed_by: "Lone Star Roofing", cost: 14200, performed_at: "2024-03-22", verified: true },
-  { id: "3", category: "maintenance", icon: Wrench, title: "HVAC service & coil cleaning", description: "Annual tune-up on both upstairs and downstairs units. Replaced capacitor on condenser #2.", performed_by: "Cool Breeze HVAC", cost: 385, performed_at: "2024-06-04", verified: true },
-  { id: "4", category: "warranty", icon: Award, title: "Tankless water heater — 12yr warranty registered", description: "Rinnai RU199iN installed and registered to property. Warranty transfers with sale.", performed_by: "Austin Plumbing Co.", cost: 4100, performed_at: "2023-11-09", verified: true },
-  { id: "5", category: "inspection", icon: FileSearch, title: "Pre-listing home inspection", description: "Comprehensive 4-point inspection. Minor items addressed prior to listing. Full report attached.", performed_by: "Capital Inspections", cost: 525, performed_at: "2025-01-18", verified: true },
-  { id: "6", category: "repair", icon: Hammer, title: "Foundation drainage correction", description: "Installed French drain along east side of property to redirect runoff. Engineer-approved scope.", performed_by: "Texas Foundation Pros", cost: 6800, performed_at: "2023-05-30", verified: true },
+  { id: "1", category: "renovation", title: "Full kitchen remodel", description: "Custom shaker cabinetry, quartz countertops, new stainless appliances, recessed LED lighting, and tile backsplash. Permitted with city of Austin.", performed_by: "Hilltop Renovations LLC", cost: 38500, performed_at: "2024-08-12", verified: true, attachmentsCount: 4 },
+  { id: "2", category: "roof", title: "Roof replacement — architectural shingles", description: "Full tear-off and replacement with GAF Timberline HDZ shingles. 25-year transferable warranty included.", performed_by: "Lone Star Roofing", cost: 14200, performed_at: "2024-03-22", verified: true, attachmentsCount: 2 },
+  { id: "3", category: "hvac", title: "HVAC service & coil cleaning", description: "Annual tune-up on both upstairs and downstairs units. Replaced capacitor on condenser #2.", performed_by: "Cool Breeze HVAC", cost: 385, performed_at: "2024-06-04", verified: true, attachmentsCount: 1 },
+  { id: "4", category: "warranty", title: "Tankless water heater — 12yr warranty registered", description: "Rinnai RU199iN installed and registered to property. Warranty transfers with sale.", performed_by: "Austin Plumbing Co.", cost: 4100, performed_at: "2023-11-09", verified: true, attachmentsCount: 1 },
+  { id: "5", category: "inspection", title: "Pre-listing home inspection", description: "Comprehensive 4-point inspection. Minor items addressed prior to listing. Full report attached.", performed_by: "Capital Inspections", cost: 525, performed_at: "2025-01-18", verified: true, attachmentsCount: 3 },
+  { id: "6", category: "foundation", title: "Foundation drainage correction", description: "Installed French drain along east side of property to redirect runoff. Engineer-approved scope.", performed_by: "Texas Foundation Pros", cost: 6800, performed_at: "2023-05-30", verified: true, attachmentsCount: 2 },
 ];
 
 const Demo = () => {
@@ -104,39 +105,7 @@ const Demo = () => {
           </div>
 
           {/* Timeline */}
-          <div className="rounded-2xl border bg-card p-6 shadow-card">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Property history</h2>
-              <span className="text-xs text-muted-foreground">Newest first</span>
-            </div>
-            <ol className="mt-6 space-y-4">
-              {records.map((r) => {
-                const Icon = r.icon;
-                return (
-                  <li key={r.id} className="flex gap-4 rounded-xl border bg-background p-5 transition-shadow hover:shadow-card">
-                    <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-primary/10 text-primary">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-semibold">{r.title}</h3>
-                        <Badge variant="secondary" className="capitalize">{r.category}</Badge>
-                        <Badge className="bg-accent text-accent-foreground hover:bg-accent">
-                          <ShieldCheck className="mr-1 h-3 w-3" />Verified
-                        </Badge>
-                      </div>
-                      <p className="mt-2 text-sm text-muted-foreground">{r.description}</p>
-                      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{format(new Date(r.performed_at), "MMM d, yyyy")}</span>
-                        <span>By {r.performed_by}</span>
-                        <span className="font-medium text-foreground">${r.cost.toLocaleString()}</span>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
+          <HomeTimeline property={property} records={records} />
 
           {/* Bottom CTA */}
           <div className="rounded-2xl border bg-gradient-hero p-8 text-center text-primary-foreground shadow-elevated md:p-12">
