@@ -3,10 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { useAuth } from "@/hooks/useAuth";
 import { AddRecordDialog } from "@/components/AddRecordDialog";
-import { MapPin, Calendar, ShieldCheck, FileText, Share2, Printer, Hammer, Wrench, FileSearch, Award, Building2, MoreHorizontal } from "lucide-react";
+import { MapPin, ShieldCheck, FileText, Share2, Printer, Award } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
@@ -15,12 +15,11 @@ import { computeHealthScore } from "@/lib/healthScore";
 import { computeRiskScores } from "@/lib/riskScores";
 import { HealthScoreCard } from "@/components/health/HealthScoreCard";
 import { RiskBadgeGrid } from "@/components/health/RiskBadgeGrid";
+import { HomeTimeline } from "@/components/timeline/HomeTimeline";
 
 interface Property { id: string; address_line: string; city: string; state: string; zip: string; year_built: number | null; square_feet: number | null; bedrooms: number | null; bathrooms: number | null; property_type: string | null; claimed_by: string | null; }
 interface RecordRow { id: string; category: string; title: string; description: string | null; performed_by: string | null; cost: number | null; performed_at: string | null; verified: boolean; created_at: string; submitted_by: string | null; }
 interface Attachment { id: string; record_id: string; file_url: string; file_name: string; file_type: string | null; }
-
-const CAT_ICON: Record<string, any> = { repair: Hammer, maintenance: Wrench, warranty: Award, inspection: FileSearch, renovation: Building2, other: MoreHorizontal };
 
 export function PropertyView({ shared = false }: { shared?: boolean }) {
   const { id, token } = useParams();
@@ -162,63 +161,51 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
           </div>
 
           {/* Timeline */}
-          <div className="rounded-2xl border bg-card p-6 shadow-card">
-            <h2 className="text-xl font-semibold">Property history</h2>
-            {records.length === 0 ? (
-              <div className="py-12 text-center text-muted-foreground"><FileText className="mx-auto h-8 w-8" /><p className="mt-3">No records yet.</p></div>
-            ) : (
-              <ol className="mt-6 space-y-5">
-                {records.map((r) => {
-                  const Icon = CAT_ICON[r.category] ?? FileText;
-                  const recAtt = attachments.filter((a) => a.record_id === r.id);
-                  return (
-                    <li key={r.id} className="relative flex gap-4 rounded-xl border bg-background p-5">
-                      <div className="flex h-10 w-10 flex-none items-center justify-center rounded-lg bg-primary/10 text-primary"><Icon className="h-5 w-5" /></div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-start justify-between gap-2">
-                          <div>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <h3 className="font-semibold">{r.title}</h3>
-                              <Badge variant="secondary" className="capitalize">{r.category}</Badge>
-                              {r.verified ? (
-                                <Badge className="bg-accent text-accent-foreground hover:bg-accent"><ShieldCheck className="mr-1 h-3 w-3" />Verified</Badge>
-                              ) : (
-                                <Badge variant="outline">Pending</Badge>
-                              )}
-                            </div>
-                            {r.description && <p className="mt-2 text-sm text-muted-foreground">{r.description}</p>}
-                            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                              {r.performed_at && <span className="flex items-center gap-1"><Calendar className="h-3 w-3" />{format(new Date(r.performed_at), "MMM d, yyyy")}</span>}
-                              {r.performed_by && <span>By {r.performed_by}</span>}
-                              {r.cost != null && <span>${Number(r.cost).toLocaleString()}</span>}
-                            </div>
-                          </div>
-                          {canVerify && (
-                            <Button size="sm" variant={r.verified ? "outline" : "default"} className="no-print" onClick={() => verifyRecord(r.id, !r.verified)}>
-                              {r.verified ? "Unverify" : "Verify"}
-                            </Button>
-                          )}
-                        </div>
-                        {recAtt.length > 0 && (
-                          <div className="mt-3 flex flex-wrap gap-2">
-                            {recAtt.map((a) => (
-                              <a key={a.id} href={a.file_url} target="_blank" rel="noreferrer" className="group">
-                                {a.file_type?.startsWith("image/") ? (
-                                  <img src={a.file_url} alt={a.file_name} className="h-20 w-20 rounded-lg border object-cover group-hover:opacity-90" />
-                                ) : (
-                                  <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border bg-muted p-2 text-center text-xs"><FileText className="h-5 w-5" /><span className="mt-1 line-clamp-2">{a.file_name}</span></div>
-                                )}
-                              </a>
-                            ))}
-                          </div>
-                        )}
+          <HomeTimeline
+            property={property}
+            records={records.map((r) => ({
+              ...r,
+              attachmentsCount: attachments.filter((a) => a.record_id === r.id).length,
+            }))}
+            recordActions={
+              canVerify
+                ? Object.fromEntries(
+                    records.map((r) => [
+                      r.id,
+                      <Button
+                        key={r.id}
+                        size="sm"
+                        variant={r.verified ? "outline" : "default"}
+                        onClick={() => verifyRecord(r.id, !r.verified)}
+                      >
+                        {r.verified ? "Unverify" : "Verify"}
+                      </Button>,
+                    ])
+                  )
+                : undefined
+            }
+          />
+
+          {/* Attachments */}
+          {attachments.length > 0 && (
+            <div className="rounded-2xl border bg-card p-6 shadow-card">
+              <h2 className="text-base font-semibold">Documents & photos</h2>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {attachments.map((a) => (
+                  <a key={a.id} href={a.file_url} target="_blank" rel="noreferrer" className="group">
+                    {a.file_type?.startsWith("image/") ? (
+                      <img src={a.file_url} alt={a.file_name} className="h-20 w-20 rounded-lg border object-cover group-hover:opacity-90" />
+                    ) : (
+                      <div className="flex h-20 w-20 flex-col items-center justify-center rounded-lg border bg-muted p-2 text-center text-xs">
+                        <FileText className="h-5 w-5" />
+                        <span className="mt-1 line-clamp-2">{a.file_name}</span>
                       </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            )}
-          </div>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           <p className="text-center text-xs text-muted-foreground">Generated by HomeFacts Report on {format(new Date(), "MMM d, yyyy")}</p>
         </div>
