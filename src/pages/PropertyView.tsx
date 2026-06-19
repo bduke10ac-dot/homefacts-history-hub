@@ -11,6 +11,10 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { computeHealthScore } from "@/lib/healthScore";
+import { computeRiskScores } from "@/lib/riskScores";
+import { HealthScoreCard } from "@/components/health/HealthScoreCard";
+import { RiskBadgeGrid } from "@/components/health/RiskBadgeGrid";
 
 interface Property { id: string; address_line: string; city: string; state: string; zip: string; year_built: number | null; square_feet: number | null; bedrooms: number | null; bathrooms: number | null; property_type: string | null; claimed_by: string | null; }
 interface RecordRow { id: string; category: string; title: string; description: string | null; performed_by: string | null; cost: number | null; performed_at: string | null; verified: boolean; created_at: string; submitted_by: string | null; }
@@ -142,6 +146,12 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* Health + Risk */}
+          <div className="grid gap-4 lg:grid-cols-2">
+            <HealthScoreCard result={computeHealthScore(property, records)} />
+            <RiskBadgeGrid risks={computeRiskScores(property, records)} />
           </div>
 
           {/* Summary */}
