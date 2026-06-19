@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { useAuth } from "@/hooks/useAuth";
 import { AddRecordDialog } from "@/components/AddRecordDialog";
 import { MapPin, ShieldCheck, FileText, Share2, Printer, Award } from "lucide-react";
