@@ -14,6 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
+      address_report_sections: {
+        Row: {
+          created_at: string
+          data: Json | null
+          error: string | null
+          id: string
+          report_id: string
+          section: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json | null
+          error?: string | null
+          id?: string
+          report_id: string
+          section: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json | null
+          error?: string | null
+          id?: string
+          report_id?: string
+          section?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "address_report_sections_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "address_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      address_reports: {
+        Row: {
+          address: string
+          anon_token: string | null
+          created_at: string
+          formatted_address: string | null
+          id: string
+          lat: number | null
+          living_outlook_grade: string | null
+          living_outlook_score: number | null
+          lng: number | null
+          place_id: string | null
+          status: string
+          summary: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address: string
+          anon_token?: string | null
+          created_at?: string
+          formatted_address?: string | null
+          id?: string
+          lat?: number | null
+          living_outlook_grade?: string | null
+          living_outlook_score?: number | null
+          lng?: number | null
+          place_id?: string | null
+          status?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string
+          anon_token?: string | null
+          created_at?: string
+          formatted_address?: string | null
+          id?: string
+          lat?: number | null
+          living_outlook_grade?: string | null
+          living_outlook_score?: number | null
+          lng?: number | null
+          place_id?: string | null
+          status?: string
+          summary?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

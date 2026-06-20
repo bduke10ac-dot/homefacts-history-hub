@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Home, LogOut, LayoutDashboard, Search, Shield } from "lucide-react";
+import { Home, LogOut, LayoutDashboard, Search, Shield, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -32,6 +32,9 @@ export function Navbar() {
           </Button>
           {user ? (
             <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/my-reports"><FileText className="mr-1.5 h-4 w-4" />My reports</Link>
+              </Button>
               <Button variant="ghost" size="sm" asChild>
                 <Link to={dashboardPath()}>
                   {primaryRole === "admin" ? <Shield className="mr-1.5 h-4 w-4" /> : <LayoutDashboard className="mr-1.5 h-4 w-4" />}
