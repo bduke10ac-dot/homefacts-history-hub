@@ -16,8 +16,22 @@ export default function MyReports() {
   useEffect(() => {
     (async () => {
       if (!user) return;
-      const { data } = await supabase.from("address_reports").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
-      setRows(data ?? []);
+      const { data: reports } = await supabase
+        .from("reports")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false });
+
+      const ids = (reports ?? []).map((r) => r.id);
+      let scoreMap: Record<string, number | null> = {};
+      if (ids.length > 0) {
+        const { data: scores } = await supabase
+          .from("scorecards")
+          .select("report_id, living_outlook_score")
+          .in("report_id", ids);
+        (scores ?? []).forEach((s: any) => { scoreMap[s.report_id] = s.living_outlook_score; });
+      }
+      setRows((reports ?? []).map((r) => ({ ...r, _score: scoreMap[r.id] ?? null })));
       setLoading(false);
     })();
   }, [user]);
@@ -39,15 +53,15 @@ export default function MyReports() {
         ) : (
           <div className="mt-6 grid gap-3">
             {rows.map((r) => {
-              const c = scoreColor(r.living_outlook_score);
+              const c = scoreColor(r._score);
               return (
                 <Link key={r.id} to={`/report/${r.id}`} className="group flex items-center justify-between rounded-xl border bg-card p-4 shadow-card transition-all hover:shadow-elevated">
                   <div className="flex min-w-0 items-center gap-4">
                     <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${c.bg} text-sm font-bold text-primary-foreground`}>
-                      {r.living_outlook_score ?? "—"}
+                      {r._score ?? "—"}
                     </div>
                     <div className="min-w-0">
-                      <div className="truncate font-medium">{r.formatted_address ?? r.address}</div>
+                      <div className="truncate font-medium">{r.address_normalized ?? r.address_raw}</div>
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3 w-3" />{format(new Date(r.created_at), "MMM d, yyyy")} · {r.status}</div>
                     </div>
                   </div>

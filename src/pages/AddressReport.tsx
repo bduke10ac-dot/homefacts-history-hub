@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Lock, MapPin, Printer, Save } from "lucide-react";
 import { toast } from "sonner";
 
-type SectionRow = { section: string; status: string; data: any };
+type SectionRow = { section_key: string; status: string; data: any };
 
 export default function AddressReport() {
   const { id } = useParams();
@@ -20,28 +20,27 @@ export default function AddressReport() {
   const [loading, setLoading] = useState(true);
 
   const isOwner = report && user && report.user_id === user.id;
-  const isClaimable = report && !report.user_id && user; // anon report owned by no one — signed-in user can claim
-  const teaser = !user && !isOwner; // unauth visitor sees blurred sections
+  const isClaimable = report && !report.user_id && user;
+  const teaser = !user && !isOwner;
 
   async function load() {
     if (!id) return;
     const [{ data: r }, { data: s }] = await Promise.all([
-      supabase.from("address_reports").select("*").eq("id", id).maybeSingle(),
-      supabase.from("address_report_sections").select("section,status,data").eq("report_id", id),
+      supabase.from("reports").select("*").eq("id", id).maybeSingle(),
+      supabase.from("report_sections").select("section_key,status,data").eq("report_id", id),
     ]);
     setReport(r);
     const map: Record<string, SectionRow> = {};
-    (s ?? []).forEach((row: any) => { map[row.section] = row; });
+    (s ?? []).forEach((row: any) => { map[row.section_key] = row; });
     setSections(map);
     setLoading(false);
   }
 
   useEffect(() => { load(); }, [id]);
 
-  // Poll while anything is pending
   useEffect(() => {
     if (!report) return;
-    const pending = report.status !== "ready" || Object.values(sections).some((s) => s.status !== "ready");
+    const pending = report.status !== "complete" || Object.values(sections).some((s) => s.status === "pending");
     if (!pending) return;
     const t = setInterval(load, 1500);
     return () => clearInterval(t);
@@ -50,14 +49,14 @@ export default function AddressReport() {
 
   async function claim() {
     if (!user || !report) return;
-    const { error } = await supabase.from("address_reports").update({ user_id: user.id, anon_token: null }).eq("id", report.id).is("user_id", null);
+    const { error } = await supabase.from("reports").update({ user_id: user.id, anon_token: null } as any).eq("id", report.id).is("user_id", null);
     if (error) return toast.error(error.message);
     toast.success("Saved to your account");
     load();
   }
 
   const get = (k: string) => sections[k]?.data;
-  const isReady = (k: string) => sections[k]?.status === "ready";
+  const isReady = (k: string) => sections[k]?.status === "success";
 
   if (loading) return <div className="flex min-h-screen items-center justify-center text-muted-foreground">Loading…</div>;
   if (!report) return (
@@ -82,11 +81,11 @@ export default function AddressReport() {
 
         <header className="mb-6">
           <div className="flex items-center gap-1.5 text-sm text-muted-foreground"><MapPin className="h-4 w-4" />Address report</div>
-          <h1 className="mt-2 text-2xl font-bold md:text-3xl">{report.formatted_address ?? report.address}</h1>
+          <h1 className="mt-2 text-2xl font-bold md:text-3xl">{report.address_normalized ?? report.address_raw}</h1>
         </header>
 
         <div className="mb-8">
-          <LivingOutlookCard data={isReady("outlook") ? get("outlook") : undefined} loading={!isReady("outlook")} />
+          <LivingOutlookCard data={isReady("scorecard") ? get("scorecard") : undefined} loading={!isReady("scorecard")} />
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -100,22 +99,22 @@ export default function AddressReport() {
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            <PropertySection data={get("property")} loading={!isReady("property")} />
+            <PropertySection data={get("overview")} loading={!isReady("overview")} />
             <div className={teaser ? "relative" : ""}>
               {teaser && <TeaserOverlay />}
               <div className={`grid gap-6 lg:grid-cols-2 ${teaser ? "pointer-events-none blur-sm" : ""}`}>
-                <NeighborhoodSection data={get("neighborhood")} loading={!isReady("neighborhood")} />
+                <NeighborhoodSection data={get("amenities")} loading={!isReady("amenities")} />
                 <RiskSection data={get("risk")} loading={!isReady("risk")} />
                 <SchoolsSection data={get("schools")} loading={!isReady("schools")} />
-                <MarketSection data={get("market")} loading={!isReady("market")} />
+                <MarketSection data={get("taxes")} loading={!isReady("taxes")} />
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="property"><PropertySection data={get("property")} loading={!isReady("property")} /></TabsContent>
-          <TabsContent value="neighborhood"><Locked teaser={teaser}><NeighborhoodSection data={get("neighborhood")} loading={!isReady("neighborhood")} /></Locked></TabsContent>
+          <TabsContent value="property"><PropertySection data={get("overview")} loading={!isReady("overview")} /></TabsContent>
+          <TabsContent value="neighborhood"><Locked teaser={teaser}><NeighborhoodSection data={get("amenities")} loading={!isReady("amenities")} /></Locked></TabsContent>
           <TabsContent value="risk"><Locked teaser={teaser}><RiskSection data={get("risk")} loading={!isReady("risk")} /></Locked></TabsContent>
           <TabsContent value="schools"><Locked teaser={teaser}><SchoolsSection data={get("schools")} loading={!isReady("schools")} /></Locked></TabsContent>
-          <TabsContent value="market"><Locked teaser={teaser}><MarketSection data={get("market")} loading={!isReady("market")} /></Locked></TabsContent>
+          <TabsContent value="market"><Locked teaser={teaser}><MarketSection data={get("taxes")} loading={!isReady("taxes")} /></Locked></TabsContent>
         </Tabs>
       </div>
     </div>
