@@ -801,6 +801,39 @@ export type Database = {
           },
         ]
       }
+      permit_professionals: {
+        Row: {
+          permit_id: string
+          professional_id: string
+          role: string | null
+        }
+        Insert: {
+          permit_id: string
+          professional_id: string
+          role?: string | null
+        }
+        Update: {
+          permit_id?: string
+          professional_id?: string
+          role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permit_professionals_permit_id_fkey"
+            columns: ["permit_id"]
+            isOneToOne: false
+            referencedRelation: "permits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "permit_professionals_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       permits: {
         Row: {
           applicant_name: string | null
