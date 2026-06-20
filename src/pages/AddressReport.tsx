@@ -5,7 +5,10 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { LivingOutlookCard } from "@/components/address/LivingOutlookCard";
-import { PropertySection, NeighborhoodSection, RiskSection, SchoolsSection, MarketSection } from "@/components/address/SectionCards";
+import {
+  OverviewSection, TaxesSection, SchoolsSection, RiskSection,
+  AmenitiesSection, UtilitiesSection, CivicSection, VotingSection,
+} from "@/components/address/SectionCards";
 import { useAuth } from "@/hooks/useAuth";
 import { Lock, MapPin, Printer, Save } from "lucide-react";
 import { toast } from "sonner";
@@ -40,7 +43,7 @@ export default function AddressReport() {
 
   useEffect(() => {
     if (!report) return;
-    const pending = report.status !== "complete" || Object.values(sections).some((s) => s.status === "pending");
+    const pending = report.status === "pending" || Object.values(sections).some((s) => s.status === "pending");
     if (!pending) return;
     const t = setInterval(load, 1500);
     return () => clearInterval(t);
@@ -55,6 +58,12 @@ export default function AddressReport() {
     load();
   }
 
+  // Map scorecard payload to the LivingOutlookCard's shape
+  const sc = sections.scorecard?.data;
+  const outlook = sc ? {
+    score: sc.living_outlook_score, grade: sc.living_outlook_grade,
+    headline: sc.headline, summary: sc.summary, pros: sc.pros ?? [], cons: sc.cons ?? [], best_for: sc.best_for ?? [],
+  } : undefined;
   const get = (k: string) => sections[k]?.data;
   const isReady = (k: string) => sections[k]?.status === "success";
 
@@ -85,36 +94,40 @@ export default function AddressReport() {
         </header>
 
         <div className="mb-8">
-          <LivingOutlookCard data={isReady("scorecard") ? get("scorecard") : undefined} loading={!isReady("scorecard")} />
+          <LivingOutlookCard data={isReady("scorecard") ? outlook : undefined} loading={!isReady("scorecard")} />
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="no-print w-full justify-start overflow-x-auto sm:w-auto">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="property">Property</TabsTrigger>
-            <TabsTrigger value="neighborhood">Neighborhood</TabsTrigger>
-            <TabsTrigger value="risk">Risk</TabsTrigger>
+            <TabsTrigger value="taxes">Taxes</TabsTrigger>
             <TabsTrigger value="schools">Schools</TabsTrigger>
-            <TabsTrigger value="market">Market</TabsTrigger>
+            <TabsTrigger value="risk">Risk</TabsTrigger>
+            <TabsTrigger value="amenities">Amenities</TabsTrigger>
+            <TabsTrigger value="utilities">Utilities</TabsTrigger>
+            <TabsTrigger value="civic">Civic</TabsTrigger>
+            <TabsTrigger value="voting">Voting</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            <PropertySection data={get("overview")} loading={!isReady("overview")} />
+            <OverviewSection data={get("overview")} loading={!isReady("overview")} />
             <div className={teaser ? "relative" : ""}>
               {teaser && <TeaserOverlay />}
               <div className={`grid gap-6 lg:grid-cols-2 ${teaser ? "pointer-events-none blur-sm" : ""}`}>
-                <NeighborhoodSection data={get("amenities")} loading={!isReady("amenities")} />
                 <RiskSection data={get("risk")} loading={!isReady("risk")} />
                 <SchoolsSection data={get("schools")} loading={!isReady("schools")} />
-                <MarketSection data={get("taxes")} loading={!isReady("taxes")} />
+                <TaxesSection data={get("taxes")} loading={!isReady("taxes")} />
+                <AmenitiesSection data={get("amenities")} loading={!isReady("amenities")} />
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="property"><PropertySection data={get("overview")} loading={!isReady("overview")} /></TabsContent>
-          <TabsContent value="neighborhood"><Locked teaser={teaser}><NeighborhoodSection data={get("amenities")} loading={!isReady("amenities")} /></Locked></TabsContent>
-          <TabsContent value="risk"><Locked teaser={teaser}><RiskSection data={get("risk")} loading={!isReady("risk")} /></Locked></TabsContent>
+          <TabsContent value="taxes"><Locked teaser={teaser}><TaxesSection data={get("taxes")} loading={!isReady("taxes")} /></Locked></TabsContent>
           <TabsContent value="schools"><Locked teaser={teaser}><SchoolsSection data={get("schools")} loading={!isReady("schools")} /></Locked></TabsContent>
-          <TabsContent value="market"><Locked teaser={teaser}><MarketSection data={get("taxes")} loading={!isReady("taxes")} /></Locked></TabsContent>
+          <TabsContent value="risk"><Locked teaser={teaser}><RiskSection data={get("risk")} loading={!isReady("risk")} /></Locked></TabsContent>
+          <TabsContent value="amenities"><Locked teaser={teaser}><AmenitiesSection data={get("amenities")} loading={!isReady("amenities")} /></Locked></TabsContent>
+          <TabsContent value="utilities"><Locked teaser={teaser}><UtilitiesSection data={get("utilities")} loading={!isReady("utilities")} /></Locked></TabsContent>
+          <TabsContent value="civic"><Locked teaser={teaser}><CivicSection data={get("civic")} loading={!isReady("civic")} /></Locked></TabsContent>
+          <TabsContent value="voting"><Locked teaser={teaser}><VotingSection data={get("voting")} loading={!isReady("voting")} /></Locked></TabsContent>
         </Tabs>
       </div>
     </div>
