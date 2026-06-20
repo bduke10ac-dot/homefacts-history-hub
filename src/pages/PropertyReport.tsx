@@ -4,10 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
-import { Printer, RefreshCw, ShieldCheck, MapPin, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Printer, RefreshCw, ShieldCheck, MapPin, AlertTriangle, CheckCircle2, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { PaywallGate } from "@/components/paywall/PaywallGate";
+import { PropertyMap } from "@/components/map/PropertyMap";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 interface ReportPayload {
   title: string;
@@ -101,7 +104,8 @@ export default function PropertyReport() {
             <Button variant="outline" size="sm" onClick={() => fetchReport(true)} disabled={generating}>
               <RefreshCw className={`mr-2 h-4 w-4 ${generating ? "animate-spin" : ""}`} />Regenerate
             </Button>
-            <Button variant="outline" size="sm" onClick={() => window.print()}><Printer className="mr-2 h-4 w-4" />Print / PDF</Button>
+            <Button variant="outline" size="sm" onClick={() => window.print()}><Printer className="mr-2 h-4 w-4" />Print</Button>
+            <Button variant="outline" size="sm" onClick={downloadPdf}><FileText className="mr-2 h-4 w-4" />Download PDF</Button>
           </div>
         </div>
 
