@@ -13,6 +13,7 @@ import HomeownerDashboard from "./pages/HomeownerDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
 import RealtorDashboard from "./pages/RealtorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminFraudReview from "./pages/AdminFraudReview";
 import DemoReport from "./pages/DemoReport";
 import PropertyReport from "./pages/PropertyReport";
 import PropertyHomeHistory from "./pages/PropertyHomeHistory";
