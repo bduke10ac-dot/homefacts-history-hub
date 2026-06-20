@@ -1,0 +1,1 @@
+alter view public.work_history_with_current_status set (security_invoker = on);
