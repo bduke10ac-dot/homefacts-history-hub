@@ -14,97 +14,125 @@ export type Database = {
   }
   public: {
     Tables: {
-      address_report_sections: {
+      amenities: {
         Row: {
-          created_at: string
-          data: Json | null
-          error: string | null
+          address: string | null
+          category: string | null
+          distance_miles: number | null
           id: string
-          report_id: string
-          section: string
-          status: string
-          updated_at: string
+          name: string | null
+          place_id: string | null
+          rating: number | null
+          report_id: string | null
         }
         Insert: {
-          created_at?: string
-          data?: Json | null
-          error?: string | null
+          address?: string | null
+          category?: string | null
+          distance_miles?: number | null
           id?: string
-          report_id: string
-          section: string
-          status?: string
-          updated_at?: string
+          name?: string | null
+          place_id?: string | null
+          rating?: number | null
+          report_id?: string | null
         }
         Update: {
-          created_at?: string
-          data?: Json | null
-          error?: string | null
+          address?: string | null
+          category?: string | null
+          distance_miles?: number | null
           id?: string
-          report_id?: string
-          section?: string
-          status?: string
-          updated_at?: string
+          name?: string | null
+          place_id?: string | null
+          rating?: number | null
+          report_id?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "address_report_sections_report_id_fkey"
+            foreignKeyName: "amenities_report_id_fkey"
             columns: ["report_id"]
             isOneToOne: false
-            referencedRelation: "address_reports"
+            referencedRelation: "reports"
             referencedColumns: ["id"]
           },
         ]
       }
-      address_reports: {
+      civic_officials: {
         Row: {
-          address: string
-          anon_token: string | null
-          created_at: string
-          formatted_address: string | null
+          contact_phone: string | null
+          contact_url: string | null
+          district_number: string | null
           id: string
-          lat: number | null
-          living_outlook_grade: string | null
-          living_outlook_score: number | null
-          lng: number | null
-          place_id: string | null
-          status: string
-          summary: string | null
-          updated_at: string
-          user_id: string | null
+          name: string | null
+          office: string | null
+          party: string | null
+          report_id: string | null
         }
         Insert: {
-          address: string
-          anon_token?: string | null
-          created_at?: string
-          formatted_address?: string | null
+          contact_phone?: string | null
+          contact_url?: string | null
+          district_number?: string | null
           id?: string
-          lat?: number | null
-          living_outlook_grade?: string | null
-          living_outlook_score?: number | null
-          lng?: number | null
-          place_id?: string | null
-          status?: string
-          summary?: string | null
-          updated_at?: string
-          user_id?: string | null
+          name?: string | null
+          office?: string | null
+          party?: string | null
+          report_id?: string | null
         }
         Update: {
-          address?: string
-          anon_token?: string | null
-          created_at?: string
-          formatted_address?: string | null
+          contact_phone?: string | null
+          contact_url?: string | null
+          district_number?: string | null
           id?: string
-          lat?: number | null
-          living_outlook_grade?: string | null
-          living_outlook_score?: number | null
-          lng?: number | null
-          place_id?: string | null
-          status?: string
-          summary?: string | null
-          updated_at?: string
-          user_id?: string | null
+          name?: string | null
+          office?: string | null
+          party?: string | null
+          report_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "civic_officials_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ownership_history: {
+        Row: {
+          document_type: string | null
+          id: string
+          owner_name: string | null
+          property_id: string | null
+          recorder_doc_number: string | null
+          sale_price: number | null
+          transfer_date: string | null
+        }
+        Insert: {
+          document_type?: string | null
+          id?: string
+          owner_name?: string | null
+          property_id?: string | null
+          recorder_doc_number?: string | null
+          sale_price?: number | null
+          transfer_date?: string | null
+        }
+        Update: {
+          document_type?: string | null
+          id?: string
+          owner_name?: string | null
+          property_id?: string | null
+          recorder_doc_number?: string | null
+          sale_price?: number | null
+          transfer_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ownership_history_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "report_properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -351,6 +379,348 @@ export type Database = {
           },
         ]
       }
+      report_exports: {
+        Row: {
+          generated_at: string
+          id: string
+          pdf_url: string | null
+          report_id: string | null
+        }
+        Insert: {
+          generated_at?: string
+          id?: string
+          pdf_url?: string | null
+          report_id?: string | null
+        }
+        Update: {
+          generated_at?: string
+          id?: string
+          pdf_url?: string | null
+          report_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_exports_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_properties: {
+        Row: {
+          assessed_value: number | null
+          bathrooms: number | null
+          bedrooms: number | null
+          gis_map_url: string | null
+          id: string
+          last_sale_date: string | null
+          last_sale_price: number | null
+          legal_description: string | null
+          living_area_sqft: number | null
+          lot_size_sqft: number | null
+          market_value: number | null
+          parcel_id: string | null
+          property_type: string | null
+          report_id: string | null
+          year_built: number | null
+          zoning: string | null
+        }
+        Insert: {
+          assessed_value?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          gis_map_url?: string | null
+          id?: string
+          last_sale_date?: string | null
+          last_sale_price?: number | null
+          legal_description?: string | null
+          living_area_sqft?: number | null
+          lot_size_sqft?: number | null
+          market_value?: number | null
+          parcel_id?: string | null
+          property_type?: string | null
+          report_id?: string | null
+          year_built?: number | null
+          zoning?: string | null
+        }
+        Update: {
+          assessed_value?: number | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          gis_map_url?: string | null
+          id?: string
+          last_sale_date?: string | null
+          last_sale_price?: number | null
+          legal_description?: string | null
+          living_area_sqft?: number | null
+          lot_size_sqft?: number | null
+          market_value?: number | null
+          parcel_id?: string | null
+          property_type?: string | null
+          report_id?: string | null
+          year_built?: number | null
+          zoning?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_properties_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_sections: {
+        Row: {
+          data: Json | null
+          fetched_at: string | null
+          id: string
+          report_id: string
+          section_key: string
+          source: string | null
+          status: string
+        }
+        Insert: {
+          data?: Json | null
+          fetched_at?: string | null
+          id?: string
+          report_id: string
+          section_key: string
+          source?: string | null
+          status?: string
+        }
+        Update: {
+          data?: Json | null
+          fetched_at?: string | null
+          id?: string
+          report_id?: string
+          section_key?: string
+          source?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_sections_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reports: {
+        Row: {
+          address_normalized: string | null
+          address_raw: string
+          anon_token: string | null
+          county: string | null
+          created_at: string
+          id: string
+          last_refreshed_at: string | null
+          lat: number | null
+          lng: number | null
+          parcel_id: string | null
+          place_id: string | null
+          state: string | null
+          status: string
+          user_id: string | null
+        }
+        Insert: {
+          address_normalized?: string | null
+          address_raw: string
+          anon_token?: string | null
+          county?: string | null
+          created_at?: string
+          id?: string
+          last_refreshed_at?: string | null
+          lat?: number | null
+          lng?: number | null
+          parcel_id?: string | null
+          place_id?: string | null
+          state?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Update: {
+          address_normalized?: string | null
+          address_raw?: string
+          anon_token?: string | null
+          county?: string | null
+          created_at?: string
+          id?: string
+          last_refreshed_at?: string | null
+          lat?: number | null
+          lng?: number | null
+          parcel_id?: string | null
+          place_id?: string | null
+          state?: string | null
+          status?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      risk_indicators: {
+        Row: {
+          environmental_notes: string[] | null
+          fema_panel_url: string | null
+          flood_zone: string | null
+          flood_zone_description: string | null
+          id: string
+          report_id: string | null
+          storm_events: Json | null
+          wildfire_risk_tier: string | null
+        }
+        Insert: {
+          environmental_notes?: string[] | null
+          fema_panel_url?: string | null
+          flood_zone?: string | null
+          flood_zone_description?: string | null
+          id?: string
+          report_id?: string | null
+          storm_events?: Json | null
+          wildfire_risk_tier?: string | null
+        }
+        Update: {
+          environmental_notes?: string[] | null
+          fema_panel_url?: string | null
+          flood_zone?: string | null
+          flood_zone_description?: string | null
+          id?: string
+          report_id?: string | null
+          storm_events?: Json | null
+          wildfire_risk_tier?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "risk_indicators_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schools: {
+        Row: {
+          address: string | null
+          distance_miles: number | null
+          district_name: string | null
+          id: string
+          level: string | null
+          name: string | null
+          phone: string | null
+          rating: number | null
+          rating_source: string | null
+          report_id: string | null
+        }
+        Insert: {
+          address?: string | null
+          distance_miles?: number | null
+          district_name?: string | null
+          id?: string
+          level?: string | null
+          name?: string | null
+          phone?: string | null
+          rating?: number | null
+          rating_source?: string | null
+          report_id?: string | null
+        }
+        Update: {
+          address?: string | null
+          distance_miles?: number | null
+          district_name?: string | null
+          id?: string
+          level?: string | null
+          name?: string | null
+          phone?: string | null
+          rating?: number | null
+          rating_source?: string | null
+          report_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "schools_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scorecards: {
+        Row: {
+          amenities_score: number | null
+          best_for: string[] | null
+          commute_score: number | null
+          computed_at: string
+          cons: string[] | null
+          crime_score: number | null
+          headline: string | null
+          id: string
+          living_outlook_grade: string | null
+          living_outlook_score: number | null
+          market_score: number | null
+          methodology_version: string | null
+          pros: string[] | null
+          report_id: string | null
+          risk_score: number | null
+          schools_score: number | null
+          summary: string | null
+          tax_burden_score: number | null
+        }
+        Insert: {
+          amenities_score?: number | null
+          best_for?: string[] | null
+          commute_score?: number | null
+          computed_at?: string
+          cons?: string[] | null
+          crime_score?: number | null
+          headline?: string | null
+          id?: string
+          living_outlook_grade?: string | null
+          living_outlook_score?: number | null
+          market_score?: number | null
+          methodology_version?: string | null
+          pros?: string[] | null
+          report_id?: string | null
+          risk_score?: number | null
+          schools_score?: number | null
+          summary?: string | null
+          tax_burden_score?: number | null
+        }
+        Update: {
+          amenities_score?: number | null
+          best_for?: string[] | null
+          commute_score?: number | null
+          computed_at?: string
+          cons?: string[] | null
+          crime_score?: number | null
+          headline?: string | null
+          id?: string
+          living_outlook_grade?: string | null
+          living_outlook_score?: number | null
+          market_score?: number | null
+          methodology_version?: string | null
+          pros?: string[] | null
+          report_id?: string | null
+          risk_score?: number | null
+          schools_score?: number | null
+          summary?: string | null
+          tax_burden_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scorecards_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       share_links: {
         Row: {
           created_at: string
@@ -386,6 +756,44 @@ export type Database = {
           },
         ]
       }
+      tax_history: {
+        Row: {
+          assessed_value: number | null
+          exemptions: string[] | null
+          id: string
+          property_id: string | null
+          tax_year: number | null
+          taxable_value: number | null
+          total_tax: number | null
+        }
+        Insert: {
+          assessed_value?: number | null
+          exemptions?: string[] | null
+          id?: string
+          property_id?: string | null
+          tax_year?: number | null
+          taxable_value?: number | null
+          total_tax?: number | null
+        }
+        Update: {
+          assessed_value?: number | null
+          exemptions?: string[] | null
+          id?: string
+          property_id?: string | null
+          tax_year?: number | null
+          taxable_value?: number | null
+          total_tax?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tax_history_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "report_properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -406,6 +814,91 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      utilities: {
+        Row: {
+          contact_phone: string | null
+          contact_url: string | null
+          id: string
+          notes: string | null
+          provider_name: string | null
+          report_id: string | null
+          utility_type: string | null
+        }
+        Insert: {
+          contact_phone?: string | null
+          contact_url?: string | null
+          id?: string
+          notes?: string | null
+          provider_name?: string | null
+          report_id?: string | null
+          utility_type?: string | null
+        }
+        Update: {
+          contact_phone?: string | null
+          contact_url?: string | null
+          id?: string
+          notes?: string | null
+          provider_name?: string | null
+          report_id?: string | null
+          utility_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utilities_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      voting_info: {
+        Row: {
+          closest_city_hall_address: string | null
+          closest_dmv_address: string | null
+          closest_dmv_distance_miles: number | null
+          closest_dmv_name: string | null
+          election_authority: string | null
+          election_authority_url: string | null
+          id: string
+          polling_place_address: string | null
+          polling_place_name: string | null
+          report_id: string | null
+        }
+        Insert: {
+          closest_city_hall_address?: string | null
+          closest_dmv_address?: string | null
+          closest_dmv_distance_miles?: number | null
+          closest_dmv_name?: string | null
+          election_authority?: string | null
+          election_authority_url?: string | null
+          id?: string
+          polling_place_address?: string | null
+          polling_place_name?: string | null
+          report_id?: string | null
+        }
+        Update: {
+          closest_city_hall_address?: string | null
+          closest_dmv_address?: string | null
+          closest_dmv_distance_miles?: number | null
+          closest_dmv_name?: string | null
+          election_authority?: string | null
+          election_authority_url?: string | null
+          id?: string
+          polling_place_address?: string | null
+          polling_place_name?: string | null
+          report_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "voting_info_report_id_fkey"
+            columns: ["report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

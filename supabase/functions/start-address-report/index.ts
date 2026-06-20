@@ -3,83 +3,150 @@ import { generateText, Output } from "npm:ai";
 import { z } from "npm:zod";
 import { createLovableAiGatewayProvider, corsHeaders } from "../_shared/ai-gateway.ts";
 
-const SECTIONS = ["property", "neighborhood", "risk", "schools", "market"] as const;
+const SECTION_KEYS = ["overview", "taxes", "schools", "risk", "amenities", "utilities", "civic", "voting", "scorecard"] as const;
 
-// Seeded deterministic-ish stubs so the demo feels alive per address.
 function hash(s: string) { let h = 2166136261; for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return Math.abs(h); }
 function rng(seed: number) { let s = seed || 1; return () => { s = Math.imul(48271, s) % 0x7fffffff; return s / 0x7fffffff; }; }
 function pick<T>(r: () => number, arr: T[]) { return arr[Math.floor(r() * arr.length)]; }
 function range(r: () => number, min: number, max: number) { return Math.round(min + r() * (max - min)); }
 
-function stubProperty(seed: number) {
-  const r = rng(seed);
-  return {
-    year_built: range(r, 1920, 2020),
-    sqft: range(r, 900, 4200),
-    beds: range(r, 1, 6),
-    baths: range(r, 1, 5),
-    lot_size_sqft: range(r, 2000, 18000),
-    property_type: pick(r, ["Single family", "Townhome", "Condo", "Duplex"]),
-    last_sold_price: range(r, 180_000, 1_400_000),
-    last_sold_year: range(r, 2005, 2024),
-    roof_age_years: range(r, 1, 28),
-    hvac_age_years: range(r, 1, 22),
+function buildStubs(seed: number, address: string) {
+  const r1 = rng(seed);
+  const overview = {
+    parcel_id: `P-${range(r1, 100000, 999999)}`,
+    legal_description: "Lot 14, Block 7, Per recorded plat",
+    property_type: pick(r1, ["Single family", "Townhome", "Condo", "Duplex"]),
+    year_built: range(r1, 1920, 2020),
+    living_area_sqft: range(r1, 900, 4200),
+    bedrooms: range(r1, 1, 6),
+    bathrooms: Math.round(range(r1, 1, 5) + r1()) ,
+    lot_size_sqft: range(r1, 2000, 18000),
+    zoning: pick(r1, ["R-1", "R-2", "R-3 Mixed", "RM-20"]),
+    assessed_value: range(r1, 180_000, 1_400_000),
+    market_value: range(r1, 220_000, 1_600_000),
+    last_sale_date: `${range(r1, 2008, 2024)}-${String(range(r1, 1, 12)).padStart(2,"0")}-${String(range(r1, 1, 28)).padStart(2,"0")}`,
+    last_sale_price: range(r1, 180_000, 1_400_000),
   };
-}
-function stubNeighborhood(seed: number) {
-  const r = rng(seed + 1);
-  return {
-    walk_score: range(r, 18, 98),
-    transit_score: range(r, 10, 95),
-    bike_score: range(r, 12, 92),
-    noise_level: pick(r, ["Quiet", "Moderate", "Lively", "Loud"]),
-    median_income: range(r, 38_000, 185_000),
-    median_age: range(r, 28, 52),
-    nearby_amenities: range(r, 4, 40),
+
+  const r2 = rng(seed + 11);
+  const baseTax = Math.round(overview.market_value * 0.012);
+  const taxes = {
+    years: [0,1,2,3,4].map((i) => {
+      const y = new Date().getFullYear() - i;
+      const av = Math.round(overview.market_value * (0.85 - i*0.04));
+      return { tax_year: y, assessed_value: av, taxable_value: av - 25000, total_tax: Math.round(baseTax * (1 - i*0.05) * (0.95 + r2()*0.1)) };
+    }),
   };
-}
-function stubRisk(seed: number) {
-  const r = rng(seed + 2);
-  const lvl = () => pick(r, ["Low", "Moderate", "High"]);
-  return {
-    flood: { level: lvl(), zone: pick(r, ["X", "AE", "A", "VE"]) },
-    wildfire: { level: lvl() },
-    earthquake: { level: lvl() },
-    crime: { level: lvl(), incidents_last_year: range(r, 5, 380) },
-    storm: { level: lvl() },
-    air_quality: { aqi: range(r, 15, 140) },
-  };
-}
-function stubSchools(seed: number) {
-  const r = rng(seed + 3);
-  const names = ["Lincoln", "Roosevelt", "Jefferson", "Maple Grove", "Oakwood", "Willow Creek", "Riverside"];
-  return {
-    schools: ["Elementary", "Middle", "High"].map((lvl) => ({
+
+  const r3 = rng(seed + 22);
+  const schoolNames = ["Lincoln", "Roosevelt", "Jefferson", "Maple Grove", "Oakwood", "Willow Creek", "Riverside", "Sequoia"];
+  const districts = ["Unified School District", "Public Schools", "Community Schools"];
+  const schools = {
+    schools: ["elementary","middle","high"].map((lvl) => ({
       level: lvl,
-      name: `${pick(r, names)} ${lvl}`,
-      rating: range(r, 3, 10),
-      distance_mi: Math.round(r() * 30) / 10,
-      students: range(r, 220, 1800),
+      name: `${pick(r3, schoolNames)} ${lvl[0].toUpperCase()+lvl.slice(1)}`,
+      district_name: `${pick(r3, ["Hillside","Westfield","Lakeside","Northgate"])} ${pick(r3, districts)}`,
+      rating: range(r3, 3, 10),
+      rating_source: "GreatSchools",
+      distance_miles: Math.round(r3()*30)/10,
+      address: `${range(r3, 100, 9999)} ${pick(r3, ["Oak","Elm","Pine","Cedar"])} St`,
+      phone: `(${range(r3, 200, 999)}) ${range(r3, 200, 999)}-${range(r3, 1000, 9999)}`,
     })),
   };
-}
-function stubMarket(seed: number) {
-  const r = rng(seed + 4);
-  const median = range(r, 240_000, 1_300_000);
-  return {
-    median_price: median,
-    price_per_sqft: range(r, 140, 780),
-    yoy_change_pct: Math.round((r() * 18 - 4) * 10) / 10,
-    days_on_market: range(r, 6, 78),
-    inventory: range(r, 18, 540),
-    rent_estimate: range(r, 1500, 6800),
-    appreciation_5yr_pct: range(r, 8, 65),
+
+  const r4 = rng(seed + 33);
+  const lvl = () => pick(r4, ["Low", "Moderate", "High"]);
+  const risk = {
+    flood_zone: pick(r4, ["X", "AE", "A", "VE"]),
+    flood_zone_description: pick(r4, ["Low", "Moderate", "High"]),
+    fema_panel_url: "https://msc.fema.gov/portal/home",
+    storm_events: Array.from({ length: range(r4, 0, 6) }, () => ({
+      date: `202${range(r4,0,4)}-${String(range(r4,1,12)).padStart(2,"0")}-${String(range(r4,1,28)).padStart(2,"0")}`,
+      type: pick(r4, ["Thunderstorm Wind","Hail","Flood","Tornado","Winter Storm"]),
+      magnitude: range(r4, 1, 4),
+    })),
+    storm_level: lvl(),
+    wildfire_risk_tier: lvl(),
+    environmental_notes: r4() > 0.5 ? ["Older home — radon testing recommended"] : [],
   };
+
+  const r5 = rng(seed + 44);
+  const cats = ["grocery", "restaurant", "gas", "pharmacy", "hospital", "park", "gym", "bank", "hardware", "transit"];
+  const placeNames: Record<string,string[]> = {
+    grocery: ["Whole Foods","Trader Joe's","Safeway","Sprouts"],
+    restaurant: ["Lucia's Cafe","Riverside Grill","The Local","Anchor Tavern"],
+    gas: ["Shell","Chevron","BP"],
+    pharmacy: ["CVS","Walgreens","Rite Aid"],
+    hospital: ["Mercy General","St. Mary's","Regional Medical Center"],
+    park: ["Sunset Park","Riverside Park","Oakwood Greenway"],
+    gym: ["Anytime Fitness","Equinox","Planet Fitness"],
+    bank: ["Chase","Bank of America","Wells Fargo"],
+    hardware: ["Home Depot","Lowe's","Ace Hardware"],
+    transit: ["Metro Bus 14 Stop","Light Rail Station","Park & Ride"],
+  };
+  const amenities = {
+    places: cats.flatMap((c) => Array.from({ length: range(r5, 1, 3) }, () => ({
+      category: c,
+      name: pick(r5, placeNames[c]),
+      address: `${range(r5, 100, 9999)} ${pick(r5, ["Main","Oak","Elm","Cedar","Pine"])} St`,
+      distance_miles: Math.round(r5()*30)/10,
+      rating: Math.round((3 + r5()*2) * 10) / 10,
+    }))),
+  };
+
+  const r6 = rng(seed + 55);
+  const utilities = {
+    providers: [
+      { utility_type: "electric", provider_name: pick(r6, ["PG&E","Duke Energy","Con Edison","Xcel Energy"]), contact_phone: "1-800-555-0100", contact_url: "https://example.com", notes: null },
+      { utility_type: "gas", provider_name: pick(r6, ["PG&E","SoCalGas","National Grid"]), contact_phone: "1-800-555-0101", contact_url: "https://example.com", notes: null },
+      { utility_type: "water_sewer", provider_name: `${pick(r6, ["City of ","County "])}Water Department`, contact_phone: "1-800-555-0102", contact_url: "https://example.com", notes: null },
+      { utility_type: "trash", provider_name: pick(r6, ["Waste Management","Republic Services"]), contact_phone: "1-800-555-0103", contact_url: "https://example.com", notes: null },
+      { utility_type: "internet", provider_name: pick(r6, ["Comcast Xfinity","Verizon Fios","AT&T Fiber","Spectrum"]), contact_phone: "1-800-555-0104", contact_url: "https://example.com", notes: "Fiber available" },
+    ],
+  };
+
+  const r7 = rng(seed + 66);
+  const firsts = ["Sarah","Michael","Lisa","David","Maria","James","Patricia","Robert"];
+  const lasts = ["Johnson","Smith","Garcia","Lee","Martinez","Brown","Davis","Wilson"];
+  const offices: [string,string?][] = [
+    ["mayor"],["city_council","3"],["county_official"],["state_rep","42"],["state_senator","12"],["governor"],["us_house","11"],["us_senate"],["us_senate"]
+  ];
+  const civic = {
+    officials: offices.map(([office, district]) => ({
+      office,
+      name: `${pick(r7, firsts)} ${pick(r7, lasts)}`,
+      party: pick(r7, ["Democratic","Republican","Independent"]),
+      contact_phone: `(${range(r7, 200, 999)}) ${range(r7, 200, 999)}-${range(r7, 1000, 9999)}`,
+      contact_url: "https://example.gov",
+      district_number: district ?? null,
+    })),
+  };
+
+  const r8 = rng(seed + 77);
+  const voting = {
+    election_authority: `${pick(r8, ["County","City"])} Registrar of Voters`,
+    election_authority_url: "https://example.gov/elections",
+    polling_place_name: `${pick(r8, ["Lincoln","Roosevelt","Community"])} ${pick(r8, ["Elementary","Center","Library"])}`,
+    polling_place_address: `${range(r8, 100, 9999)} ${pick(r8, ["Main","Oak","Elm"])} St`,
+    closest_dmv_name: `${pick(r8, ["Downtown","Northside","Westgate"])} DMV`,
+    closest_dmv_address: `${range(r8, 100, 9999)} ${pick(r8, ["Broadway","Market","2nd"])} St`,
+    closest_dmv_distance_miles: Math.round(r8()*80)/10,
+    closest_city_hall_address: `1 City Hall Plaza, ${address.split(",").slice(-2)[0]?.trim() ?? ""}`,
+  };
+
+  return { overview, taxes, schools, risk, amenities, utilities, civic, voting };
 }
 
-const OutlookSchema = z.object({
-  score: z.number().min(0).max(100),
-  grade: z.enum(["A", "B", "C", "D", "F"]),
+const ScoreSchema = z.object({
+  living_outlook_score: z.number().min(0).max(100),
+  living_outlook_grade: z.enum(["A","B","C","D","F"]),
+  schools_score: z.number().min(0).max(100),
+  crime_score: z.number().min(0).max(100),
+  market_score: z.number().min(0).max(100),
+  tax_burden_score: z.number().min(0).max(100),
+  amenities_score: z.number().min(0).max(100),
+  risk_score: z.number().min(0).max(100),
+  commute_score: z.number().min(0).max(100),
   headline: z.string(),
   summary: z.string(),
   pros: z.array(z.string()).min(2).max(5),
@@ -110,97 +177,137 @@ Deno.serve(async (req) => {
     };
     if (!address) return new Response("address required", { status: 400, headers: corsHeaders });
 
-    // Create the report
-    const { data: report, error: insErr } = await admin.from("address_reports").insert({
+    const addressNormalized = formatted_address ?? address;
+    const parts = addressNormalized.split(",").map((s) => s.trim());
+    const state = parts.length >= 2 ? (parts[parts.length-1].split(" ")[0] ?? null) : null;
+
+    const { data: report, error: insErr } = await admin.from("reports").insert({
       user_id: userId,
       anon_token: userId ? null : (anon_token ?? null),
-      address,
-      formatted_address: formatted_address ?? address,
+      address_raw: address,
+      address_normalized: addressNormalized,
       place_id: place_id ?? null,
       lat: lat ?? null,
       lng: lng ?? null,
+      state,
       status: "pending",
     }).select("*").single();
     if (insErr) throw insErr;
 
-    // Pre-create pending section rows for instant UI skeletons
-    await admin.from("address_report_sections").insert(
-      [...SECTIONS, "outlook"].map((s) => ({ report_id: report.id, section: s, status: "pending" })),
+    await admin.from("report_sections").insert(
+      SECTION_KEYS.map((k) => ({ report_id: report.id, section_key: k, status: "pending" })),
     );
 
-    // Respond immediately so the UI navigates to /report/:id
     const responsePromise = Response.json({ id: report.id }, { headers: corsHeaders });
 
-    // Background: populate sections, then synthesize outlook
     const work = (async () => {
       try {
-        const seed = hash(`${formatted_address ?? address}|${place_id ?? ""}|${lat ?? ""}|${lng ?? ""}`);
-        const sectionData: Record<string, any> = {
-          property: stubProperty(seed),
-          neighborhood: stubNeighborhood(seed),
-          risk: stubRisk(seed),
-          schools: stubSchools(seed),
-          market: stubMarket(seed),
-        };
+        const seed = hash(`${addressNormalized}|${place_id ?? ""}|${lat ?? ""}|${lng ?? ""}`);
+        const stubs = buildStubs(seed, addressNormalized);
 
-        // Save the five stub sections in parallel
-        await Promise.all(SECTIONS.map((s) =>
-          admin.from("address_report_sections").update({ status: "ready", data: sectionData[s] }).eq("report_id", report.id).eq("section", s)
+        // 1) Insert the normalized report_properties row + children
+        const { data: rp } = await admin.from("report_properties").insert({
+          report_id: report.id,
+          parcel_id: stubs.overview.parcel_id,
+          legal_description: stubs.overview.legal_description,
+          lot_size_sqft: stubs.overview.lot_size_sqft,
+          year_built: stubs.overview.year_built,
+          living_area_sqft: stubs.overview.living_area_sqft,
+          bedrooms: stubs.overview.bedrooms,
+          bathrooms: stubs.overview.bathrooms,
+          property_type: stubs.overview.property_type,
+          zoning: stubs.overview.zoning,
+          assessed_value: stubs.overview.assessed_value,
+          market_value: stubs.overview.market_value,
+          last_sale_date: stubs.overview.last_sale_date,
+          last_sale_price: stubs.overview.last_sale_price,
+        }).select("id").single();
+
+        if (rp?.id) {
+          await admin.from("tax_history").insert(stubs.taxes.years.map((y) => ({ property_id: rp.id, ...y })));
+        }
+        await admin.from("schools").insert(stubs.schools.schools.map((s) => ({ report_id: report.id, ...s })));
+        await admin.from("risk_indicators").insert({
+          report_id: report.id,
+          flood_zone: stubs.risk.flood_zone,
+          flood_zone_description: stubs.risk.flood_zone_description,
+          fema_panel_url: stubs.risk.fema_panel_url,
+          storm_events: stubs.risk.storm_events,
+          wildfire_risk_tier: stubs.risk.wildfire_risk_tier,
+          environmental_notes: stubs.risk.environmental_notes,
+        });
+        await admin.from("amenities").insert(stubs.amenities.places.map((p) => ({ report_id: report.id, ...p })));
+        await admin.from("utilities").insert(stubs.utilities.providers.map((p) => ({ report_id: report.id, ...p })));
+        await admin.from("civic_officials").insert(stubs.civic.officials.map((o) => ({ report_id: report.id, ...o })));
+        await admin.from("voting_info").insert({ report_id: report.id, ...stubs.voting });
+
+        // 2) Mark each data section as success with its payload
+        const writes = [
+          { key: "overview", data: stubs.overview, source: "stub:assessor" },
+          { key: "taxes", data: stubs.taxes, source: "stub:tax_office" },
+          { key: "schools", data: stubs.schools, source: "stub:greatschools" },
+          { key: "risk", data: stubs.risk, source: "stub:fema_noaa" },
+          { key: "amenities", data: stubs.amenities, source: "stub:places" },
+          { key: "utilities", data: stubs.utilities, source: "stub:providers" },
+          { key: "civic", data: stubs.civic, source: "stub:google_civic" },
+          { key: "voting", data: stubs.voting, source: "stub:civic" },
+        ];
+        await Promise.all(writes.map((w) =>
+          admin.from("report_sections").update({ status: "success", data: w.data, source: w.source, fetched_at: new Date().toISOString() })
+            .eq("report_id", report.id).eq("section_key", w.key)
         ));
 
-        // Synthesize Living Outlook with Lovable AI
+        // 3) Synthesize Living Outlook with Lovable AI
         const apiKey = Deno.env.get("LOVABLE_API_KEY");
-        let outlook: z.infer<typeof OutlookSchema> | null = null;
+        let outlook: z.infer<typeof ScoreSchema> | null = null;
         if (apiKey) {
           const gateway = createLovableAiGatewayProvider(apiKey);
-          const prompt = `You are a real-estate intelligence analyst. Based on the following data for ${formatted_address ?? address}, produce a "Living Outlook" rating from 0-100 with an A-F letter grade, a one-line headline, a 3-4 sentence summary, the top pros and cons of living here, and 2-4 lifestyle types this home is best for (e.g. "Young families", "Remote workers", "Retirees").
+          const prompt = `You are a real-estate intelligence analyst. Based on the data below for ${addressNormalized}, produce a "Living Outlook" composite score and sub-scores from 0-100 (higher is better). Also produce an A-F letter grade for the overall outlook, a one-line headline, a 3-4 sentence summary, top pros, top cons, and 2-4 lifestyle types this home is best for.
+
+Sub-scores cover: schools (school quality), crime (lower crime = higher score), market (price trends/value), tax_burden (lower taxes = higher score), amenities (walkability/nearby places), risk (lower hazards = higher score), commute (transit/access).
 
 Data:
-${JSON.stringify(sectionData, null, 2)}
+${JSON.stringify(stubs, null, 2)}
 
-Be specific and reference the actual numbers. Tone: trustworthy, neutral, helpful — like an insurance underwriter writing for a homebuyer.`;
-
+Be specific. Reference real numbers. Tone: trustworthy and neutral, like an underwriter writing for a homebuyer.`;
           try {
             const { experimental_output } = await generateText({
               model: gateway("google/gemini-3-flash-preview"),
-              experimental_output: Output.object({ schema: OutlookSchema }),
+              experimental_output: Output.object({ schema: ScoreSchema }),
               prompt,
             });
             outlook = experimental_output;
-          } catch (aiErr) {
-            console.error("outlook AI error", aiErr);
-          }
+          } catch (aiErr) { console.error("outlook AI error", aiErr); }
         }
 
         if (!outlook) {
-          // Fallback heuristic
           const r = rng(seed + 99);
           const score = range(r, 55, 92);
-          const grade = score >= 85 ? "A" : score >= 75 ? "B" : score >= 65 ? "C" : score >= 55 ? "D" : "F";
           outlook = {
-            score, grade,
+            living_outlook_score: score,
+            living_outlook_grade: score >= 85 ? "A" : score >= 75 ? "B" : score >= 65 ? "C" : score >= 55 ? "D" : "F",
+            schools_score: range(r, 50, 95), crime_score: range(r, 40, 90), market_score: range(r, 55, 92),
+            tax_burden_score: range(r, 45, 88), amenities_score: range(r, 50, 95), risk_score: range(r, 45, 90),
+            commute_score: range(r, 40, 88),
             headline: "Solid pick with a few tradeoffs to weigh.",
             summary: "This property scores well on neighborhood amenities and school access, with moderate risk exposure. Verify roof and HVAC age before close.",
             pros: ["Walkable area", "Strong school zone", "Healthy appreciation"],
-            cons: ["Older roof", "Moderate flood zone"],
+            cons: ["Older home", "Moderate flood exposure"],
             best_for: ["Young families", "Remote workers"],
           };
         }
 
-        await admin.from("address_report_sections").update({ status: "ready", data: outlook }).eq("report_id", report.id).eq("section", "outlook");
-        await admin.from("address_reports").update({
-          status: "ready",
-          living_outlook_score: outlook.score,
-          living_outlook_grade: outlook.grade,
-          summary: outlook.summary,
-        }).eq("id", report.id);
+        await admin.from("scorecards").insert({ report_id: report.id, ...outlook });
+        await admin.from("report_sections").update({ status: "success", data: outlook, source: "lovable-ai", fetched_at: new Date().toISOString() })
+          .eq("report_id", report.id).eq("section_key", "scorecard");
+        await admin.from("reports").update({ status: "complete", last_refreshed_at: new Date().toISOString() }).eq("id", report.id);
       } catch (e) {
         console.error("background work error", e);
-        await admin.from("address_reports").update({ status: "error" }).eq("id", report.id);
+        await admin.from("reports").update({ status: "failed" }).eq("id", report.id);
       }
     })();
 
-    // @ts-ignore EdgeRuntime exists in Supabase functions runtime
+    // @ts-ignore EdgeRuntime is provided by Supabase runtime
     if (typeof EdgeRuntime !== "undefined" && (EdgeRuntime as any).waitUntil) {
       // @ts-ignore
       EdgeRuntime.waitUntil(work);
