@@ -46,6 +46,7 @@ const App = () => (
             <Route path="/search" element={<PropertySearch />} />
             <Route path="/demo" element={<DemoReport />} />
             <Route path="/property/:id" element={<PropertyView />} />
+            <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />
             <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
