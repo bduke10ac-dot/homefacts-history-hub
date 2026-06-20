@@ -13,6 +13,7 @@ import HomeownerDashboard from "./pages/HomeownerDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
 import RealtorDashboard from "./pages/RealtorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminFraudReview from "./pages/AdminFraudReview";
 import DemoReport from "./pages/DemoReport";
 import PropertyReport from "./pages/PropertyReport";
 import PropertyHomeHistory from "./pages/PropertyHomeHistory";
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
             <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorDashboard /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
+            <Route path="/admin/fraud" element={<ProtectedRoute requireRole="admin"><AdminFraudReview /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
