@@ -37,8 +37,13 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="container py-10">
-        <p className="text-sm text-muted-foreground">Admin dashboard</p>
-        <h1 className="mt-1 text-3xl font-bold">Verification queue</h1>
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-muted-foreground">Admin dashboard</p>
+            <h1 className="mt-1 text-3xl font-bold">Verification queue</h1>
+          </div>
+          <Link to="/admin/fraud"><Button variant="outline" size="sm"><ShieldCheck className="mr-2 h-4 w-4" />Fraud review queue</Button></Link>
+        </div>
 
         <section className="mt-8">
           <h2 className="mb-3 text-lg font-semibold">Pending ({pending.length})</h2>
