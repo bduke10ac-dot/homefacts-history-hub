@@ -358,6 +358,321 @@ export type Database = {
         }
         Relationships: []
       }
+      env_claim_predictions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          disclaimer: string
+          horizon_months: number | null
+          id: string
+          is_certified: boolean
+          model: string
+          predicted_claim_type: string | null
+          predicted_probability: number | null
+          prompt: string | null
+          property_id: string
+          response_json: Json
+          response_text: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          disclaimer: string
+          horizon_months?: number | null
+          id?: string
+          is_certified?: boolean
+          model: string
+          predicted_claim_type?: string | null
+          predicted_probability?: number | null
+          prompt?: string | null
+          property_id: string
+          response_json?: Json
+          response_text?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          disclaimer?: string
+          horizon_months?: number | null
+          id?: string
+          is_certified?: boolean
+          model?: string
+          predicted_claim_type?: string | null
+          predicted_probability?: number | null
+          prompt?: string | null
+          property_id?: string
+          response_json?: Json
+          response_text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_claim_predictions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      env_events: {
+        Row: {
+          created_at: string
+          description: string | null
+          distance_miles: number | null
+          event_date: string
+          event_type: string
+          external_id: string | null
+          id: string
+          magnitude: number | null
+          magnitude_unit: string | null
+          property_id: string | null
+          raw: Json
+          severity: string | null
+          source: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          distance_miles?: number | null
+          event_date: string
+          event_type: string
+          external_id?: string | null
+          id?: string
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json
+          severity?: string | null
+          source?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string
+          event_type?: string
+          external_id?: string | null
+          id?: string
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json
+          severity?: string | null
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      env_flood_intelligence: {
+        Row: {
+          base_flood_elevation_ft: number | null
+          created_at: string
+          elevation_ft: number | null
+          fema_zone: string | null
+          flood_insurance_required: boolean | null
+          id: string
+          in_floodway: boolean | null
+          last_flood_event_date: string | null
+          metadata: Json
+          property_id: string
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          base_flood_elevation_ft?: number | null
+          created_at?: string
+          elevation_ft?: number | null
+          fema_zone?: string | null
+          flood_insurance_required?: boolean | null
+          id?: string
+          in_floodway?: boolean | null
+          last_flood_event_date?: string | null
+          metadata?: Json
+          property_id: string
+          source?: string
+          updated_at?: string
+        }
+        Update: {
+          base_flood_elevation_ft?: number | null
+          created_at?: string
+          elevation_ft?: number | null
+          fema_zone?: string | null
+          flood_insurance_required?: boolean | null
+          id?: string
+          in_floodway?: boolean | null
+          last_flood_event_date?: string | null
+          metadata?: Json
+          property_id?: string
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_flood_intelligence_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      env_grade: {
+        Row: {
+          breakdown: Json
+          computed_at: string
+          grade: string
+          id: string
+          property_id: string
+          score: number | null
+          updated_at: string
+        }
+        Insert: {
+          breakdown?: Json
+          computed_at?: string
+          grade: string
+          id?: string
+          property_id: string
+          score?: number | null
+          updated_at?: string
+        }
+        Update: {
+          breakdown?: Json
+          computed_at?: string
+          grade?: string
+          id?: string
+          property_id?: string
+          score?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_grade_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      env_risk_scores: {
+        Row: {
+          computed_at: string
+          earthquake_risk_level: string | null
+          flood_risk_level: string | null
+          hail_risk_level: string | null
+          id: string
+          metadata: Json
+          overall_risk_score: number | null
+          property_id: string
+          source: string
+          tornado_risk_level: string | null
+          updated_at: string
+          wildfire_risk_level: string | null
+          wind_risk_level: string | null
+          winter_risk_level: string | null
+        }
+        Insert: {
+          computed_at?: string
+          earthquake_risk_level?: string | null
+          flood_risk_level?: string | null
+          hail_risk_level?: string | null
+          id?: string
+          metadata?: Json
+          overall_risk_score?: number | null
+          property_id: string
+          source?: string
+          tornado_risk_level?: string | null
+          updated_at?: string
+          wildfire_risk_level?: string | null
+          wind_risk_level?: string | null
+          winter_risk_level?: string | null
+        }
+        Update: {
+          computed_at?: string
+          earthquake_risk_level?: string | null
+          flood_risk_level?: string | null
+          hail_risk_level?: string | null
+          id?: string
+          metadata?: Json
+          overall_risk_score?: number | null
+          property_id?: string
+          source?: string
+          tornado_risk_level?: string | null
+          updated_at?: string
+          wildfire_risk_level?: string | null
+          wind_risk_level?: string | null
+          winter_risk_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_risk_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      env_roof_stress_assessments: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          disclaimer: string
+          estimated_remaining_life_years: number | null
+          id: string
+          is_certified: boolean
+          model: string
+          prompt: string | null
+          property_id: string
+          response_json: Json
+          response_text: string | null
+          stress_level: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          disclaimer: string
+          estimated_remaining_life_years?: number | null
+          id?: string
+          is_certified?: boolean
+          model: string
+          prompt?: string | null
+          property_id: string
+          response_json?: Json
+          response_text?: string | null
+          stress_level?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          disclaimer?: string
+          estimated_remaining_life_years?: number | null
+          id?: string
+          is_certified?: boolean
+          model?: string
+          prompt?: string | null
+          property_id?: string
+          response_json?: Json
+          response_text?: string | null
+          stress_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_roof_stress_assessments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       environmental_risks: {
         Row: {
           id: string
@@ -884,6 +1199,547 @@ export type Database = {
           },
         ]
       }
+      platform_ai_observations: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          created_by: string | null
+          disclaimer: string
+          id: string
+          is_certified: boolean
+          model: string
+          observation_type: string
+          prompt: string | null
+          property_id: string
+          response_json: Json
+          response_text: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          created_by?: string | null
+          disclaimer: string
+          id?: string
+          is_certified?: boolean
+          model: string
+          observation_type: string
+          prompt?: string | null
+          property_id: string
+          response_json?: Json
+          response_text?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          created_by?: string | null
+          disclaimer?: string
+          id?: string
+          is_certified?: boolean
+          model?: string
+          observation_type?: string
+          prompt?: string | null
+          property_id?: string
+          response_json?: Json
+          response_text?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_ai_observations_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_audit_log: {
+        Row: {
+          action: string
+          actor_role: string | null
+          actor_user_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          payload: Json
+          property_id: string | null
+        }
+        Insert: {
+          action: string
+          actor_role?: string | null
+          actor_user_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          payload?: Json
+          property_id?: string | null
+        }
+        Update: {
+          action?: string
+          actor_role?: string | null
+          actor_user_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          payload?: Json
+          property_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_audit_log_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_certificates: {
+        Row: {
+          cert_type: string
+          created_at: string
+          document_id: string | null
+          expires_at: string | null
+          id: string
+          issued_at: string | null
+          issued_by: string | null
+          metadata: Json
+          project_id: string | null
+          property_id: string
+          updated_at: string
+        }
+        Insert: {
+          cert_type: string
+          created_at?: string
+          document_id?: string | null
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          issued_by?: string | null
+          metadata?: Json
+          project_id?: string | null
+          property_id: string
+          updated_at?: string
+        }
+        Update: {
+          cert_type?: string
+          created_at?: string
+          document_id?: string | null
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          issued_by?: string | null
+          metadata?: Json
+          project_id?: string | null
+          property_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_certificates_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "platform_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_certificates_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "platform_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_certificates_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_customer_acknowledgments: {
+        Row: {
+          ack_type: string
+          created_at: string
+          document_id: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json
+          property_id: string
+          signed_at: string
+          signed_name: string | null
+          user_id: string | null
+        }
+        Insert: {
+          ack_type: string
+          created_at?: string
+          document_id?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json
+          property_id: string
+          signed_at?: string
+          signed_name?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          ack_type?: string
+          created_at?: string
+          document_id?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json
+          property_id?: string
+          signed_at?: string
+          signed_name?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_customer_acknowledgments_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "platform_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_customer_acknowledgments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_documents: {
+        Row: {
+          created_at: string
+          description: string | null
+          doc_type: string
+          file_size_bytes: number | null
+          id: string
+          metadata: Json
+          mime_type: string | null
+          property_id: string
+          source: string
+          storage_path: string
+          title: string
+          updated_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          doc_type: string
+          file_size_bytes?: number | null
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          property_id: string
+          source?: string
+          storage_path: string
+          title: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          doc_type?: string
+          file_size_bytes?: number | null
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          property_id?: string
+          source?: string
+          storage_path?: string
+          title?: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_documents_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_media_assets: {
+        Row: {
+          asset_type: string
+          caption: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          property_id: string
+          storage_path: string
+          taken_at: string | null
+          updated_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          asset_type: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          property_id: string
+          storage_path: string
+          taken_at?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          asset_type?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          property_id?: string
+          storage_path?: string
+          taken_at?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_media_assets_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_permit_submissions: {
+        Row: {
+          created_at: string
+          external_reference: string | null
+          id: string
+          jurisdiction: string | null
+          payload: Json
+          permit_type: string
+          project_id: string | null
+          property_id: string
+          status: string
+          submitted_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          external_reference?: string | null
+          id?: string
+          jurisdiction?: string | null
+          payload?: Json
+          permit_type: string
+          project_id?: string | null
+          property_id: string
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          external_reference?: string | null
+          id?: string
+          jurisdiction?: string | null
+          payload?: Json
+          permit_type?: string
+          project_id?: string | null
+          property_id?: string
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_permit_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "platform_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_permit_submissions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_project_milestones: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          project_id: string
+          sort_order: number
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          project_id: string
+          sort_order?: number
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          project_id?: string
+          sort_order?: number
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_project_milestones_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "platform_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_projects: {
+        Row: {
+          actual_completion_date: string | null
+          budget_cents: number | null
+          contractor_professional_id: string | null
+          created_at: string
+          description: string | null
+          id: string
+          metadata: Json
+          owner_user_id: string | null
+          project_type: string
+          property_id: string
+          start_date: string | null
+          status: string
+          target_completion_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_completion_date?: string | null
+          budget_cents?: number | null
+          contractor_professional_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json
+          owner_user_id?: string | null
+          project_type: string
+          property_id: string
+          start_date?: string | null
+          status?: string
+          target_completion_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_completion_date?: string | null
+          budget_cents?: number | null
+          contractor_professional_id?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          metadata?: Json
+          owner_user_id?: string | null
+          project_type?: string
+          property_id?: string
+          start_date?: string | null
+          status?: string
+          target_completion_date?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_projects_contractor_professional_id_fkey"
+            columns: ["contractor_professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "platform_projects_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_property_timeline_events: {
+        Row: {
+          created_at: string
+          description: string | null
+          event_date: string
+          event_type: string
+          id: string
+          metadata: Json
+          property_id: string
+          related_entity_id: string | null
+          related_entity_type: string | null
+          source: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          event_date: string
+          event_type: string
+          id?: string
+          metadata?: Json
+          property_id: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          source?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+          property_id?: string
+          related_entity_id?: string | null
+          related_entity_type?: string | null
+          source?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_property_timeline_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       professional_badge_history: {
         Row: {
           changed_at: string | null
@@ -1401,6 +2257,380 @@ export type Database = {
             columns: ["record_id"]
             isOneToOne: false
             referencedRelation: "property_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      regional_home_coach_query_log: {
+        Row: {
+          created_at: string
+          disclaimer: string
+          id: string
+          is_certified: boolean
+          model: string
+          prompt: string
+          property_id: string | null
+          response_json: Json
+          response_text: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          disclaimer: string
+          id?: string
+          is_certified?: boolean
+          model: string
+          prompt: string
+          property_id?: string | null
+          response_json?: Json
+          response_text?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          disclaimer?: string
+          id?: string
+          is_certified?: boolean
+          model?: string
+          prompt?: string
+          property_id?: string | null
+          response_json?: Json
+          response_text?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_home_coach_query_log_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      regional_home_system_topics: {
+        Row: {
+          body_markdown: string | null
+          category: string
+          created_at: string
+          id: string
+          metadata: Json
+          region_scope: string
+          summary: string | null
+          title: string
+          topic_key: string
+          updated_at: string
+        }
+        Insert: {
+          body_markdown?: string | null
+          category: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          region_scope?: string
+          summary?: string | null
+          title: string
+          topic_key: string
+          updated_at?: string
+        }
+        Update: {
+          body_markdown?: string | null
+          category?: string
+          created_at?: string
+          id?: string
+          metadata?: Json
+          region_scope?: string
+          summary?: string | null
+          title?: string
+          topic_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      regional_incentives: {
+        Row: {
+          amount_text: string | null
+          authority_level: string
+          category: string
+          created_at: string
+          eligibility_summary: string | null
+          ends_on: string | null
+          id: string
+          jurisdiction: string | null
+          metadata: Json
+          program_key: string
+          starts_on: string | null
+          state_code: string | null
+          title: string
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          amount_text?: string | null
+          authority_level: string
+          category: string
+          created_at?: string
+          eligibility_summary?: string | null
+          ends_on?: string | null
+          id?: string
+          jurisdiction?: string | null
+          metadata?: Json
+          program_key: string
+          starts_on?: string | null
+          state_code?: string | null
+          title: string
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          amount_text?: string | null
+          authority_level?: string
+          category?: string
+          created_at?: string
+          eligibility_summary?: string | null
+          ends_on?: string | null
+          id?: string
+          jurisdiction?: string | null
+          metadata?: Json
+          program_key?: string
+          starts_on?: string | null
+          state_code?: string | null
+          title?: string
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
+      regional_insurance_guidance: {
+        Row: {
+          authority: string | null
+          body_markdown: string | null
+          created_at: string
+          id: string
+          last_reviewed: string | null
+          metadata: Json
+          state_code: string
+          summary: string | null
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          authority?: string | null
+          body_markdown?: string | null
+          created_at?: string
+          id?: string
+          last_reviewed?: string | null
+          metadata?: Json
+          state_code: string
+          summary?: string | null
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          authority?: string | null
+          body_markdown?: string | null
+          created_at?: string
+          id?: string
+          last_reviewed?: string | null
+          metadata?: Json
+          state_code?: string
+          summary?: string | null
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      regional_property_profile: {
+        Row: {
+          classified_at: string
+          climate_zone: string | null
+          county_fips: string | null
+          flood_risk_level: string | null
+          hail_risk_level: string | null
+          id: string
+          metadata: Json
+          property_id: string
+          region_classification: string | null
+          state_code: string | null
+          updated_at: string
+          wildfire_risk_level: string | null
+          wind_risk_level: string | null
+        }
+        Insert: {
+          classified_at?: string
+          climate_zone?: string | null
+          county_fips?: string | null
+          flood_risk_level?: string | null
+          hail_risk_level?: string | null
+          id?: string
+          metadata?: Json
+          property_id: string
+          region_classification?: string | null
+          state_code?: string | null
+          updated_at?: string
+          wildfire_risk_level?: string | null
+          wind_risk_level?: string | null
+        }
+        Update: {
+          classified_at?: string
+          climate_zone?: string | null
+          county_fips?: string | null
+          flood_risk_level?: string | null
+          hail_risk_level?: string | null
+          id?: string
+          metadata?: Json
+          property_id?: string
+          region_classification?: string | null
+          state_code?: string | null
+          updated_at?: string
+          wildfire_risk_level?: string | null
+          wind_risk_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_property_profile_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      regional_property_systems: {
+        Row: {
+          contractor_professional_id: string | null
+          created_at: string
+          id: string
+          install_date: string | null
+          manufacturer: string | null
+          metadata: Json
+          model: string | null
+          notes: string | null
+          permit_id: string | null
+          property_id: string
+          status: string
+          system_type: string
+          updated_at: string
+          warranty_expires: string | null
+        }
+        Insert: {
+          contractor_professional_id?: string | null
+          created_at?: string
+          id?: string
+          install_date?: string | null
+          manufacturer?: string | null
+          metadata?: Json
+          model?: string | null
+          notes?: string | null
+          permit_id?: string | null
+          property_id: string
+          status?: string
+          system_type: string
+          updated_at?: string
+          warranty_expires?: string | null
+        }
+        Update: {
+          contractor_professional_id?: string | null
+          created_at?: string
+          id?: string
+          install_date?: string | null
+          manufacturer?: string | null
+          metadata?: Json
+          model?: string | null
+          notes?: string | null
+          permit_id?: string | null
+          property_id?: string
+          status?: string
+          system_type?: string
+          updated_at?: string
+          warranty_expires?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_property_systems_contractor_professional_id_fkey"
+            columns: ["contractor_professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "regional_property_systems_permit_id_fkey"
+            columns: ["permit_id"]
+            isOneToOne: false
+            referencedRelation: "permits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "regional_property_systems_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      regional_solar_systems: {
+        Row: {
+          battery_capacity_kwh: number | null
+          created_at: string
+          estimated_annual_kwh: number | null
+          financing_provider: string | null
+          id: string
+          inverter_type: string | null
+          metadata: Json
+          ownership_type: string | null
+          panel_count: number | null
+          ppa_term_years: number | null
+          property_id: string
+          property_system_id: string
+          system_capacity_kw: number | null
+          updated_at: string
+        }
+        Insert: {
+          battery_capacity_kwh?: number | null
+          created_at?: string
+          estimated_annual_kwh?: number | null
+          financing_provider?: string | null
+          id?: string
+          inverter_type?: string | null
+          metadata?: Json
+          ownership_type?: string | null
+          panel_count?: number | null
+          ppa_term_years?: number | null
+          property_id: string
+          property_system_id: string
+          system_capacity_kw?: number | null
+          updated_at?: string
+        }
+        Update: {
+          battery_capacity_kwh?: number | null
+          created_at?: string
+          estimated_annual_kwh?: number | null
+          financing_provider?: string | null
+          id?: string
+          inverter_type?: string | null
+          metadata?: Json
+          ownership_type?: string | null
+          panel_count?: number | null
+          ppa_term_years?: number | null
+          property_id?: string
+          property_system_id?: string
+          system_capacity_kw?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "regional_solar_systems_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "regional_solar_systems_property_system_id_fkey"
+            columns: ["property_system_id"]
+            isOneToOne: true
+            referencedRelation: "regional_property_systems"
             referencedColumns: ["id"]
           },
         ]
@@ -2287,6 +3517,230 @@ export type Database = {
       }
     }
     Views: {
+      v_env_hail_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          distance_miles: number | null
+          event_date: string | null
+          event_type: string | null
+          external_id: string | null
+          id: string | null
+          magnitude: number | null
+          magnitude_unit: string | null
+          property_id: string | null
+          raw: Json | null
+          severity: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_env_tornado_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          distance_miles: number | null
+          event_date: string | null
+          event_type: string | null
+          external_id: string | null
+          id: string | null
+          magnitude: number | null
+          magnitude_unit: string | null
+          property_id: string | null
+          raw: Json | null
+          severity: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_env_wind_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          distance_miles: number | null
+          event_date: string | null
+          event_type: string | null
+          external_id: string | null
+          id: string | null
+          magnitude: number | null
+          magnitude_unit: string | null
+          property_id: string | null
+          raw: Json | null
+          severity: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      v_env_winter_events: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          distance_miles: number | null
+          event_date: string | null
+          event_type: string | null
+          external_id: string | null
+          id: string | null
+          magnitude: number | null
+          magnitude_unit: string | null
+          property_id: string | null
+          raw: Json | null
+          severity: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          distance_miles?: number | null
+          event_date?: string | null
+          event_type?: string | null
+          external_id?: string | null
+          id?: string | null
+          magnitude?: number | null
+          magnitude_unit?: string | null
+          property_id?: string | null
+          raw?: Json | null
+          severity?: string | null
+          source?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "env_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       work_history_with_current_status: {
         Row: {
           company_name: string | null
@@ -2342,6 +3796,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_property_owner: {
+        Args: { _property_id: string; _user_id: string }
         Returns: boolean
       }
     }
