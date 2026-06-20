@@ -390,6 +390,60 @@ export type Database = {
           },
         ]
       }
+      fraud_flags: {
+        Row: {
+          detail: string | null
+          detected_at: string | null
+          flag_type: string | null
+          id: string
+          permit_id: string | null
+          professional_id: string | null
+          resolved: boolean | null
+          resolved_at: string | null
+          resolved_note: string | null
+          severity: string | null
+        }
+        Insert: {
+          detail?: string | null
+          detected_at?: string | null
+          flag_type?: string | null
+          id?: string
+          permit_id?: string | null
+          professional_id?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_note?: string | null
+          severity?: string | null
+        }
+        Update: {
+          detail?: string | null
+          detected_at?: string | null
+          flag_type?: string | null
+          id?: string
+          permit_id?: string | null
+          professional_id?: string | null
+          resolved?: boolean | null
+          resolved_at?: string | null
+          resolved_note?: string | null
+          severity?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fraud_flags_permit_id_fkey"
+            columns: ["permit_id"]
+            isOneToOne: false
+            referencedRelation: "permits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fraud_flags_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insurance_claims: {
         Row: {
           claim_date: string | null
@@ -793,6 +847,137 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      professional_badge_history: {
+        Row: {
+          changed_at: string | null
+          id: string
+          new_badge: string | null
+          previous_badge: string | null
+          professional_id: string | null
+          reason: string | null
+        }
+        Insert: {
+          changed_at?: string | null
+          id?: string
+          new_badge?: string | null
+          previous_badge?: string | null
+          professional_id?: string | null
+          reason?: string | null
+        }
+        Update: {
+          changed_at?: string | null
+          id?: string
+          new_badge?: string | null
+          previous_badge?: string | null
+          professional_id?: string | null
+          reason?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "professional_badge_history_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      professionals: {
+        Row: {
+          bbb_accredited: boolean | null
+          bbb_rating: string | null
+          bond_status: string | null
+          business_registration_number: string | null
+          business_registration_status: string | null
+          company_name: string | null
+          complaints_count: number | null
+          complaints_detail: Json | null
+          created_at: string | null
+          expiration_date: string | null
+          id: string
+          identity_mismatch: boolean | null
+          insurance_status: string | null
+          issuing_state: string | null
+          issuing_state_agency: string | null
+          license_number: string | null
+          license_status: string | null
+          license_type: string | null
+          major_complaint: boolean | null
+          nmls_id: string | null
+          professional_category: string | null
+          professional_name: string | null
+          source_link: string | null
+          trade_type: string | null
+          updated_at: string | null
+          verification_badge: string | null
+          verification_score: number | null
+          verified_date: string | null
+          workers_comp_status: string | null
+        }
+        Insert: {
+          bbb_accredited?: boolean | null
+          bbb_rating?: string | null
+          bond_status?: string | null
+          business_registration_number?: string | null
+          business_registration_status?: string | null
+          company_name?: string | null
+          complaints_count?: number | null
+          complaints_detail?: Json | null
+          created_at?: string | null
+          expiration_date?: string | null
+          id?: string
+          identity_mismatch?: boolean | null
+          insurance_status?: string | null
+          issuing_state?: string | null
+          issuing_state_agency?: string | null
+          license_number?: string | null
+          license_status?: string | null
+          license_type?: string | null
+          major_complaint?: boolean | null
+          nmls_id?: string | null
+          professional_category?: string | null
+          professional_name?: string | null
+          source_link?: string | null
+          trade_type?: string | null
+          updated_at?: string | null
+          verification_badge?: string | null
+          verification_score?: number | null
+          verified_date?: string | null
+          workers_comp_status?: string | null
+        }
+        Update: {
+          bbb_accredited?: boolean | null
+          bbb_rating?: string | null
+          bond_status?: string | null
+          business_registration_number?: string | null
+          business_registration_status?: string | null
+          company_name?: string | null
+          complaints_count?: number | null
+          complaints_detail?: Json | null
+          created_at?: string | null
+          expiration_date?: string | null
+          id?: string
+          identity_mismatch?: boolean | null
+          insurance_status?: string | null
+          issuing_state?: string | null
+          issuing_state_agency?: string | null
+          license_number?: string | null
+          license_status?: string | null
+          license_type?: string | null
+          major_complaint?: boolean | null
+          nmls_id?: string | null
+          professional_category?: string | null
+          professional_name?: string | null
+          source_link?: string | null
+          trade_type?: string | null
+          updated_at?: string | null
+          verification_badge?: string | null
+          verification_score?: number | null
+          verified_date?: string | null
+          workers_comp_status?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -1973,9 +2158,119 @@ export type Database = {
           },
         ]
       }
+      work_history_records: {
+        Row: {
+          created_at: string | null
+          id: string
+          insurance_verified_at_time: boolean | null
+          license_status_at_time: string | null
+          license_verified: boolean | null
+          permit_id: string | null
+          professional_id: string | null
+          property_id: string | null
+          risk_note_override: string | null
+          source_url: string | null
+          work_date: string | null
+          work_performed: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          insurance_verified_at_time?: boolean | null
+          license_status_at_time?: string | null
+          license_verified?: boolean | null
+          permit_id?: string | null
+          professional_id?: string | null
+          property_id?: string | null
+          risk_note_override?: string | null
+          source_url?: string | null
+          work_date?: string | null
+          work_performed: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          insurance_verified_at_time?: boolean | null
+          license_status_at_time?: string | null
+          license_verified?: boolean | null
+          permit_id?: string | null
+          professional_id?: string | null
+          property_id?: string | null
+          risk_note_override?: string | null
+          source_url?: string | null
+          work_date?: string | null
+          work_performed?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "work_history_records_permit_id_fkey"
+            columns: ["permit_id"]
+            isOneToOne: false
+            referencedRelation: "permits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_history_records_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_history_records_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      work_history_with_current_status: {
+        Row: {
+          company_name: string | null
+          id: string | null
+          insurance_status_today: string | null
+          insurance_verified_at_time: boolean | null
+          license_status_at_time: string | null
+          license_status_today: string | null
+          license_verified: boolean | null
+          permit_id: string | null
+          permit_number: string | null
+          professional_badge_today: string | null
+          professional_id: string | null
+          professional_name: string | null
+          property_id: string | null
+          risk_note: string | null
+          source_url: string | null
+          work_date: string | null
+          work_performed: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "work_history_records_permit_id_fkey"
+            columns: ["permit_id"]
+            isOneToOne: false
+            referencedRelation: "permits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_history_records_professional_id_fkey"
+            columns: ["professional_id"]
+            isOneToOne: false
+            referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "work_history_records_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       has_role: {
