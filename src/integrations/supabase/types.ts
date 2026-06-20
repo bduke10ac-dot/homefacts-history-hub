@@ -803,6 +803,7 @@ export type Database = {
       }
       permits: {
         Row: {
+          applicant_name: string | null
           description: string | null
           finaled_date: string | null
           id: string
@@ -815,6 +816,7 @@ export type Database = {
           valuation: number | null
         }
         Insert: {
+          applicant_name?: string | null
           description?: string | null
           finaled_date?: string | null
           id?: string
@@ -827,6 +829,7 @@ export type Database = {
           valuation?: number | null
         }
         Update: {
+          applicant_name?: string | null
           description?: string | null
           finaled_date?: string | null
           id?: string
