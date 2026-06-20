@@ -1,0 +1,2 @@
+create policy "subs insert own trial" on public.subscriptions for insert to authenticated with check (auth.uid() = user_id and plan in ('trial','free'));
+create policy "subs update own" on public.subscriptions for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
