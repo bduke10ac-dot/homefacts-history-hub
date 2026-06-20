@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { VerifiedProfessionalCard, type ProfessionalRow, type FraudFlagRow } from "@/components/professionals/VerifiedProfessionalCard";
 import { MapPin, FileText, Wrench } from "lucide-react";
+import { PaywallGate } from "@/components/paywall/PaywallGate";
 import { Skeleton } from "@/components/ui/skeleton";
 
 type Permit = {
@@ -191,56 +192,72 @@ export default function PropertyHomeHistory() {
           {workRows.length === 0 ? (
             <p className="text-sm text-muted-foreground">No recorded work history.</p>
           ) : (
-            <div className="space-y-4">
-              {[...workRows].sort((a, b) => (b.work_date ?? "").localeCompare(a.work_date ?? "")).map((w) => {
-                const pro = w.professional_id ? proById[w.professional_id] : undefined;
-                const flags = pro ? (flagsByPro[pro.id] ?? []).filter((f) => !f.resolved) : [];
-                const tinted = !!w.risk_note;
-                return (
-                  <div key={w.id} className={`grid gap-4 rounded-2xl border p-5 shadow-sm lg:grid-cols-[1fr_minmax(0,1.2fr)] ${tinted ? "border-red-500/40 bg-red-500/5" : "bg-card"}`}>
-                    <div>
-                      <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                        {w.work_date ?? "—"}{w.permit_number ? ` · Permit ${w.permit_number}` : ""}
-                      </div>
+            <PaywallGate
+              title="Full work history is a Pro feature"
+              description="See every recorded job at this address, with then-vs-now contractor verification, fraud flags, and source links."
+              teaser={
+                <div className="space-y-4 p-1">
+                  {[...workRows].slice(0, 1).map((w) => (
+                    <div key={w.id} className="rounded-2xl border bg-card p-5">
+                      <div className="text-xs uppercase tracking-wider text-muted-foreground">{w.work_date ?? "—"}</div>
                       <div className="mt-1 text-base font-semibold">{w.work_performed}</div>
-                      <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
-                        <div className="rounded-md border bg-background p-2">
-                          <div className="text-muted-foreground">License at time of work</div>
-                          <div className="mt-0.5 font-medium capitalize">{w.license_status_at_time ?? "—"}</div>
-                        </div>
-                        <div className="rounded-md border bg-background p-2">
-                          <div className="text-muted-foreground">License today</div>
-                          <div className="mt-0.5 font-medium capitalize">{w.license_status_today ?? "—"}</div>
-                        </div>
-                        <div className="rounded-md border bg-background p-2">
-                          <div className="text-muted-foreground">Verified at time</div>
-                          <div className="mt-0.5 font-medium">{w.license_verified ? "Yes" : "No"}</div>
-                        </div>
-                        <div className="rounded-md border bg-background p-2">
-                          <div className="text-muted-foreground">Insurance at time</div>
-                          <div className="mt-0.5 font-medium">{w.insurance_verified_at_time ? "Yes" : "No"}</div>
-                        </div>
-                      </div>
-                      {w.risk_note && (
-                        <div className="mt-3 rounded border border-red-500/40 bg-red-500/10 p-2 text-xs font-bold text-red-700 dark:text-red-300">
-                          ⚠ {w.risk_note}
-                        </div>
-                      )}
+                      <div className="mt-3 h-24 rounded bg-muted/40" />
                     </div>
-                    <VerifiedProfessionalCard
-                      professional={pro}
-                      flags={flags}
-                      workContext={{
-                        license_status_at_time: w.license_status_at_time,
-                        insurance_verified_at_time: w.insurance_verified_at_time,
-                        work_date: w.work_date,
-                        risk_note: w.risk_note,
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+                  ))}
+                </div>
+              }
+            >
+              <div className="space-y-4">
+                {[...workRows].sort((a, b) => (b.work_date ?? "").localeCompare(a.work_date ?? "")).map((w) => {
+                  const pro = w.professional_id ? proById[w.professional_id] : undefined;
+                  const flags = pro ? (flagsByPro[pro.id] ?? []).filter((f) => !f.resolved) : [];
+                  const tinted = !!w.risk_note;
+                  return (
+                    <div key={w.id} className={`grid gap-4 rounded-2xl border p-5 shadow-sm lg:grid-cols-[1fr_minmax(0,1.2fr)] ${tinted ? "border-red-500/40 bg-red-500/5" : "bg-card"}`}>
+                      <div>
+                        <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                          {w.work_date ?? "—"}{w.permit_number ? ` · Permit ${w.permit_number}` : ""}
+                        </div>
+                        <div className="mt-1 text-base font-semibold">{w.work_performed}</div>
+                        <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+                          <div className="rounded-md border bg-background p-2">
+                            <div className="text-muted-foreground">License at time of work</div>
+                            <div className="mt-0.5 font-medium capitalize">{w.license_status_at_time ?? "—"}</div>
+                          </div>
+                          <div className="rounded-md border bg-background p-2">
+                            <div className="text-muted-foreground">License today</div>
+                            <div className="mt-0.5 font-medium capitalize">{w.license_status_today ?? "—"}</div>
+                          </div>
+                          <div className="rounded-md border bg-background p-2">
+                            <div className="text-muted-foreground">Verified at time</div>
+                            <div className="mt-0.5 font-medium">{w.license_verified ? "Yes" : "No"}</div>
+                          </div>
+                          <div className="rounded-md border bg-background p-2">
+                            <div className="text-muted-foreground">Insurance at time</div>
+                            <div className="mt-0.5 font-medium">{w.insurance_verified_at_time ? "Yes" : "No"}</div>
+                          </div>
+                        </div>
+                        {w.risk_note && (
+                          <div className="mt-3 rounded border border-red-500/40 bg-red-500/10 p-2 text-xs font-bold text-red-700 dark:text-red-300">
+                            ⚠ {w.risk_note}
+                          </div>
+                        )}
+                      </div>
+                      <VerifiedProfessionalCard
+                        professional={pro}
+                        flags={flags}
+                        workContext={{
+                          license_status_at_time: w.license_status_at_time,
+                          insurance_verified_at_time: w.insurance_verified_at_time,
+                          work_date: w.work_date,
+                          risk_note: w.risk_note,
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </PaywallGate>
           )}
         </section>
       </div>

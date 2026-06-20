@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Printer, RefreshCw, ShieldCheck, MapPin, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { PaywallGate } from "@/components/paywall/PaywallGate";
 
 interface ReportPayload {
   title: string;
@@ -137,46 +138,66 @@ export default function PropertyReport() {
                 </ul>
               </Section>
 
-              <Section title="Risks">
-                <div className="space-y-3">
-                  {p.risks.map((r, i) => (
-                    <div key={i} className="rounded-lg border p-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold">{r.name}</span>
-                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                          r.severity === "high" ? "bg-destructive/15 text-destructive" :
-                          r.severity === "medium" ? "bg-amber-500/15 text-amber-700 dark:text-amber-400" :
-                          "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
-                        }`}>{r.severity}</span>
+              <PaywallGate
+                title="Full risk & recommendation report is Pro"
+                description="Unlock the full risk breakdown, system-by-system analysis, and prioritized recommendations."
+                teaser={
+                  <Section title="Risks">
+                    <div className="space-y-3">
+                      {p.risks.slice(0, 1).map((r, i) => (
+                        <div key={i} className="rounded-lg border p-4">
+                          <div className="flex items-center justify-between">
+                            <span className="font-semibold">{r.name}</span>
+                            <span className="rounded-full bg-muted px-2 py-0.5 text-xs">{r.severity}</span>
+                          </div>
+                          <p className="mt-1 text-sm text-muted-foreground">{r.detail.slice(0, 80)}…</p>
+                        </div>
+                      ))}
+                    </div>
+                  </Section>
+                }
+              >
+                <Section title="Risks">
+                  <div className="space-y-3">
+                    {p.risks.map((r, i) => (
+                      <div key={i} className="rounded-lg border p-4">
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold">{r.name}</span>
+                          <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                            r.severity === "high" ? "bg-destructive/15 text-destructive" :
+                            r.severity === "medium" ? "bg-amber-500/15 text-amber-700 dark:text-amber-400" :
+                            "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+                          }`}>{r.severity}</span>
+                        </div>
+                        <p className="mt-1 text-sm text-muted-foreground">{r.detail}</p>
                       </div>
-                      <p className="mt-1 text-sm text-muted-foreground">{r.detail}</p>
-                    </div>
-                  ))}
-                </div>
-              </Section>
+                    ))}
+                  </div>
+                </Section>
 
-              <Section title="System breakdown">
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {p.systems.map((s, i) => (
-                    <div key={i} className="rounded-lg border p-4">
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">{s.name}</p>
-                      <p className="mt-1 font-semibold">{s.status}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">{s.notes}</p>
-                    </div>
-                  ))}
-                </div>
-              </Section>
+                <Section title="System breakdown">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {p.systems.map((s, i) => (
+                      <div key={i} className="rounded-lg border p-4">
+                        <p className="text-xs uppercase tracking-wider text-muted-foreground">{s.name}</p>
+                        <p className="mt-1 font-semibold">{s.status}</p>
+                        <p className="mt-1 text-sm text-muted-foreground">{s.notes}</p>
+                      </div>
+                    ))}
+                  </div>
+                </Section>
 
-              <Section title="Recommendations">
-                <ul className="space-y-2">
-                  {p.recommendations.map((r, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                      <span>{r}</span>
-                    </li>
-                  ))}
-                </ul>
-              </Section>
+                <Section title="Recommendations">
+                  <ul className="space-y-2">
+                    {p.recommendations.map((r, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm">
+                        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Section>
+              </PaywallGate>
 
               <p className="text-center text-xs text-muted-foreground">
                 Generated by HomeFacts AI{report ? ` on ${format(new Date(report.created_at), "MMM d, yyyy 'at' h:mm a")}` : ""} · AI-generated; verify with a licensed professional.
