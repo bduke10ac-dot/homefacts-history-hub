@@ -33,6 +33,9 @@ export function Navbar() {
           {user ? (
             <>
               <Button variant="ghost" size="sm" asChild>
+                <Link to="/my-reports"><FileText className="mr-1.5 h-4 w-4" />My reports</Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
                 <Link to={dashboardPath()}>
                   {primaryRole === "admin" ? <Shield className="mr-1.5 h-4 w-4" /> : <LayoutDashboard className="mr-1.5 h-4 w-4" />}
                   Dashboard
