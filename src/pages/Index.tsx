@@ -39,6 +39,9 @@ const Index = () => {
               <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
                 <Link to="/demo"><FileText className="mr-2 h-4 w-4" />See a sample report</Link>
               </Button>
+              <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                <Link to="/properties/22222222-2222-2222-2222-222222222222/home-history">See contractor fraud demo →</Link>
+              </Button>
             </div>
           </div>
         </div>
