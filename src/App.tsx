@@ -15,6 +15,8 @@ import RealtorDashboard from "./pages/RealtorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import DemoReport from "./pages/DemoReport";
 import PropertyReport from "./pages/PropertyReport";
+import AddressReport from "./pages/AddressReport";
+import MyReports from "./pages/MyReports";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,6 +46,8 @@ const App = () => (
             <Route path="/demo" element={<DemoReport />} />
             <Route path="/property/:id" element={<PropertyView />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
+            <Route path="/report/:id" element={<AddressReport />} />
+            <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
             <Route path="/r/:token" element={<PropertyView shared />} />
             <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
             <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />

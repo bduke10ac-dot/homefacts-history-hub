@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Search, ShieldCheck, FileText, Wrench, Award, ArrowRight, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/Navbar";
+import { AddressSearch } from "@/components/address/AddressSearch";
 import heroImage from "@/assets/hero-home.jpg";
 
 const features = [
@@ -29,14 +30,14 @@ const Index = () => {
               Know the full story behind every home.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-primary-foreground/85 md:text-xl">
-              HomeFacts Report tracks repairs, maintenance, warranties and contractor work — so homeowners, realtors, and buyers can trust what they see.
+              Get an instant property history, neighborhood intelligence, and risk report on any U.S. address.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button size="lg" variant="secondary" asChild>
-                <Link to="/demo"><FileText className="mr-2 h-5 w-5" />See a sample report</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link to="/auth?mode=signup">Create My Report<ArrowRight className="ml-2 h-4 w-4" /></Link>
+            <div className="mt-8 max-w-2xl rounded-2xl bg-background/95 p-3 shadow-elevated backdrop-blur">
+              <AddressSearch />
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                <Link to="/demo"><FileText className="mr-2 h-4 w-4" />See a sample report</Link>
               </Button>
             </div>
           </div>
