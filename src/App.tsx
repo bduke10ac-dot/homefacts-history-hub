@@ -15,6 +15,7 @@ import RealtorDashboard from "./pages/RealtorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import DemoReport from "./pages/DemoReport";
 import PropertyReport from "./pages/PropertyReport";
+import PropertyHomeHistory from "./pages/PropertyHomeHistory";
 import AddressReport from "./pages/AddressReport";
 import MyReports from "./pages/MyReports";
 import NotFound from "./pages/NotFound";
