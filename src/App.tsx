@@ -20,6 +20,9 @@ import PropertyHomeHistory from "./pages/PropertyHomeHistory";
 import AddressReport from "./pages/AddressReport";
 import MyReports from "./pages/MyReports";
 import NotFound from "./pages/NotFound";
+import Pricing from "./pages/Pricing";
+import CheckoutReturn from "./pages/CheckoutReturn";
+import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +44,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
+          <PaymentTestModeBanner />
           <Routes>
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/checkout/return" element={<CheckoutReturn />} />
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/search" element={<PropertySearch />} />
