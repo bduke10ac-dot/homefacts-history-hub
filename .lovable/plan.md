@@ -1,80 +1,77 @@
-# HomeFacts AI — Next Build Plan
 
-You picked all four slices on real properties. That's a lot, so I'll ship in 4 reviewable phases against the existing `properties` / `property_records` / `record_attachments` tables. Each phase is independently shippable.
+# Modules B + C + D — Full Scaffold with Mock Data
 
----
-
-## Phase 1 — Home Health Score + Risk Scores
-
-**Goal:** Every property page (and the demo) shows a 0–100 Home Health Score and a row of per-system risk badges.
-
-- New pure module `src/lib/healthScore.ts`:
-  - `computeHealthScore(property, records)` → `{ score, grade, factors[] }`
-  - Factors: roof age (records in `category=roof`), HVAC age, deferred maintenance (gaps > 12 months), verified-record ratio, year_built decay, claim/damage records.
-- New module `src/lib/riskScores.ts` → per-system risks (roof, flood, wind, fire, foundation, electrical, plumbing, insurance, maintenance) as 0–100 with `low|medium|high` band. Heuristics from records + `state`/`zip` (FEMA-style mock weights — clearly marked as estimated; real integrations later).
-- New components:
-  - `src/components/health/HealthScoreCard.tsx` — big circular score, grade, top contributing factors.
-  - `src/components/health/RiskBadgeGrid.tsx` — 9 badges with tooltip explanations.
-- Wire into `PropertyView.tsx` (top of report) and `DemoReport.tsx`.
-
-No DB changes.
+Build all three module backends + minimal UI surfaces now. Real seed data and master prompts swap in later without schema changes.
 
 ---
 
-## Phase 2 — Digital Home Timeline
+## Scope per module
 
-**Goal:** Vertical timeline replacing/augmenting the current records list.
+### Module B — Platform (Vault / Projects / Government / AI)
+- **Tables**: `platform_documents`, `platform_media_assets`, `platform_audit_log`, `platform_projects`, `platform_project_milestones`, `platform_customer_acknowledgments`, `platform_permit_submissions`, `platform_certificates`, `platform_ai_observations`, `platform_property_timeline_events`.
+- **Storage**: reuse existing `property-files` bucket; documents/media reference storage paths.
+- **Audit log**: append-only — RLS allows INSERT only via SECURITY DEFINER trigger from other tables; no UPDATE/DELETE policies.
+- **AI guardrails**: `platform_ai_observations` has NOT NULL `disclaimer` + CHECK that `is_certified = false`.
+- **UI**: new `/property/:id/vault` tab (list + upload), `/property/:id/projects` (homeowner+contractor view), read-only `platform_audit_log` viewer on PropertyView for owners.
 
-- New component `src/components/timeline/HomeTimeline.tsx`:
-  - Groups records by year, icon per `category`, verified badge, cost, attachments count.
-  - Synthetic "milestone" entries derived from property fields (Built `year_built`, Last sold from a future `transactions` table — for now just Built).
-- Add a `category` icon map in `src/lib/categoryMeta.ts` (roof, hvac, plumbing, electrical, foundation, roof, paint, landscaping, claim, permit, inspection, sale, construction).
-- Used in `PropertyView.tsx` (new "Timeline" tab) and `DemoReport.tsx`.
+### Module C — Environmental & Weather Intelligence
+- **Tables**: `env_events`, `env_roof_stress_assessments`, `env_risk_scores`, `env_flood_intelligence`, `env_claim_predictions`, `env_grade`.
+- **Views**: `v_env_hail_events`, `v_env_wind_events`, `v_env_tornado_events`, `v_env_winter_events` (filtered selects on `env_events`).
+- **AI guardrails**: NOT NULL `disclaimer` + `is_certified = false` CHECK on `env_roof_stress_assessments` and `env_claim_predictions`.
+- **Compat**: leave existing `weather_events` and `environmental_risks` untouched; add `v_property_environmental_summary` view that prefers `env_*` and falls back to legacy. Merge pass deletes legacy later.
+- **UI**: new "Environmental" section on PropertyView with grade card, exposure timeline, risk grid.
 
-No DB changes.
-
----
-
-## Phase 3 — AI Assistant per property
-
-**Goal:** Chat panel on a property page that answers from that home's records.
-
-Following the chat-agent-ui-contract: **one conversation per property, persisted in the database** (so realtors/buyers see the same context).
-
-- Migration:
-  - `property_chat_messages(id, property_id fk, user_id, role, content, created_at)` + RLS: anyone with property read access (owner, share_links viewer, realtor/admin) can read; only authed users can insert their own messages.
-  - GRANTs to authenticated + service_role.
-- Edge function `supabase/functions/property-chat/index.ts`:
-  - Validates JWT, checks user can access `property_id`.
-  - Loads property + last 200 records + attachments metadata, builds a system prompt.
-  - Streams via AI SDK + Lovable AI Gateway (`google/gemini-3-flash-preview`).
-  - Persists user + assistant messages in `onFinish`.
-- Client component `src/components/ai/PropertyAssistant.tsx` using `useChat` + `DefaultChatTransport` pointed at the edge function. Rendered as a side panel / tab in `PropertyView.tsx` (gated to authed users; teaser-only on `/r/:token` share view and demo).
+### Module D — Regional Intelligence & Education
+- **Tables**: `regional_property_profile`, `regional_home_system_topics`, `regional_property_systems`, `regional_solar_systems`, `regional_incentives`, `regional_insurance_guidance`, `regional_home_coach_query_log`.
+- **FKs from day one**: `regional_property_systems.contractor_professional_id → professionals(id)`, `.permit_id → permits(id)`. `regional_solar_systems.property_system_id → regional_property_systems(id)` (1:1 unique).
+- **AI guardrails**: NOT NULL `disclaimer` + `is_certified = false` on `regional_home_coach_query_log`.
+- **Risk-level columns** on `regional_property_profile`: nullable, populated by trigger from Module C's `env_risk_scores` when present.
+- **UI**: "Regional & Systems" tab on PropertyView with classification card, installed systems list, incentive matches.
 
 ---
 
-## Phase 4 — AI Reports + PDF export
+## Cross-cutting decisions (locked)
 
-**Goal:** One-click Buyer / Seller / Insurance / Roof / Maintenance reports.
-
-- Edge function `supabase/functions/generate-report/index.ts`:
-  - Input: `{ property_id, report_type }`. Access-checks the user.
-  - Uses Lovable AI w/ structured output (`Output.object`) to produce a typed report (executive summary, key findings, risks, recommendations, system breakdown).
-  - Returns JSON; cached in new `property_reports(id, property_id, report_type, payload jsonb, created_by, created_at)` table (migration + RLS + GRANTs).
-- New page `src/pages/PropertyReport.tsx` at `/property/:id/report/:type`:
-  - Renders branded HTML report (uses realtor branding from `profiles` if `primaryRole=realtor`).
-  - "Download PDF" button — client-side via `window.print()` with a print stylesheet (already partially set up via `no-print` class). Avoids extra deps; same approach the existing share/print flow uses.
-- Buttons added to `PropertyView.tsx` and `RealtorDashboard.tsx`.
+1. **Naming**: `platform_*`, `env_*`, `regional_*` prefixes in `public` schema. No new schemas.
+2. **`property_id`**: real FK to `properties(id)` on every new table, `ON DELETE CASCADE`.
+3. **AI log consolidation prep**: B's `platform_ai_observations`, C's `env_claim_predictions`, D's `regional_home_coach_query_log` all share columns `(property_id, model, prompt, response_text, response_json, disclaimer, is_certified, created_by, created_at)` so a future `ai_interaction_log` merge is a rename + UNION, not a rewrite.
+4. **RLS pattern**: owner of property OR users with read access via existing `share_links` / role checks. Contractors see only projects they're assigned to. Admin sees all.
+5. **GRANTs**: `authenticated` + `service_role` on every new table. No `anon`.
+6. **Mock seed data**: insert mocks for the 3 existing demo properties only, via the insert tool after migrations land.
 
 ---
 
-## Technical notes
+## Build order
 
-- All AI calls server-side via Lovable AI Gateway; no new secrets.
-- Health/risk scoring is heuristic and explicitly labeled "estimated" until real data sources (FEMA, NOAA, county GIS) are wired in — those are dedicated future projects, not part of this plan.
-- Each phase ends with verification: build clean, manual smoke on `/demo` and `/property/:id`.
-- I will pause after each phase so you can review before moving on.
+1. **Migration B** (10 tables, RLS, GRANTs, triggers, audit-log append-only enforcement).
+2. **Migration C** (6 tables + 4 views, RLS, GRANTs, guardrail CHECKs).
+3. **Migration D** (7 tables, RLS, GRANTs, FKs to professionals/permits, sync trigger from `env_risk_scores`).
+4. **Mock seed inserts** for B/C/D against the 3 demo properties.
+5. **UI surfaces** (parallel writes):
+   - `src/pages/PropertyVault.tsx` + route
+   - `src/pages/PropertyProjects.tsx` + route
+   - `src/components/environmental/EnvironmentalSection.tsx` mounted in `PropertyView`
+   - `src/components/regional/RegionalSection.tsx` mounted in `PropertyView`
+6. **Edge functions** (stubs, real logic when prompts arrive):
+   - `compute-env-grade` — recomputes `env_grade` from `env_events` + `env_risk_scores`.
+   - `classify-region` — populates `regional_property_profile` from property lat/lon/state.
+   - `home-coach` — wraps Lovable AI Gateway, logs to `regional_home_coach_query_log` with disclaimer.
 
 ---
 
-**Confirm to start with Phase 1 (Health Score + Risk Scores).** If you'd rather reorder or drop a phase, tell me which.
+## Verification per phase
+
+- After each migration: `supabase--linter` + spot-check RLS with `supabase--read_query` as anon/authenticated.
+- After UI: load `/property/<demo-id>` and confirm all three new sections render with mock data, no console errors.
+- Build green at the end of each module.
+
+---
+
+## Out of scope (deferred until real specs arrive)
+
+- Real connector logic for permit boards, NOAA/FEMA feeds, incentive APIs.
+- Government portal (B) — table + RLS only, no UI this pass.
+- Customer acknowledgment e-sign flow — table only.
+- Solar financial transfer workflow — table only.
+
+I'll pause after each module migration so you can review the SQL before the next one runs.
