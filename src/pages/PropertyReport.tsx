@@ -4,10 +4,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
-import { Printer, RefreshCw, ShieldCheck, MapPin, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Printer, RefreshCw, ShieldCheck, MapPin, AlertTriangle, CheckCircle2, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { PaywallGate } from "@/components/paywall/PaywallGate";
+import { PropertyMap } from "@/components/map/PropertyMap";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 interface ReportPayload {
   title: string;
@@ -83,6 +86,34 @@ export default function PropertyReport() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, id, type]);
 
+  const downloadPdf = async () => {
+    const el = document.getElementById("report-printable");
+    if (!el) return;
+    toast.info("Generating PDF…");
+    try {
+      const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const imgW = pageW - 20;
+      const imgH = (canvas.height * imgW) / canvas.width;
+      let heightLeft = imgH;
+      let position = 10;
+      pdf.addImage(imgData, "PNG", 10, position, imgW, imgH);
+      heightLeft -= pageH - 20;
+      while (heightLeft > 0) {
+        position = heightLeft - imgH + 10;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 10, position, imgW, imgH);
+        heightLeft -= pageH - 20;
+      }
+      pdf.save(`HomeFacts-${type}-${property?.address_line?.replace(/\s+/g, "-") ?? "report"}.pdf`);
+    } catch (e: any) {
+      toast.error(e?.message ?? "PDF export failed");
+    }
+  };
+
   if (authLoading || loading) return <div className="flex min-h-screen items-center justify-center text-muted-foreground">Loading…</div>;
   if (!user) return <Navigate to="/auth" replace />;
   if (!property || !type || !TYPE_LABELS[type]) return (
@@ -101,7 +132,8 @@ export default function PropertyReport() {
             <Button variant="outline" size="sm" onClick={() => fetchReport(true)} disabled={generating}>
               <RefreshCw className={`mr-2 h-4 w-4 ${generating ? "animate-spin" : ""}`} />Regenerate
             </Button>
-            <Button variant="outline" size="sm" onClick={() => window.print()}><Printer className="mr-2 h-4 w-4" />Print / PDF</Button>
+            <Button variant="outline" size="sm" onClick={() => window.print()}><Printer className="mr-2 h-4 w-4" />Print</Button>
+            <Button variant="outline" size="sm" onClick={downloadPdf}><FileText className="mr-2 h-4 w-4" />Download PDF</Button>
           </div>
         </div>
 
@@ -149,7 +181,14 @@ export default function PropertyReport() {
                           <div className="flex items-center justify-between">
                             <span className="font-semibold">{r.name}</span>
                             <span className="rounded-full bg-muted px-2 py-0.5 text-xs">{r.severity}</span>
-                          </div>
+          </div>
+
+          <PropertyMap
+            latitude={property.latitude}
+            longitude={property.longitude}
+            address={`${property.address_line}, ${property.city}, ${property.state} ${property.zip}`}
+            height={240}
+          />
                           <p className="mt-1 text-sm text-muted-foreground">{r.detail.slice(0, 80)}…</p>
                         </div>
                       ))}
