@@ -15,6 +15,7 @@ import RealtorDashboard from "./pages/RealtorDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import DemoReport from "./pages/DemoReport";
 import PropertyReport from "./pages/PropertyReport";
+import PropertyHomeHistory from "./pages/PropertyHomeHistory";
 import AddressReport from "./pages/AddressReport";
 import MyReports from "./pages/MyReports";
 import NotFound from "./pages/NotFound";
@@ -45,6 +46,7 @@ const App = () => (
             <Route path="/search" element={<PropertySearch />} />
             <Route path="/demo" element={<DemoReport />} />
             <Route path="/property/:id" element={<PropertyView />} />
+            <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />
             <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
