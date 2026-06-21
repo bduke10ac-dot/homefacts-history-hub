@@ -1,77 +1,114 @@
 
-# Modules B + C + D — Full Scaffold with Mock Data
+# New Build History Package — Full Scaffold
 
-Build all three module backends + minimal UI surfaces now. Real seed data and master prompts swap in later without schema changes.
+Builder-facing portal + homeowner Beginner Guide + transferable QR handoff. Template → Clone → Customize → Deliver.
 
----
-
-## Scope per module
-
-### Module B — Platform (Vault / Projects / Government / AI)
-- **Tables**: `platform_documents`, `platform_media_assets`, `platform_audit_log`, `platform_projects`, `platform_project_milestones`, `platform_customer_acknowledgments`, `platform_permit_submissions`, `platform_certificates`, `platform_ai_observations`, `platform_property_timeline_events`.
-- **Storage**: reuse existing `property-files` bucket; documents/media reference storage paths.
-- **Audit log**: append-only — RLS allows INSERT only via SECURITY DEFINER trigger from other tables; no UPDATE/DELETE policies.
-- **AI guardrails**: `platform_ai_observations` has NOT NULL `disclaimer` + CHECK that `is_certified = false`.
-- **UI**: new `/property/:id/vault` tab (list + upload), `/property/:id/projects` (homeowner+contractor view), read-only `platform_audit_log` viewer on PropertyView for owners.
-
-### Module C — Environmental & Weather Intelligence
-- **Tables**: `env_events`, `env_roof_stress_assessments`, `env_risk_scores`, `env_flood_intelligence`, `env_claim_predictions`, `env_grade`.
-- **Views**: `v_env_hail_events`, `v_env_wind_events`, `v_env_tornado_events`, `v_env_winter_events` (filtered selects on `env_events`).
-- **AI guardrails**: NOT NULL `disclaimer` + `is_certified = false` CHECK on `env_roof_stress_assessments` and `env_claim_predictions`.
-- **Compat**: leave existing `weather_events` and `environmental_risks` untouched; add `v_property_environmental_summary` view that prefers `env_*` and falls back to legacy. Merge pass deletes legacy later.
-- **UI**: new "Environmental" section on PropertyView with grade card, exposure timeline, risk grid.
-
-### Module D — Regional Intelligence & Education
-- **Tables**: `regional_property_profile`, `regional_home_system_topics`, `regional_property_systems`, `regional_solar_systems`, `regional_incentives`, `regional_insurance_guidance`, `regional_home_coach_query_log`.
-- **FKs from day one**: `regional_property_systems.contractor_professional_id → professionals(id)`, `.permit_id → permits(id)`. `regional_solar_systems.property_system_id → regional_property_systems(id)` (1:1 unique).
-- **AI guardrails**: NOT NULL `disclaimer` + `is_certified = false` on `regional_home_coach_query_log`.
-- **Risk-level columns** on `regional_property_profile`: nullable, populated by trigger from Module C's `env_risk_scores` when present.
-- **UI**: "Regional & Systems" tab on PropertyView with classification card, installed systems list, incentive matches.
+Defaults baked in from section 11:
+- Hierarchy: developer subdivision template → builder model template → property clone. `parent_template_id` self-FK supports both layers.
+- Template edits after first clone restricted to template owner + admin (RLS).
+- Post-closing: clones flip to `handed_off`, builder loses write, homeowner (claimed_by) gains append-only access to docs.
 
 ---
 
-## Cross-cutting decisions (locked)
+## 1. Auth / Roles
 
-1. **Naming**: `platform_*`, `env_*`, `regional_*` prefixes in `public` schema. No new schemas.
-2. **`property_id`**: real FK to `properties(id)` on every new table, `ON DELETE CASCADE`.
-3. **AI log consolidation prep**: B's `platform_ai_observations`, C's `env_claim_predictions`, D's `regional_home_coach_query_log` all share columns `(property_id, model, prompt, response_text, response_json, disclaimer, is_certified, created_by, created_at)` so a future `ai_interaction_log` merge is a rename + UNION, not a rewrite.
-4. **RLS pattern**: owner of property OR users with read access via existing `share_links` / role checks. Contractors see only projects they're assigned to. Admin sees all.
-5. **GRANTs**: `authenticated` + `service_role` on every new table. No `anon`.
-6. **Mock seed data**: insert mocks for the 3 existing demo properties only, via the insert tool after migrations land.
+- Add `'builder'` to `app_role` enum.
+- New `builder_companies` table (name, license #, insurance, logo, contact). Users join via `builder_company_members(user_id, company_id, role)` so multiple staff can share a builder account.
 
----
+## 2. Tables (all `public`, prefix `nb_`)
 
-## Build order
+| Table | Purpose |
+|---|---|
+| `builder_companies` | Builder/developer org record |
+| `builder_company_members` | user ↔ company w/ owner/admin/staff |
+| `nb_templates` | Master template. `kind` enum: `subdivision`, `model`, `series`, `custom`. `parent_template_id` self-FK. Versioned via `version` int + `is_locked`. |
+| `nb_template_versions` | Snapshot per version for "future clones only" semantics |
+| `nb_template_subcontractors` | Trades attached to a template (company, license, insurance, scope, warranty months) |
+| `nb_template_documents` | Standard docs/manuals/spec sheets stored in `property-files` bucket |
+| `nb_template_warranties` | Standard warranty terms (type enum, coverage, term_months, issuer, claim_instructions) |
+| `nb_template_guide_items` | Beginner Guide content blocks (section, title, body, order) |
+| `nb_property_clones` | Per-address clone. FK → `nb_templates`, FK → `properties` (nullable until address assigned), `lot_number`, `parcel_id`, `build_start_date`, `completion_date`, `co_date`, `status` enum (`draft`, `under_construction`, `ready_for_handoff`, `handed_off`, `transferred`), `handoff_token` UUID for QR |
+| `nb_clone_subcontractors` | Overrides/additions per home |
+| `nb_clone_documents` | Per-home docs (permits, inspection reports, walkthrough) |
+| `nb_clone_warranties` | Per-home warranty instances w/ `start_date`, `expiration_date`, computed `status` (active/expiring/expired via view) |
+| `nb_clone_inspections` | Foundation/framing/rough-in/final milestones |
+| `nb_clone_guide_overrides` | Per-home tweaks to Beginner Guide |
+| `nb_handoff_log` | Append-only: who generated QR, when, scanned-by |
 
-1. **Migration B** (10 tables, RLS, GRANTs, triggers, audit-log append-only enforcement).
-2. **Migration C** (6 tables + 4 views, RLS, GRANTs, guardrail CHECKs).
-3. **Migration D** (7 tables, RLS, GRANTs, FKs to professionals/permits, sync trigger from `env_risk_scores`).
-4. **Mock seed inserts** for B/C/D against the 3 demo properties.
-5. **UI surfaces** (parallel writes):
-   - `src/pages/PropertyVault.tsx` + route
-   - `src/pages/PropertyProjects.tsx` + route
-   - `src/components/environmental/EnvironmentalSection.tsx` mounted in `PropertyView`
-   - `src/components/regional/RegionalSection.tsx` mounted in `PropertyView`
-6. **Edge functions** (stubs, real logic when prompts arrive):
-   - `compute-env-grade` — recomputes `env_grade` from `env_events` + `env_risk_scores`.
-   - `classify-region` — populates `regional_property_profile` from property lat/lon/state.
-   - `home-coach` — wraps Lovable AI Gateway, logs to `regional_home_coach_query_log` with disclaimer.
+All AI-touched tables get the standard `disclaimer NOT NULL` + `is_certified=false` guardrail (none in this module yet, but reserve pattern).
 
----
+## 3. RLS (key rules)
 
-## Verification per phase
+- Builder company members: full RW on their `nb_templates` + clones.
+- Template edit blocked when `is_locked = true` (set after first clone) except for company owner/admin role.
+- Homeowner (auth.uid() = property.claimed_by) on a clone in status `handed_off`/`transferred`:
+  - SELECT all clone rows
+  - INSERT into `nb_clone_documents` only
+- Public read of clone + Beginner Guide + warranty list via `handoff_token` (no auth) — mirrors existing `share_links` pattern.
 
-- After each migration: `supabase--linter` + spot-check RLS with `supabase--read_query` as anon/authenticated.
-- After UI: load `/property/<demo-id>` and confirm all three new sections render with mock data, no console errors.
-- Build green at the end of each module.
+GRANTs: `authenticated` + `service_role` on all; `anon` SELECT only on the handoff-token view.
 
----
+## 4. Triggers / functions
 
-## Out of scope (deferred until real specs arrive)
+- `lock_template_on_first_clone()` — sets `is_locked=true` after first row in `nb_property_clones`.
+- `clone_template(template_id, lot_specs[])` SECURITY DEFINER fn — bulk-creates clones, copies subs/docs/warranties/guide items.
+- `compute_warranty_status` view returning `active | expiring_soon | expired` per warranty (90/30/7 day buckets).
+- Updated-at triggers everywhere.
 
-- Real connector logic for permit boards, NOAA/FEMA feeds, incentive APIs.
-- Government portal (B) — table + RLS only, no UI this pass.
-- Customer acknowledgment e-sign flow — table only.
-- Solar financial transfer workflow — table only.
+## 5. Edge functions (stubs, real logic later)
 
-I'll pause after each module migration so you can review the SQL before the next one runs.
+- `nb-bulk-clone` — wraps `clone_template` with auth check.
+- `nb-warranty-reminders` — cron-ready; computes expiring warranties and queues notifications (placeholder log table).
+- `nb-generate-handoff` — mints/refreshes `handoff_token`, writes `nb_handoff_log`.
+
+## 6. UI
+
+Builder portal (new role-gated):
+- `/builder` — dashboard: company, template count, clone count, expiring warranties across all homes.
+- `/builder/templates` — list + create.
+- `/builder/templates/:id` — tabs: Overview, Subcontractors, Standard Docs, Warranties, Beginner Guide. "Clone" button → bulk clone modal (paste addresses or count).
+- `/builder/clones` — table of all clones across templates, filter by status/subdivision.
+- `/builder/clones/:id` — per-home edit: address assignment, timeline, inspections, per-home docs, warranty instances, "Generate Handoff QR" button.
+
+Homeowner / public:
+- `/home/:handoffToken` — public Beginner Guide landing (no auth). Tabs: Move-In Checklist, Warranties (color-coded), Systems Guide, Documents, Emergency Info. "Claim this home" CTA → existing claim flow, then merges clone with `properties.claimed_by`.
+- Adds a "New Build History" card to existing `PropertyView` when a clone is linked.
+
+Components:
+- `src/components/newbuild/TemplateForm.tsx`
+- `src/components/newbuild/BulkCloneDialog.tsx`
+- `src/components/newbuild/WarrantyCenter.tsx` (color-coded badges, claim instructions modal)
+- `src/components/newbuild/BeginnerGuide.tsx`
+- `src/components/newbuild/HandoffQRDialog.tsx` (uses `qrcode.react` — add dep)
+- `src/components/newbuild/InspectionTimeline.tsx`
+
+Navbar: add "Builder" link when `hasRole('builder')`.
+
+## 7. Mock seed data
+
+One demo builder company ("Lone Star Homes"), one subdivision template ("Westfield Meadows"), one model template ("The Hill Country") nested under it, 3 cloned properties (link to existing 3 Texas demo properties), full subcontractor list, 8 warranty instances per home with varied expirations (active / expiring / expired for testing color coding), beginner guide content.
+
+## 8. Build order
+
+1. Migration 1: `app_role` enum extension + `builder_companies` + members + RLS.
+2. Migration 2: `nb_templates` + child template tables + RLS + GRANTs.
+3. Migration 3: `nb_property_clones` + child clone tables + handoff token + RLS + GRANTs + triggers.
+4. `clone_template` SECURITY DEFINER fn + warranty status view.
+5. Edge functions stubs.
+6. Mock seed inserts.
+7. UI scaffold (parallel writes): pages, components, route additions in `App.tsx`, Navbar link.
+8. Smoke test: load `/builder`, clone a template, generate QR, hit `/home/:token` unauthenticated.
+
+## 9. Verification
+
+- `supabase--linter` after each migration.
+- `supabase--read_query` to confirm RLS blocks cross-company access and post-handoff lock.
+- Manual load of `/builder` + `/home/<seeded-token>` with no console errors.
+- Build green.
+
+## 10. Out of scope (deferred)
+
+- Real email/SMS warranty reminders (function logs only).
+- Buyer e-sign of acknowledgments (table exists from Module B, reused later).
+- Inspector portal — builders enter inspection results manually for now.
+- Multi-builder developer subdivisions where builders are *separate companies under a developer-owned template* — schema supports it via `parent_template_id` + nullable `owning_company_id`, but UI surfaces only single-company case this pass.
