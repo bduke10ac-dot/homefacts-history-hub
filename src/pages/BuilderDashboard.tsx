@@ -48,9 +48,11 @@ export default function BuilderDashboard() {
               {stats.companies[0]?.name ?? "No builder company yet"}
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button asChild variant="outline" size="sm"><Link to="/builder/templates">Templates</Link></Button>
-            <Button asChild size="sm"><Link to="/builder/clones">Homes</Link></Button>
+            <Button asChild variant="outline" size="sm"><Link to="/builder/clones">Homes</Link></Button>
+            <Button asChild variant="outline" size="sm"><Link to="/builder/marketing">Marketing</Link></Button>
+            {stats.companies[0]?.slug && <Button asChild size="sm"><Link to={`/builders/${stats.companies[0].slug}`}>Public profile</Link></Button>}
           </div>
         </div>
 
