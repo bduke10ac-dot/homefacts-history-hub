@@ -41,6 +41,7 @@ const DashboardRouter = () => {
     case "admin": return <Navigate to="/admin" replace />;
     case "realtor": return <Navigate to="/realtor" replace />;
     case "contractor": return <Navigate to="/contractor" replace />;
+    case "builder": return <Navigate to="/builder" replace />;
     default: return <HomeownerDashboard />;
   }
 };
