@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, ShieldCheck, FileText, Wrench, Award, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Search, ShieldCheck, FileText, Wrench, Award, ArrowRight, CheckCircle2, HardHat, QrCode, Sparkles, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/Navbar";
 import { AddressSearch } from "@/components/address/AddressSearch";
