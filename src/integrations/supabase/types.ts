@@ -82,6 +82,95 @@ export type Database = {
         }
         Relationships: []
       }
+      builder_companies: {
+        Row: {
+          address_line: string | null
+          city: string | null
+          created_at: string
+          created_by: string | null
+          email: string | null
+          id: string
+          insurance_carrier: string | null
+          insurance_policy: string | null
+          license_number: string | null
+          logo_url: string | null
+          name: string
+          phone: string | null
+          state: string | null
+          updated_at: string
+          website: string | null
+          zip: string | null
+        }
+        Insert: {
+          address_line?: string | null
+          city?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          insurance_carrier?: string | null
+          insurance_policy?: string | null
+          license_number?: string | null
+          logo_url?: string | null
+          name: string
+          phone?: string | null
+          state?: string | null
+          updated_at?: string
+          website?: string | null
+          zip?: string | null
+        }
+        Update: {
+          address_line?: string | null
+          city?: string | null
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          insurance_carrier?: string | null
+          insurance_policy?: string | null
+          license_number?: string | null
+          logo_url?: string | null
+          name?: string
+          phone?: string | null
+          state?: string | null
+          updated_at?: string
+          website?: string | null
+          zip?: string | null
+        }
+        Relationships: []
+      }
+      builder_company_members: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["builder_member_role"]
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["builder_member_role"]
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["builder_member_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "builder_company_members_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "builder_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       civic_officials: {
         Row: {
           contact_phone: string | null
@@ -1002,6 +1091,668 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_clone_documents: {
+        Row: {
+          category: string
+          clone_id: string
+          created_at: string
+          description: string | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          storage_path: string | null
+          title: string
+          uploaded_by: string | null
+          uploaded_by_role: string
+        }
+        Insert: {
+          category: string
+          clone_id: string
+          created_at?: string
+          description?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          storage_path?: string | null
+          title: string
+          uploaded_by?: string | null
+          uploaded_by_role?: string
+        }
+        Update: {
+          category?: string
+          clone_id?: string
+          created_at?: string
+          description?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          storage_path?: string | null
+          title?: string
+          uploaded_by?: string | null
+          uploaded_by_role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_clone_documents_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_clone_guide_overrides: {
+        Row: {
+          body: string | null
+          clone_id: string
+          created_at: string
+          id: string
+          responsibility: string | null
+          section: string
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          clone_id: string
+          created_at?: string
+          id?: string
+          responsibility?: string | null
+          section: string
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          body?: string | null
+          clone_id?: string
+          created_at?: string
+          id?: string
+          responsibility?: string | null
+          section?: string
+          sort_order?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_clone_guide_overrides_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_clone_inspections: {
+        Row: {
+          clone_id: string
+          created_at: string
+          document_url: string | null
+          id: string
+          inspection_date: string | null
+          inspector_name: string | null
+          milestone: string
+          notes: string | null
+          result: string | null
+        }
+        Insert: {
+          clone_id: string
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          inspection_date?: string | null
+          inspector_name?: string | null
+          milestone: string
+          notes?: string | null
+          result?: string | null
+        }
+        Update: {
+          clone_id?: string
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          inspection_date?: string | null
+          inspector_name?: string | null
+          milestone?: string
+          notes?: string | null
+          result?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_clone_inspections_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_clone_subcontractors: {
+        Row: {
+          clone_id: string
+          company_name: string
+          contact_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          insurance_carrier: string | null
+          license_number: string | null
+          phone: string | null
+          scope_of_work: string | null
+          source_template_sub_id: string | null
+          trade: string
+          warranty_months: number | null
+        }
+        Insert: {
+          clone_id: string
+          company_name: string
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          insurance_carrier?: string | null
+          license_number?: string | null
+          phone?: string | null
+          scope_of_work?: string | null
+          source_template_sub_id?: string | null
+          trade: string
+          warranty_months?: number | null
+        }
+        Update: {
+          clone_id?: string
+          company_name?: string
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          insurance_carrier?: string | null
+          license_number?: string | null
+          phone?: string | null
+          scope_of_work?: string | null
+          source_template_sub_id?: string | null
+          trade?: string
+          warranty_months?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_clone_subcontractors_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nb_clone_subcontractors_source_template_sub_id_fkey"
+            columns: ["source_template_sub_id"]
+            isOneToOne: false
+            referencedRelation: "nb_template_subcontractors"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_clone_warranties: {
+        Row: {
+          claim_instructions: string | null
+          clone_id: string
+          coverage_description: string | null
+          created_at: string
+          document_url: string | null
+          expiration_date: string | null
+          id: string
+          issuer: string | null
+          issuer_email: string | null
+          issuer_phone: string | null
+          source_template_warranty_id: string | null
+          start_date: string | null
+          title: string
+          warranty_type: Database["public"]["Enums"]["nb_warranty_type"]
+        }
+        Insert: {
+          claim_instructions?: string | null
+          clone_id: string
+          coverage_description?: string | null
+          created_at?: string
+          document_url?: string | null
+          expiration_date?: string | null
+          id?: string
+          issuer?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          source_template_warranty_id?: string | null
+          start_date?: string | null
+          title: string
+          warranty_type: Database["public"]["Enums"]["nb_warranty_type"]
+        }
+        Update: {
+          claim_instructions?: string | null
+          clone_id?: string
+          coverage_description?: string | null
+          created_at?: string
+          document_url?: string | null
+          expiration_date?: string | null
+          id?: string
+          issuer?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          source_template_warranty_id?: string | null
+          start_date?: string | null
+          title?: string
+          warranty_type?: Database["public"]["Enums"]["nb_warranty_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_clone_warranties_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nb_clone_warranties_source_template_warranty_id_fkey"
+            columns: ["source_template_warranty_id"]
+            isOneToOne: false
+            referencedRelation: "nb_template_warranties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_handoff_log: {
+        Row: {
+          actor: string | null
+          clone_id: string
+          created_at: string
+          event: string
+          id: string
+          meta: Json | null
+        }
+        Insert: {
+          actor?: string | null
+          clone_id: string
+          created_at?: string
+          event: string
+          id?: string
+          meta?: Json | null
+        }
+        Update: {
+          actor?: string | null
+          clone_id?: string
+          created_at?: string
+          event?: string
+          id?: string
+          meta?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_handoff_log_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_property_clones: {
+        Row: {
+          address_line: string | null
+          build_start_date: string | null
+          city: string | null
+          co_date: string | null
+          company_id: string
+          completion_date: string | null
+          created_at: string
+          created_by: string | null
+          handed_off_at: string | null
+          handoff_token: string
+          id: string
+          lot_number: string | null
+          notes: string | null
+          parcel_id: string | null
+          property_id: string | null
+          state: string | null
+          status: Database["public"]["Enums"]["nb_clone_status"]
+          template_id: string
+          updated_at: string
+          zip: string | null
+        }
+        Insert: {
+          address_line?: string | null
+          build_start_date?: string | null
+          city?: string | null
+          co_date?: string | null
+          company_id: string
+          completion_date?: string | null
+          created_at?: string
+          created_by?: string | null
+          handed_off_at?: string | null
+          handoff_token?: string
+          id?: string
+          lot_number?: string | null
+          notes?: string | null
+          parcel_id?: string | null
+          property_id?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["nb_clone_status"]
+          template_id: string
+          updated_at?: string
+          zip?: string | null
+        }
+        Update: {
+          address_line?: string | null
+          build_start_date?: string | null
+          city?: string | null
+          co_date?: string | null
+          company_id?: string
+          completion_date?: string | null
+          created_at?: string
+          created_by?: string | null
+          handed_off_at?: string | null
+          handoff_token?: string
+          id?: string
+          lot_number?: string | null
+          notes?: string | null
+          parcel_id?: string | null
+          property_id?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["nb_clone_status"]
+          template_id?: string
+          updated_at?: string
+          zip?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_property_clones_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "builder_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nb_property_clones_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nb_property_clones_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "nb_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_template_documents: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          storage_path: string | null
+          template_id: string
+          title: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          storage_path?: string | null
+          template_id: string
+          title: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          storage_path?: string | null
+          template_id?: string
+          title?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_template_documents_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "nb_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_template_guide_items: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          responsibility: string | null
+          section: string
+          sort_order: number
+          template_id: string
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          responsibility?: string | null
+          section: string
+          sort_order?: number
+          template_id: string
+          title: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          responsibility?: string | null
+          section?: string
+          sort_order?: number
+          template_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_template_guide_items_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "nb_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_template_subcontractors: {
+        Row: {
+          company_name: string
+          contact_name: string | null
+          created_at: string
+          email: string | null
+          id: string
+          insurance_carrier: string | null
+          license_number: string | null
+          phone: string | null
+          scope_of_work: string | null
+          template_id: string
+          trade: string
+          warranty_months: number | null
+        }
+        Insert: {
+          company_name: string
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          insurance_carrier?: string | null
+          license_number?: string | null
+          phone?: string | null
+          scope_of_work?: string | null
+          template_id: string
+          trade: string
+          warranty_months?: number | null
+        }
+        Update: {
+          company_name?: string
+          contact_name?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          insurance_carrier?: string | null
+          license_number?: string | null
+          phone?: string | null
+          scope_of_work?: string | null
+          template_id?: string
+          trade?: string
+          warranty_months?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_template_subcontractors_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "nb_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_template_warranties: {
+        Row: {
+          claim_instructions: string | null
+          coverage_description: string | null
+          created_at: string
+          document_url: string | null
+          id: string
+          issuer: string | null
+          issuer_email: string | null
+          issuer_phone: string | null
+          template_id: string
+          term_months: number
+          title: string
+          warranty_type: Database["public"]["Enums"]["nb_warranty_type"]
+        }
+        Insert: {
+          claim_instructions?: string | null
+          coverage_description?: string | null
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          issuer?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          template_id: string
+          term_months: number
+          title: string
+          warranty_type: Database["public"]["Enums"]["nb_warranty_type"]
+        }
+        Update: {
+          claim_instructions?: string | null
+          coverage_description?: string | null
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          issuer?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          template_id?: string
+          term_months?: number
+          title?: string
+          warranty_type?: Database["public"]["Enums"]["nb_warranty_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_template_warranties_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "nb_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      nb_templates: {
+        Row: {
+          bathrooms: number | null
+          bedrooms: number | null
+          company_id: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          elevation: string | null
+          hoa_info: Json | null
+          id: string
+          is_locked: boolean
+          kind: Database["public"]["Enums"]["nb_template_kind"]
+          name: string
+          parent_template_id: string | null
+          square_feet: number | null
+          subdivision: string | null
+          updated_at: string
+          utility_info: Json | null
+          version: number
+        }
+        Insert: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          company_id: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          elevation?: string | null
+          hoa_info?: Json | null
+          id?: string
+          is_locked?: boolean
+          kind: Database["public"]["Enums"]["nb_template_kind"]
+          name: string
+          parent_template_id?: string | null
+          square_feet?: number | null
+          subdivision?: string | null
+          updated_at?: string
+          utility_info?: Json | null
+          version?: number
+        }
+        Update: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          company_id?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          elevation?: string | null
+          hoa_info?: Json | null
+          id?: string
+          is_locked?: boolean
+          kind?: Database["public"]["Enums"]["nb_template_kind"]
+          name?: string
+          parent_template_id?: string | null
+          square_feet?: number | null
+          subdivision?: string | null
+          updated_at?: string
+          utility_info?: Json | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_templates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "builder_companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nb_templates_parent_template_id_fkey"
+            columns: ["parent_template_id"]
+            isOneToOne: false
+            referencedRelation: "nb_templates"
             referencedColumns: ["id"]
           },
         ]
@@ -3741,6 +4492,75 @@ export type Database = {
           },
         ]
       }
+      v_nb_clone_warranty_status: {
+        Row: {
+          claim_instructions: string | null
+          clone_id: string | null
+          coverage_description: string | null
+          created_at: string | null
+          document_url: string | null
+          expiration_date: string | null
+          id: string | null
+          issuer: string | null
+          issuer_email: string | null
+          issuer_phone: string | null
+          source_template_warranty_id: string | null
+          start_date: string | null
+          status: string | null
+          title: string | null
+          warranty_type: Database["public"]["Enums"]["nb_warranty_type"] | null
+        }
+        Insert: {
+          claim_instructions?: string | null
+          clone_id?: string | null
+          coverage_description?: string | null
+          created_at?: string | null
+          document_url?: string | null
+          expiration_date?: string | null
+          id?: string | null
+          issuer?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          source_template_warranty_id?: string | null
+          start_date?: string | null
+          status?: never
+          title?: string | null
+          warranty_type?: Database["public"]["Enums"]["nb_warranty_type"] | null
+        }
+        Update: {
+          claim_instructions?: string | null
+          clone_id?: string | null
+          coverage_description?: string | null
+          created_at?: string | null
+          document_url?: string | null
+          expiration_date?: string | null
+          id?: string | null
+          issuer?: string | null
+          issuer_email?: string | null
+          issuer_phone?: string | null
+          source_template_warranty_id?: string | null
+          start_date?: string | null
+          status?: never
+          title?: string | null
+          warranty_type?: Database["public"]["Enums"]["nb_warranty_type"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nb_clone_warranties_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "nb_clone_warranties_source_template_warranty_id_fkey"
+            columns: ["source_template_warranty_id"]
+            isOneToOne: false
+            referencedRelation: "nb_template_warranties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       work_history_with_current_status: {
         Row: {
           company_name: string | null
@@ -3798,13 +4618,50 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_builder_company_admin: {
+        Args: { _company_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_builder_company_member: {
+        Args: { _company_id: string; _user_id: string }
+        Returns: boolean
+      }
+      is_clone_homeowner: {
+        Args: { _clone_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_property_owner: {
         Args: { _property_id: string; _user_id: string }
         Returns: boolean
       }
+      nb_clone_template: {
+        Args: { _lot_specs: Json; _template_id: string }
+        Returns: string[]
+      }
     }
     Enums: {
-      app_role: "homeowner" | "realtor" | "contractor" | "admin"
+      app_role: "homeowner" | "realtor" | "contractor" | "admin" | "builder"
+      builder_member_role: "owner" | "admin" | "staff"
+      nb_clone_status:
+        | "draft"
+        | "under_construction"
+        | "ready_for_handoff"
+        | "handed_off"
+        | "transferred"
+      nb_template_kind: "subdivision" | "model" | "series" | "custom"
+      nb_warranty_type:
+        | "builder"
+        | "structural"
+        | "roof"
+        | "hvac"
+        | "appliance"
+        | "plumbing"
+        | "electrical"
+        | "windows_doors"
+        | "flooring"
+        | "siding_exterior"
+        | "manufacturer"
+        | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3932,7 +4789,30 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["homeowner", "realtor", "contractor", "admin"],
+      app_role: ["homeowner", "realtor", "contractor", "admin", "builder"],
+      builder_member_role: ["owner", "admin", "staff"],
+      nb_clone_status: [
+        "draft",
+        "under_construction",
+        "ready_for_handoff",
+        "handed_off",
+        "transferred",
+      ],
+      nb_template_kind: ["subdivision", "model", "series", "custom"],
+      nb_warranty_type: [
+        "builder",
+        "structural",
+        "roof",
+        "hvac",
+        "appliance",
+        "plumbing",
+        "electrical",
+        "windows_doors",
+        "flooring",
+        "siding_exterior",
+        "manufacturer",
+        "other",
+      ],
     },
   },
 } as const

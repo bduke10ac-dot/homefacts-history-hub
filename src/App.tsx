@@ -24,6 +24,12 @@ import Pricing from "./pages/Pricing";
 import CheckoutReturn from "./pages/CheckoutReturn";
 import PropertyVault from "./pages/PropertyVault";
 import PropertyProjects from "./pages/PropertyProjects";
+import BuilderDashboard from "./pages/BuilderDashboard";
+import BuilderTemplates from "./pages/BuilderTemplates";
+import BuilderTemplateDetail from "./pages/BuilderTemplateDetail";
+import BuilderClones from "./pages/BuilderClones";
+import BuilderCloneDetail from "./pages/BuilderCloneDetail";
+import BeginnerGuide from "./pages/BeginnerGuide";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -35,6 +41,7 @@ const DashboardRouter = () => {
     case "admin": return <Navigate to="/admin" replace />;
     case "realtor": return <Navigate to="/realtor" replace />;
     case "contractor": return <Navigate to="/contractor" replace />;
+    case "builder": return <Navigate to="/builder" replace />;
     default: return <HomeownerDashboard />;
   }
 };
@@ -62,9 +69,15 @@ const App = () => (
             <Route path="/report/:id" element={<AddressReport />} />
             <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
             <Route path="/r/:token" element={<PropertyView shared />} />
+            <Route path="/home/:token" element={<BeginnerGuide />} />
             <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
             <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
             <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorDashboard /></ProtectedRoute>} />
+            <Route path="/builder" element={<ProtectedRoute requireRole="builder"><BuilderDashboard /></ProtectedRoute>} />
+            <Route path="/builder/templates" element={<ProtectedRoute requireRole="builder"><BuilderTemplates /></ProtectedRoute>} />
+            <Route path="/builder/templates/:id" element={<ProtectedRoute requireRole="builder"><BuilderTemplateDetail /></ProtectedRoute>} />
+            <Route path="/builder/clones" element={<ProtectedRoute requireRole="builder"><BuilderClones /></ProtectedRoute>} />
+            <Route path="/builder/clones/:id" element={<ProtectedRoute requireRole="builder"><BuilderCloneDetail /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
             <Route path="/admin/fraud" element={<ProtectedRoute requireRole="admin"><AdminFraudReview /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />

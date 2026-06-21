@@ -12,6 +12,7 @@ export function Navbar() {
       case "admin": return "/admin";
       case "realtor": return "/realtor";
       case "contractor": return "/contractor";
+      case "builder": return "/builder";
       default: return "/dashboard";
     }
   };
