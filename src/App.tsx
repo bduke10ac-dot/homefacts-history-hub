@@ -24,6 +24,12 @@ import Pricing from "./pages/Pricing";
 import CheckoutReturn from "./pages/CheckoutReturn";
 import PropertyVault from "./pages/PropertyVault";
 import PropertyProjects from "./pages/PropertyProjects";
+import BuilderDashboard from "./pages/BuilderDashboard";
+import BuilderTemplates from "./pages/BuilderTemplates";
+import BuilderTemplateDetail from "./pages/BuilderTemplateDetail";
+import BuilderClones from "./pages/BuilderClones";
+import BuilderCloneDetail from "./pages/BuilderCloneDetail";
+import BeginnerGuide from "./pages/BeginnerGuide";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
