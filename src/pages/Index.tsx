@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Search, ShieldCheck, FileText, Wrench, Award, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Search, ShieldCheck, FileText, Wrench, Award, ArrowRight, CheckCircle2, HardHat, QrCode, Sparkles, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/Navbar";
 import { AddressSearch } from "@/components/address/AddressSearch";
@@ -85,6 +85,90 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Certified Builder Program */}
+      <section className="relative overflow-hidden border-y bg-gradient-to-br from-primary via-primary to-primary/80">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, white 1px, transparent 1px), radial-gradient(circle at 80% 70%, white 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+        <div className="container relative py-20 md:py-24">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <div className="text-primary-foreground">
+              <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/15 px-3 py-1 text-xs font-semibold backdrop-blur">
+                <HardHat className="h-3.5 w-3.5" /> For Home Builders & Developers
+              </span>
+              <h2 className="mt-5 text-3xl font-bold leading-tight md:text-5xl">
+                Become a HomeFacts Certified Builder.
+              </h2>
+              <p className="mt-4 text-lg text-primary-foreground/85">
+                Hand every buyer a digital birth certificate for their new home — a permanent, transferable record that travels with the property forever.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  { icon: BadgeCheck, t: "Certified badge & public profile", d: "Display your verified Certified, Plus, or Elite tier on yard signs, MLS, and your website." },
+                  { icon: QrCode, t: "QR handoff at closing", d: "One scan delivers warranties, manuals, subs, and inspections — no login required." },
+                  { icon: Sparkles, t: "AI Home Assistant included", d: "Buyers get instant answers about their home, branded by you. Fewer warranty calls." },
+                  { icon: Award, t: "Differentiate & sell faster", d: "Documented homes resell for more. Your brand shows up every time the home changes hands." },
+                ].map((b) => (
+                  <li key={b.t} className="flex gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-foreground/15 text-primary-foreground"><b.icon className="h-4 w-4" /></div>
+                    <div>
+                      <p className="font-semibold">{b.t}</p>
+                      <p className="text-sm text-primary-foreground/75">{b.d}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button size="lg" variant="secondary" asChild>
+                  <Link to="/auth?mode=signup&role=builder">Apply for Certification<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                  <Link to="/builders/lone-star-homes">See a Certified Builder</Link>
+                </Button>
+              </div>
+            </div>
+
+            <div className="relative">
+              <div className="mx-auto max-w-sm rounded-2xl bg-background p-6 shadow-elevated">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Digital Home Passport</p>
+                    <p className="mt-1 text-sm font-semibold">1247 Bluebonnet Ln</p>
+                    <p className="text-xs text-muted-foreground">Austin, TX · Built 2026</p>
+                  </div>
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-primary bg-card">
+                    <div className="text-center">
+                      <ShieldCheck className="mx-auto h-5 w-5 text-primary" />
+                      <p className="text-[7px] font-bold uppercase">Certified</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-4 space-y-2">
+                  {[
+                    { l: "HVAC · 10-yr warranty", c: "bg-emerald-500" },
+                    { l: "Roof · 30-yr warranty", c: "bg-emerald-500" },
+                    { l: "Appliances · 1-yr warranty", c: "bg-amber-500" },
+                    { l: "Foundation · transferable", c: "bg-emerald-500" },
+                  ].map((r) => (
+                    <div key={r.l} className="flex items-center gap-2 rounded-lg border bg-card px-3 py-2 text-xs">
+                      <span className={`h-2 w-2 rounded-full ${r.c}`} />
+                      <span className="flex-1">{r.l}</span>
+                      <CheckCircle2 className="h-3.5 w-3.5 text-muted-foreground" />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 rounded-lg bg-gradient-subtle p-3 text-center text-[11px] text-muted-foreground">
+                  Built by <span className="font-semibold text-foreground">Lone Star Homes</span> · HomeFacts Elite Builder
+                </div>
+              </div>
+              <div className="absolute -bottom-4 -right-2 rotate-6 rounded-xl bg-amber-500 px-3 py-2 text-xs font-bold text-amber-950 shadow-elevated">
+                Transferable for life
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
 
       {/* CTA */}
       <section className="container py-20 text-center">
