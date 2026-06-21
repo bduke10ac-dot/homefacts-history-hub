@@ -1,0 +1,1 @@
+ALTER VIEW public.v_nb_clone_warranty_status SET (security_invoker = true);
