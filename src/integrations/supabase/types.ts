@@ -85,6 +85,8 @@ export type Database = {
       builder_companies: {
         Row: {
           address_line: string | null
+          certification_level: Database["public"]["Enums"]["builder_cert_level"]
+          certified_since: string | null
           city: string | null
           created_at: string
           created_by: string | null
@@ -96,13 +98,20 @@ export type Database = {
           logo_url: string | null
           name: string
           phone: string | null
+          public_profile_enabled: boolean
+          service_areas: string[] | null
+          slug: string | null
           state: string | null
+          tagline: string | null
           updated_at: string
           website: string | null
+          years_in_business: number | null
           zip: string | null
         }
         Insert: {
           address_line?: string | null
+          certification_level?: Database["public"]["Enums"]["builder_cert_level"]
+          certified_since?: string | null
           city?: string | null
           created_at?: string
           created_by?: string | null
@@ -114,13 +123,20 @@ export type Database = {
           logo_url?: string | null
           name: string
           phone?: string | null
+          public_profile_enabled?: boolean
+          service_areas?: string[] | null
+          slug?: string | null
           state?: string | null
+          tagline?: string | null
           updated_at?: string
           website?: string | null
+          years_in_business?: number | null
           zip?: string | null
         }
         Update: {
           address_line?: string | null
+          certification_level?: Database["public"]["Enums"]["builder_cert_level"]
+          certified_since?: string | null
           city?: string | null
           created_at?: string
           created_by?: string | null
@@ -132,9 +148,14 @@ export type Database = {
           logo_url?: string | null
           name?: string
           phone?: string | null
+          public_profile_enabled?: boolean
+          service_areas?: string[] | null
+          slug?: string | null
           state?: string | null
+          tagline?: string | null
           updated_at?: string
           website?: string | null
+          years_in_business?: number | null
           zip?: string | null
         }
         Relationships: []
@@ -4641,6 +4662,7 @@ export type Database = {
     }
     Enums: {
       app_role: "homeowner" | "realtor" | "contractor" | "admin" | "builder"
+      builder_cert_level: "certified" | "plus" | "elite"
       builder_member_role: "owner" | "admin" | "staff"
       nb_clone_status:
         | "draft"
@@ -4790,6 +4812,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["homeowner", "realtor", "contractor", "admin", "builder"],
+      builder_cert_level: ["certified", "plus", "elite"],
       builder_member_role: ["owner", "admin", "staff"],
       nb_clone_status: [
         "draft",
