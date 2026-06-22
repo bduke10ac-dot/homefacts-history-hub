@@ -17,7 +17,7 @@ interface PassportRow { id: string; current_owner_id: string | null; transfer_st
 export default function OwnershipPassport() {
   const { id } = useParams();
   const { user } = useAuth();
-  const [pass, setPass] = useState<BookKey | null>(null);
+  const [pass, setPass] = useState<PassportRow | null>(null);
   const [property, setProperty] = useState<any>(null);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [transferEmail, setTransferEmail] = useState("");
