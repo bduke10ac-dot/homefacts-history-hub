@@ -80,7 +80,7 @@ const App = () => (
             <Route path="/home/:token" element={<BeginnerGuide />} />
             <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
             <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
-            <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorDashboard /></ProtectedRoute>} />
+            <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorSuccessCenter /></ProtectedRoute>} />
             <Route path="/builders/:slug" element={<BuilderProfile />} />
             <Route path="/builder" element={<ProtectedRoute requireRole="builder"><BuilderDashboard /></ProtectedRoute>} />
             <Route path="/builder/marketing" element={<ProtectedRoute requireRole="builder"><BuilderMarketing /></ProtectedRoute>} />
