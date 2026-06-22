@@ -680,6 +680,136 @@ export type Database = {
           },
         ]
       }
+      disaster_vault_documents: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          file_type: string | null
+          file_url: string | null
+          id: string
+          notes: string | null
+          property_id: string
+          quantity: number | null
+          serial_number: string | null
+          subcategory: string | null
+          title: string
+          updated_at: string
+          value_estimate: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          property_id: string
+          quantity?: number | null
+          serial_number?: string | null
+          subcategory?: string | null
+          title: string
+          updated_at?: string
+          value_estimate?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          file_type?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          property_id?: string
+          quantity?: number | null
+          serial_number?: string | null
+          subcategory?: string | null
+          title?: string
+          updated_at?: string
+          value_estimate?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disaster_vault_documents_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      emergency_events: {
+        Row: {
+          category: string
+          checklist: Json
+          claim_status: string | null
+          contractor_notes: string | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          insurance_policy_ref: string | null
+          occurred_at: string
+          owner_notes: string | null
+          photos: Json
+          property_id: string
+          status: string
+          total_expense: number | null
+          updated_at: string
+          videos: Json
+          weather_reference: string | null
+        }
+        Insert: {
+          category: string
+          checklist?: Json
+          claim_status?: string | null
+          contractor_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          insurance_policy_ref?: string | null
+          occurred_at?: string
+          owner_notes?: string | null
+          photos?: Json
+          property_id: string
+          status?: string
+          total_expense?: number | null
+          updated_at?: string
+          videos?: Json
+          weather_reference?: string | null
+        }
+        Update: {
+          category?: string
+          checklist?: Json
+          claim_status?: string | null
+          contractor_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          insurance_policy_ref?: string | null
+          occurred_at?: string
+          owner_notes?: string | null
+          photos?: Json
+          property_id?: string
+          status?: string
+          total_expense?: number | null
+          updated_at?: string
+          videos?: Json
+          weather_reference?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emergency_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       env_claim_predictions: {
         Row: {
           created_at: string
@@ -1027,6 +1157,62 @@ export type Database = {
           },
         ]
       }
+      estate_contacts: {
+        Row: {
+          accepted_at: string | null
+          access_level: string
+          contact_name: string
+          created_at: string
+          created_by: string | null
+          email: string | null
+          id: string
+          invited_at: string | null
+          notes: string | null
+          phone: string | null
+          property_id: string
+          relationship: string | null
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          access_level?: string
+          contact_name: string
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          invited_at?: string | null
+          notes?: string | null
+          phone?: string | null
+          property_id: string
+          relationship?: string | null
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          access_level?: string
+          contact_name?: string
+          created_at?: string
+          created_by?: string | null
+          email?: string | null
+          id?: string
+          invited_at?: string | null
+          notes?: string | null
+          phone?: string | null
+          property_id?: string
+          relationship?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_contacts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fraud_flags: {
         Row: {
           detail: string | null
@@ -1077,6 +1263,62 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      government_reviews: {
+        Row: {
+          ai_checklist: Json
+          code_concerns: Json
+          corrections_requested: Json
+          created_at: string
+          decided_at: string | null
+          final_approval: boolean
+          id: string
+          inspection_notes: string | null
+          permit_id: string | null
+          property_id: string
+          reviewer_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          ai_checklist?: Json
+          code_concerns?: Json
+          corrections_requested?: Json
+          created_at?: string
+          decided_at?: string | null
+          final_approval?: boolean
+          id?: string
+          inspection_notes?: string | null
+          permit_id?: string | null
+          property_id: string
+          reviewer_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_checklist?: Json
+          code_concerns?: Json
+          corrections_requested?: Json
+          created_at?: string
+          decided_at?: string | null
+          final_approval?: boolean
+          id?: string
+          inspection_notes?: string | null
+          permit_id?: string | null
+          property_id?: string
+          reviewer_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "government_reviews_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
             referencedColumns: ["id"]
           },
         ]
@@ -1290,6 +1532,33 @@ export type Database = {
           },
         ]
       }
+      investor_portfolios: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       living_outlook_scores: {
         Row: {
           commute_score: number | null
@@ -1436,6 +1705,59 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "market_estimates_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      marketplace_recommendations: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          estimated_cost_high: number | null
+          estimated_cost_low: number | null
+          id: string
+          property_id: string
+          provider_id: string | null
+          reason: string
+          status: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          estimated_cost_high?: number | null
+          estimated_cost_low?: number | null
+          id?: string
+          property_id: string
+          provider_id?: string | null
+          reason: string
+          status?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          estimated_cost_high?: number | null
+          estimated_cost_low?: number | null
+          id?: string
+          property_id?: string
+          provider_id?: string | null
+          reason?: string
+          status?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_recommendations_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
@@ -2158,6 +2480,133 @@ export type Database = {
           },
         ]
       }
+      negotiation_reports: {
+        Row: {
+          ai_summary: string | null
+          buyer_questions: Json
+          code_concerns: Json
+          created_at: string
+          future_risks: Json
+          id: string
+          inputs: Json
+          insurance_concerns: Json
+          negotiation_points: Json
+          property_id: string | null
+          realtor_talking_points: Json
+          repair_concerns: Json
+          safety_issues: Json
+          suggested_concession_high: number | null
+          suggested_concession_low: number | null
+          title: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          buyer_questions?: Json
+          code_concerns?: Json
+          created_at?: string
+          future_risks?: Json
+          id?: string
+          inputs?: Json
+          insurance_concerns?: Json
+          negotiation_points?: Json
+          property_id?: string | null
+          realtor_talking_points?: Json
+          repair_concerns?: Json
+          safety_issues?: Json
+          suggested_concession_high?: number | null
+          suggested_concession_low?: number | null
+          title?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ai_summary?: string | null
+          buyer_questions?: Json
+          code_concerns?: Json
+          created_at?: string
+          future_risks?: Json
+          id?: string
+          inputs?: Json
+          insurance_concerns?: Json
+          negotiation_points?: Json
+          property_id?: string | null
+          realtor_talking_points?: Json
+          repair_concerns?: Json
+          safety_issues?: Json
+          suggested_concession_high?: number | null
+          suggested_concession_low?: number | null
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "negotiation_reports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      neighborhood_data_overrides: {
+        Row: {
+          confidence: string | null
+          created_at: string
+          created_by: string | null
+          data: Json
+          id: string
+          last_updated: string | null
+          notes: string | null
+          property_id: string
+          saved_to_report: boolean
+          section_key: string
+          source: string | null
+          source_link: string | null
+          updated_at: string
+        }
+        Insert: {
+          confidence?: string | null
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          last_updated?: string | null
+          notes?: string | null
+          property_id: string
+          saved_to_report?: boolean
+          section_key: string
+          source?: string | null
+          source_link?: string | null
+          updated_at?: string
+        }
+        Update: {
+          confidence?: string | null
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          last_updated?: string | null
+          notes?: string | null
+          property_id?: string
+          saved_to_report?: boolean
+          section_key?: string
+          source?: string | null
+          source_link?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "neighborhood_data_overrides_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       neighborhood_trends: {
         Row: {
           area_id: string
@@ -2231,6 +2680,56 @@ export type Database = {
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "report_properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ownership_passports: {
+        Row: {
+          created_at: string
+          current_owner_id: string | null
+          expires_at: string | null
+          full_access: boolean
+          id: string
+          last_transferred_at: string | null
+          property_id: string
+          share_token: string | null
+          transfer_status: string
+          transfer_to_email: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_owner_id?: string | null
+          expires_at?: string | null
+          full_access?: boolean
+          id?: string
+          last_transferred_at?: string | null
+          property_id: string
+          share_token?: string | null
+          transfer_status?: string
+          transfer_to_email?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_owner_id?: string | null
+          expires_at?: string | null
+          full_access?: boolean
+          id?: string
+          last_transferred_at?: string | null
+          property_id?: string
+          share_token?: string | null
+          transfer_status?: string
+          transfer_to_email?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ownership_passports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
             referencedColumns: ["id"]
           },
         ]
@@ -2885,6 +3384,54 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "platform_property_timeline_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_properties: {
+        Row: {
+          cash_flow_notes: string | null
+          created_at: string
+          id: string
+          portfolio_id: string
+          property_id: string
+          rent_estimate: number | null
+          target_roi: number | null
+          updated_at: string
+        }
+        Insert: {
+          cash_flow_notes?: string | null
+          created_at?: string
+          id?: string
+          portfolio_id: string
+          property_id: string
+          rent_estimate?: number | null
+          target_roi?: number | null
+          updated_at?: string
+        }
+        Update: {
+          cash_flow_notes?: string | null
+          created_at?: string
+          id?: string
+          portfolio_id?: string
+          property_id?: string
+          rent_estimate?: number | null
+          target_roi?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_properties_portfolio_id_fkey"
+            columns: ["portfolio_id"]
+            isOneToOne: false
+            referencedRelation: "investor_portfolios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portfolio_properties_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"

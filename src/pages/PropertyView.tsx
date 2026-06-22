@@ -219,6 +219,14 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
               <Link to={`/property/${property.id}/insurance`}><Button variant="outline" size="sm"><ShieldCheck className="mr-2 h-4 w-4" />Insurance Review</Button></Link>
               <Link to={`/property/${property.id}/deferred`}><Button variant="outline" size="sm">Deferred Maintenance</Button></Link>
               <Link to={`/property/${property.id}/twin`}><Button variant="outline" size="sm">Digital Twin</Button></Link>
+              <Link to={`/property/${property.id}/neighborhood`}><Button variant="outline" size="sm">Neighborhood</Button></Link>
+              <Link to={`/property/${property.id}/marketplace`}><Button variant="outline" size="sm">Marketplace</Button></Link>
+              <Link to={`/property/${property.id}/gov`}><Button variant="outline" size="sm">Permit Portal</Button></Link>
+              <Link to={`/property/${property.id}/vault-dr`}><Button variant="outline" size="sm">Disaster Vault</Button></Link>
+              <Link to={`/property/${property.id}/estate`}><Button variant="outline" size="sm">Estate Planning</Button></Link>
+              <Link to={`/property/${property.id}/negotiate`}><Button variant="outline" size="sm">Negotiation AI</Button></Link>
+              <Link to={`/property/${property.id}/passport`}><Button variant="outline" size="sm">Ownership Passport</Button></Link>
+              <Link to={`/property/${property.id}/emergency`}><Button variant="destructive" size="sm">Emergency Mode</Button></Link>
               <Link to={`/property/${property.id}/maintenance`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Maintenance</Button></Link>
               <Link to={`/property/${property.id}/engagement`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Home Score & Rewards</Button></Link>
               <Link to={`/property/${property.id}/boundary`}><Button variant="outline" size="sm"><MapPin className="mr-2 h-4 w-4" />Boundary & Land</Button></Link>
