@@ -215,6 +215,10 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
               <Link to={`/property/${property.id}/timeline`}><Button variant="outline" size="sm">Timeline</Button></Link>
               <Link to={`/property/${property.id}/ask`}><Button variant="outline" size="sm">Ask HomeFacts AI</Button></Link>
               <Link to={`/property/${property.id}/reports`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Reports</Button></Link>
+              <Link to={`/property/${property.id}/contractors`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Contractor Scores</Button></Link>
+              <Link to={`/property/${property.id}/insurance`}><Button variant="outline" size="sm"><ShieldCheck className="mr-2 h-4 w-4" />Insurance Review</Button></Link>
+              <Link to={`/property/${property.id}/deferred`}><Button variant="outline" size="sm">Deferred Maintenance</Button></Link>
+              <Link to={`/property/${property.id}/twin`}><Button variant="outline" size="sm">Digital Twin</Button></Link>
               <Link to={`/property/${property.id}/maintenance`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Maintenance</Button></Link>
               <Link to={`/property/${property.id}/engagement`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Home Score & Rewards</Button></Link>
               <Link to={`/property/${property.id}/boundary`}><Button variant="outline" size="sm"><MapPin className="mr-2 h-4 w-4" />Boundary & Land</Button></Link>
