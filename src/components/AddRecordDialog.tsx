@@ -11,6 +11,14 @@ import { Plus, Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORIES = ["repair", "maintenance", "warranty", "inspection", "renovation", "other"];
+const ALLOWED_MIME = [
+  "image/jpeg", "image/png", "image/webp", "image/gif", "image/heic",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const ALLOWED_ACCEPT = "image/jpeg,image/png,image/webp,image/gif,image/heic,application/pdf,.doc,.docx";
+const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add record" }: { propertyId: string; onAdded?: () => void; triggerLabel?: string }) {
   const { user, primaryRole } = useAuth();
@@ -43,10 +51,21 @@ export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add recor
 
     if (error || !rec) { setLoading(false); toast.error(error?.message ?? "Failed to add"); return; }
 
-    // Upload files
+    // Upload files (validated)
     for (const file of files) {
-      const path = `${user.id}/${rec.id}/${Date.now()}-${file.name}`;
-      const { error: upErr } = await supabase.storage.from("property-files").upload(path, file);
+      if (!ALLOWED_MIME.includes(file.type)) {
+        toast.error(`Skipped ${file.name}: file type not allowed`);
+        continue;
+      }
+      if (file.size > MAX_FILE_BYTES) {
+        toast.error(`Skipped ${file.name}: exceeds 10 MB`);
+        continue;
+      }
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120);
+      const path = `${user.id}/${rec.id}/${Date.now()}-${safeName}`;
+      const { error: upErr } = await supabase.storage
+        .from("property-files")
+        .upload(path, file, { contentType: file.type, upsert: false });
       if (upErr) { toast.error(`Upload failed: ${upErr.message}`); continue; }
       const { data: { publicUrl } } = supabase.storage.from("property-files").getPublicUrl(path);
       await supabase.from("record_attachments").insert({
@@ -86,7 +105,22 @@ export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add recor
             <label className="mt-1 flex cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed p-4 text-sm text-muted-foreground hover:border-primary/50">
               <Upload className="h-4 w-4" />
               {files.length ? `${files.length} file(s) selected` : "Click to upload (multiple)"}
-              <input type="file" multiple className="hidden" onChange={(e) => setFiles(Array.from(e.target.files ?? []))} />
+              <input
+                type="file"
+                multiple
+                accept={ALLOWED_ACCEPT}
+                className="hidden"
+                onChange={(e) => {
+                  const picked = Array.from(e.target.files ?? []);
+                  const ok: File[] = [];
+                  for (const f of picked) {
+                    if (!ALLOWED_MIME.includes(f.type)) { toast.error(`${f.name}: type not allowed`); continue; }
+                    if (f.size > MAX_FILE_BYTES) { toast.error(`${f.name}: over 10 MB`); continue; }
+                    ok.push(f);
+                  }
+                  setFiles(ok);
+                }}
+              />
             </label>
           </div>
           <DialogFooter>

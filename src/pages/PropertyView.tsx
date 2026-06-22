@@ -39,10 +39,12 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
     let propertyId = id;
 
     if (shared && token) {
-      const { data: link } = await supabase.from("share_links").select("property_id, expires_at").eq("token", token).maybeSingle();
-      if (!link) { toast.error("Share link not found"); setLoading(false); return; }
-      if (link.expires_at && new Date(link.expires_at) < new Date()) { toast.error("Share link expired"); setLoading(false); return; }
-      propertyId = link.property_id;
+      const { data: link, error: linkErr } = await supabase
+        .rpc("get_share_link_property", { p_token: token })
+        .maybeSingle();
+      if (linkErr || !link) { toast.error("Share link not found"); setLoading(false); return; }
+      if (link.expires_at && new Date(link.expires_at as string) < new Date()) { toast.error("Share link expired"); setLoading(false); return; }
+      propertyId = link.property_id as string;
     }
     if (!propertyId) { setLoading(false); return; }
 
