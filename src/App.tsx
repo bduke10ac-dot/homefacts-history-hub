@@ -36,6 +36,7 @@ import PropertyBoundary from "./pages/PropertyBoundary";
 import HomeEngagement from "./pages/HomeEngagement";
 import WhyHomeFacts from "./pages/WhyHomeFacts";
 import MaintenanceCenter from "./pages/MaintenanceCenter";
+import VacationMode from "./pages/VacationMode";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/property/:id/boundary" element={<PropertyBoundary />} />
             <Route path="/property/:id/engagement" element={<HomeEngagement />} />
             <Route path="/property/:id/maintenance" element={<MaintenanceCenter />} />
+            <Route path="/property/:id/vacation" element={<VacationMode />} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />
