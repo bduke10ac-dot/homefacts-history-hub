@@ -11,6 +11,14 @@ import { Plus, Loader2, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORIES = ["repair", "maintenance", "warranty", "inspection", "renovation", "other"];
+const ALLOWED_MIME = [
+  "image/jpeg", "image/png", "image/webp", "image/gif", "image/heic",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+];
+const ALLOWED_ACCEPT = "image/jpeg,image/png,image/webp,image/gif,image/heic,application/pdf,.doc,.docx";
+const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB
 
 export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add record" }: { propertyId: string; onAdded?: () => void; triggerLabel?: string }) {
   const { user, primaryRole } = useAuth();
