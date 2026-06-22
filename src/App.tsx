@@ -34,6 +34,7 @@ import BuilderProfile from "./pages/BuilderProfile";
 import BuilderMarketing from "./pages/BuilderMarketing";
 import PropertyBoundary from "./pages/PropertyBoundary";
 import HomeEngagement from "./pages/HomeEngagement";
+import WhyHomeFacts from "./pages/WhyHomeFacts";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/checkout/return" element={<CheckoutReturn />} />
             <Route path="/" element={<Index />} />
+            <Route path="/why" element={<WhyHomeFacts />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/search" element={<PropertySearch />} />
             <Route path="/demo" element={<DemoReport />} />
