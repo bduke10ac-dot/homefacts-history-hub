@@ -63,8 +63,8 @@ export interface Achievement {
 
 function matchSection(rec: ScoreRecord, section: typeof HOME_SECTIONS[number]): boolean {
   const cat = rec.category?.toLowerCase() ?? "";
-  if (!section.categories.includes(cat as any)) return false;
-  if ((section as any).match) return (section as any).match.test(rec.title ?? "");
+  if (!(section.categories as readonly string[]).includes(cat)) return false;
+  if ((section as any).match) return ((section as any).match as RegExp).test(rec.title ?? "");
   return true;
 }
 
