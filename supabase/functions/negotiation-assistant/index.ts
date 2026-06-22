@@ -48,13 +48,13 @@ ${insurance_quote || "(none provided)"}
 
 Return concise bullet items (max 8 per list) and a recommended concession range in USD. If price is unknown, leave concession fields null.`;
 
-    const { experimental_output } = await generateText({
+    const { output } = await generateText({
       model,
-      experimental_output: Output.object({ schema: Schema }),
+      output: Output.object({ schema: Schema }),
       prompt,
     });
 
-    return new Response(JSON.stringify(experimental_output), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(JSON.stringify(output), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     return new Response(JSON.stringify({ error: String(e?.message ?? e) }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
