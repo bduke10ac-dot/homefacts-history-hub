@@ -2775,6 +2775,145 @@ export type Database = {
         }
         Relationships: []
       }
+      property_ai_boundary_observations: {
+        Row: {
+          confidence: number | null
+          created_at: string
+          detected_at: string
+          feature_type: string
+          id: string
+          location_geojson: Json | null
+          observation: string
+          property_id: string
+          severity: string
+          updated_at: string
+        }
+        Insert: {
+          confidence?: number | null
+          created_at?: string
+          detected_at?: string
+          feature_type: string
+          id?: string
+          location_geojson?: Json | null
+          observation: string
+          property_id: string
+          severity?: string
+          updated_at?: string
+        }
+        Update: {
+          confidence?: number | null
+          created_at?: string
+          detected_at?: string
+          feature_type?: string
+          id?: string
+          location_geojson?: Json | null
+          observation?: string
+          property_id?: string
+          severity?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_ai_boundary_observations_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_boundaries: {
+        Row: {
+          acreage: number | null
+          assessor_url: string | null
+          base_flood_elevation: number | null
+          centroid_lat: number | null
+          centroid_lng: number | null
+          county_gis_url: string | null
+          created_at: string
+          fema_flood_risk: string | null
+          flood_zone: string | null
+          future_land_use: string | null
+          geometry_geojson: Json | null
+          id: string
+          improvement_value: number | null
+          land_value: number | null
+          legal_description: string | null
+          lot_dimensions: string | null
+          lot_size_sqft: number | null
+          overlay_districts: string[] | null
+          parcel_number: string | null
+          property_classification: string | null
+          property_id: string
+          source: string | null
+          source_updated_at: string | null
+          updated_at: string
+          zoning: string | null
+        }
+        Insert: {
+          acreage?: number | null
+          assessor_url?: string | null
+          base_flood_elevation?: number | null
+          centroid_lat?: number | null
+          centroid_lng?: number | null
+          county_gis_url?: string | null
+          created_at?: string
+          fema_flood_risk?: string | null
+          flood_zone?: string | null
+          future_land_use?: string | null
+          geometry_geojson?: Json | null
+          id?: string
+          improvement_value?: number | null
+          land_value?: number | null
+          legal_description?: string | null
+          lot_dimensions?: string | null
+          lot_size_sqft?: number | null
+          overlay_districts?: string[] | null
+          parcel_number?: string | null
+          property_classification?: string | null
+          property_id: string
+          source?: string | null
+          source_updated_at?: string | null
+          updated_at?: string
+          zoning?: string | null
+        }
+        Update: {
+          acreage?: number | null
+          assessor_url?: string | null
+          base_flood_elevation?: number | null
+          centroid_lat?: number | null
+          centroid_lng?: number | null
+          county_gis_url?: string | null
+          created_at?: string
+          fema_flood_risk?: string | null
+          flood_zone?: string | null
+          future_land_use?: string | null
+          geometry_geojson?: Json | null
+          id?: string
+          improvement_value?: number | null
+          land_value?: number | null
+          legal_description?: string | null
+          lot_dimensions?: string | null
+          lot_size_sqft?: number | null
+          overlay_districts?: string[] | null
+          parcel_number?: string | null
+          property_classification?: string | null
+          property_id?: string
+          source?: string | null
+          source_updated_at?: string | null
+          updated_at?: string
+          zoning?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_boundaries_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_chat_messages: {
         Row: {
           content: string
@@ -2810,6 +2949,118 @@ export type Database = {
           },
         ]
       }
+      property_confidence_scores: {
+        Row: {
+          created_at: string
+          factors: Json | null
+          has_gis_records: boolean | null
+          has_homeowner_docs: boolean | null
+          has_inspector_reports: boolean | null
+          has_licensed_contractor_docs: boolean | null
+          has_plat_map: boolean | null
+          has_recorded_deeds: boolean | null
+          has_recorded_survey: boolean | null
+          has_utility_verification: boolean | null
+          has_verified_permits: boolean | null
+          id: string
+          overall_score: number
+          property_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          factors?: Json | null
+          has_gis_records?: boolean | null
+          has_homeowner_docs?: boolean | null
+          has_inspector_reports?: boolean | null
+          has_licensed_contractor_docs?: boolean | null
+          has_plat_map?: boolean | null
+          has_recorded_deeds?: boolean | null
+          has_recorded_survey?: boolean | null
+          has_utility_verification?: boolean | null
+          has_verified_permits?: boolean | null
+          id?: string
+          overall_score?: number
+          property_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          factors?: Json | null
+          has_gis_records?: boolean | null
+          has_homeowner_docs?: boolean | null
+          has_inspector_reports?: boolean | null
+          has_licensed_contractor_docs?: boolean | null
+          has_plat_map?: boolean | null
+          has_recorded_deeds?: boolean | null
+          has_recorded_survey?: boolean | null
+          has_utility_verification?: boolean | null
+          has_verified_permits?: boolean | null
+          id?: string
+          overall_score?: number
+          property_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_confidence_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_easements: {
+        Row: {
+          created_at: string
+          description: string | null
+          easement_type: string
+          id: string
+          location_geojson: Json | null
+          property_id: string
+          recorded_date: string | null
+          recorded_doc_ref: string | null
+          restrictions: string | null
+          updated_at: string
+          width_feet: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          easement_type: string
+          id?: string
+          location_geojson?: Json | null
+          property_id: string
+          recorded_date?: string | null
+          recorded_doc_ref?: string | null
+          restrictions?: string | null
+          updated_at?: string
+          width_feet?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          easement_type?: string
+          id?: string
+          location_geojson?: Json | null
+          property_id?: string
+          recorded_date?: string | null
+          recorded_doc_ref?: string | null
+          restrictions?: string | null
+          updated_at?: string
+          width_feet?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_easements_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_jurisdictions: {
         Row: {
           congressional_district: string | null
@@ -2838,6 +3089,56 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "property_jurisdictions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_plat_maps: {
+        Row: {
+          created_at: string
+          document_url: string | null
+          id: string
+          notes: string | null
+          plat_book: string | null
+          plat_page: string | null
+          property_id: string
+          recorded_date: string | null
+          subdivision_name: string | null
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          notes?: string | null
+          plat_book?: string | null
+          plat_page?: string | null
+          property_id: string
+          recorded_date?: string | null
+          subdivision_name?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          document_url?: string | null
+          id?: string
+          notes?: string | null
+          plat_book?: string | null
+          plat_page?: string | null
+          property_id?: string
+          recorded_date?: string | null
+          subdivision_name?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_plat_maps_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
@@ -2935,6 +3236,106 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "property_reports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_satellite_snapshots: {
+        Row: {
+          captured_on: string
+          change_summary: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          property_id: string
+          source: string | null
+          thumbnail_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          captured_on: string
+          change_summary?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          property_id: string
+          source?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          captured_on?: string
+          change_summary?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          property_id?: string
+          source?: string | null
+          thumbnail_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_satellite_snapshots_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_surveys: {
+        Row: {
+          created_at: string
+          document_name: string | null
+          document_url: string | null
+          id: string
+          notes: string | null
+          property_id: string
+          survey_date: string | null
+          survey_type: string
+          surveyor_company: string | null
+          surveyor_license: string | null
+          surveyor_name: string | null
+          updated_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          document_name?: string | null
+          document_url?: string | null
+          id?: string
+          notes?: string | null
+          property_id: string
+          survey_date?: string | null
+          survey_type: string
+          surveyor_company?: string | null
+          surveyor_license?: string | null
+          surveyor_name?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          document_name?: string | null
+          document_url?: string | null
+          id?: string
+          notes?: string | null
+          property_id?: string
+          survey_date?: string | null
+          survey_type?: string
+          surveyor_company?: string | null
+          surveyor_license?: string | null
+          surveyor_name?: string | null
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_surveys_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
