@@ -42,6 +42,10 @@ import HomeHealth from "./pages/HomeHealth";
 import PropertyTimeline from "./pages/PropertyTimeline";
 import AskPropertyAI from "./pages/AskPropertyAI";
 import ReportExports from "./pages/ReportExports";
+import ContractorScores from "./pages/ContractorScores";
+import InsuranceReview from "./pages/InsuranceReview";
+import DeferredMaintenance from "./pages/DeferredMaintenance";
+import DigitalTwin from "./pages/DigitalTwin";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -86,6 +90,10 @@ const App = () => (
             <Route path="/property/:id/timeline" element={<PropertyTimeline />} />
             <Route path="/property/:id/ask" element={<ProtectedRoute><AskPropertyAI /></ProtectedRoute>} />
             <Route path="/property/:id/reports" element={<ReportExports />} />
+            <Route path="/property/:id/contractors" element={<ProtectedRoute><ContractorScores /></ProtectedRoute>} />
+            <Route path="/property/:id/insurance" element={<ProtectedRoute><InsuranceReview /></ProtectedRoute>} />
+            <Route path="/property/:id/deferred" element={<ProtectedRoute><DeferredMaintenance /></ProtectedRoute>} />
+            <Route path="/property/:id/twin" element={<ProtectedRoute><DigitalTwin /></ProtectedRoute>} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />
