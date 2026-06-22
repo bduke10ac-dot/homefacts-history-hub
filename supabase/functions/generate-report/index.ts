@@ -78,12 +78,22 @@ ${JSON.stringify(property, null, 2)}
 Records (most recent first, up to 200):
 ${JSON.stringify(records ?? [], null, 2)}
 
-Be specific. Reference dates and titles from records where relevant. Mark heuristic estimates as such.`;
+Be specific. Reference dates and titles from records where relevant. Mark heuristic estimates as such.
+
+Return a single JSON object that matches this exact top-level shape (no wrapper keys):
+{
+  "title": string,
+  "executive_summary": string,
+  "key_findings": string[],
+  "risks": [{ "name": string, "severity": "low"|"medium"|"high", "detail": string }],
+  "recommendations": string[],
+  "systems": [{ "name": string, "status": string, "notes": string }]
+}`;
 
     const gateway = createLovableAiGatewayProvider(apiKey);
-    const { experimental_output: output } = await generateText({
+    const { output } = await generateText({
       model: gateway("google/gemini-3-flash-preview"),
-      experimental_output: Output.object({ schema: ReportSchema }),
+      output: Output.object({ schema: ReportSchema }),
       prompt,
     });
 
