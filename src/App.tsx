@@ -73,6 +73,7 @@ const App = () => (
             <Route path="/property/:id/projects" element={<ProtectedRoute><PropertyProjects /></ProtectedRoute>} />
             <Route path="/property/:id/boundary" element={<PropertyBoundary />} />
             <Route path="/property/:id/engagement" element={<HomeEngagement />} />
+            <Route path="/property/:id/maintenance" element={<MaintenanceCenter />} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />
