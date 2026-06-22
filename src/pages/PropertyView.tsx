@@ -210,7 +210,12 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
           {/* Vault + Projects quick links */}
           {!shared && (
             <div className="flex flex-wrap gap-2 no-print">
-              <Link to={`/property/${property.id}/maintenance`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Maintenance Center</Button></Link>
+              <Link to={`/property/${property.id}/confidence`}><Button size="sm"><ShieldCheck className="mr-2 h-4 w-4" />Home Confidence Score</Button></Link>
+              <Link to={`/property/${property.id}/health`}><Button variant="outline" size="sm">Home Health</Button></Link>
+              <Link to={`/property/${property.id}/timeline`}><Button variant="outline" size="sm">Timeline</Button></Link>
+              <Link to={`/property/${property.id}/ask`}><Button variant="outline" size="sm">Ask HomeFacts AI</Button></Link>
+              <Link to={`/property/${property.id}/reports`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Reports</Button></Link>
+              <Link to={`/property/${property.id}/maintenance`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Maintenance</Button></Link>
               <Link to={`/property/${property.id}/engagement`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Home Score & Rewards</Button></Link>
               <Link to={`/property/${property.id}/boundary`}><Button variant="outline" size="sm"><MapPin className="mr-2 h-4 w-4" />Boundary & Land</Button></Link>
               {user && <Link to={`/property/${property.id}/vault`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Document Vault</Button></Link>}

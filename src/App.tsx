@@ -37,6 +37,11 @@ import HomeEngagement from "./pages/HomeEngagement";
 import WhyHomeFacts from "./pages/WhyHomeFacts";
 import MaintenanceCenter from "./pages/MaintenanceCenter";
 import VacationMode from "./pages/VacationMode";
+import HomeConfidenceScore from "./pages/HomeConfidenceScore";
+import HomeHealth from "./pages/HomeHealth";
+import PropertyTimeline from "./pages/PropertyTimeline";
+import AskPropertyAI from "./pages/AskPropertyAI";
+import ReportExports from "./pages/ReportExports";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -76,6 +81,11 @@ const App = () => (
             <Route path="/property/:id/engagement" element={<HomeEngagement />} />
             <Route path="/property/:id/maintenance" element={<MaintenanceCenter />} />
             <Route path="/property/:id/vacation" element={<VacationMode />} />
+            <Route path="/property/:id/confidence" element={<HomeConfidenceScore />} />
+            <Route path="/property/:id/health" element={<HomeHealth />} />
+            <Route path="/property/:id/timeline" element={<PropertyTimeline />} />
+            <Route path="/property/:id/ask" element={<ProtectedRoute><AskPropertyAI /></ProtectedRoute>} />
+            <Route path="/property/:id/reports" element={<ReportExports />} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />
