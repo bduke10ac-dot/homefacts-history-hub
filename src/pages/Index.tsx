@@ -171,6 +171,84 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Realtor Success Center — Spotlight */}
+      <section className="relative overflow-hidden py-20 md:py-28">
+        {/* Background flourish */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-background to-primary/5 dark:from-amber-950/20 dark:via-background dark:to-primary/10" />
+        <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-amber-400/20 blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
+
+        <div className="container relative">
+          <div className="mx-auto max-w-3xl text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-300 shadow-sm">
+              <Star className="h-3.5 w-3.5 fill-current" /> Built for Real Estate Pros
+            </span>
+            <h2 className="mt-5 text-4xl font-bold leading-tight md:text-5xl">
+              Win more listings.{" "}
+              <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-primary bg-clip-text text-transparent">
+                Close them faster.
+              </span>
+            </h2>
+            <p className="mt-5 text-lg text-muted-foreground md:text-xl">
+              The Realtor Success Center turns every listing into a verified, buyer-ready digital property — and keeps clients for life.
+            </p>
+          </div>
+
+          {/* Stat strip */}
+          <div className="mx-auto mt-10 grid max-w-4xl grid-cols-2 gap-3 md:grid-cols-4">
+            {[
+              { v: "3x", l: "More listing wins" },
+              { v: "32%", l: "Faster to close" },
+              { v: "100%", l: "Verified records" },
+              { v: "Lifetime", l: "Client retention" },
+            ].map((s) => (
+              <div key={s.l} className="rounded-xl border bg-background/70 p-4 text-center shadow-sm backdrop-blur">
+                <p className="text-2xl font-bold text-primary md:text-3xl">{s.v}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{s.l}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Feature cards */}
+          <div className="mt-12 grid gap-5 md:grid-cols-3">
+            {[
+              { icon: Home, t: "Branded Listing Workspace", d: "Every listing becomes a polished, shareable property profile with verified history, photos, and documents." },
+              { icon: Sparkles, t: "AI Listing Assistant", d: "Generate listing descriptions, social posts, and property history summaries in seconds." },
+              { icon: TrendingUp, t: "Earn Rewards & Status", d: "Climb from Bronze to Elite Partner. Earn points on every certified listing and closing." },
+              { icon: Users, t: "Lifetime Client CRM", d: "Automated check-ins for warranties, anniversaries, and maintenance keep you top-of-mind." },
+              { icon: BadgeCheck, t: "HomeFacts Certified Badge", d: "Stand out on MLS with the trust badge buyers recognize and lenders respect." },
+              { icon: Zap, t: "Marketing Center", d: "On-brand flyers, social graphics, and QR codes — generated for every property, instantly." },
+            ].map((f) => (
+              <div key={f.t} className="group relative overflow-hidden rounded-2xl border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-elevated">
+                <div className="absolute right-0 top-0 h-24 w-24 -translate-y-12 translate-x-12 rounded-full bg-gradient-to-br from-amber-400/20 to-primary/20 blur-2xl transition-opacity group-hover:opacity-100" />
+                <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-glow">
+                  <f.icon className="h-5 w-5" />
+                </div>
+                <h3 className="relative mt-4 text-lg font-semibold">{f.t}</h3>
+                <p className="relative mt-2 text-sm text-muted-foreground">{f.d}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA bar */}
+          <div className="mx-auto mt-12 max-w-4xl rounded-2xl border bg-gradient-to-r from-primary to-primary/80 p-6 shadow-elevated md:p-8">
+            <div className="flex flex-col items-center justify-between gap-5 md:flex-row md:text-left">
+              <div className="text-center text-primary-foreground md:text-left">
+                <p className="text-xl font-bold md:text-2xl">Ready to grow your real estate business?</p>
+                <p className="mt-1 text-sm text-primary-foreground/85">Free 30-day Pro trial. No credit card required.</p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button size="lg" variant="secondary" className="font-semibold" asChild>
+                  <Link to="/realtor">Open Success Center<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                </Button>
+                <Button size="lg" variant="outline" className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                  <Link to="/auth?mode=signup&role=realtor">Start Free Trial</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
 
       {/* CTA */}
