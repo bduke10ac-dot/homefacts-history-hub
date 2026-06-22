@@ -35,6 +35,7 @@ import BuilderMarketing from "./pages/BuilderMarketing";
 import PropertyBoundary from "./pages/PropertyBoundary";
 import HomeEngagement from "./pages/HomeEngagement";
 import WhyHomeFacts from "./pages/WhyHomeFacts";
+import MaintenanceCenter from "./pages/MaintenanceCenter";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
