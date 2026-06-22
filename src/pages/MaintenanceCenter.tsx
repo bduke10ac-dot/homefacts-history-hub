@@ -22,7 +22,7 @@ import {
 import {
   AlertTriangle, Bell, CalendarDays, CheckCircle2, FileWarning, Mail,
   MessageSquare, Shield, Smartphone, Sparkles, Sun, Snowflake, Leaf, Cloud, Wrench,
-  CloudRain, Droplets, DollarSign, Phone, Users
+  CloudRain, Droplets, DollarSign, Phone, Users, Plane
 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -169,6 +169,25 @@ export default function MaintenanceCenter() {
           <ReadinessBar label="Warranty protection" value={warrantyScore} />
           <ReadinessBar label="Insurance readiness" value={insuranceScore} />
           <ReadinessBar label="Storm preparedness" value={stormScore} />
+        </div>
+
+        {/* Vacation Mode card */}
+        <div className="mt-4 overflow-hidden rounded-xl border bg-gradient-to-r from-sky-500/10 via-indigo-500/10 to-emerald-500/10 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="rounded-lg bg-sky-500/15 p-2 text-sky-600"><Plane className="h-6 w-6" /></div>
+              <div>
+                <h3 className="text-lg font-semibold">Vacation Mode</h3>
+                <p className="text-sm text-muted-foreground max-w-xl">
+                  One-button checklist to protect the home before you leave — covers water, security,
+                  weather, photo documentation, and a Property Condition Report for insurance.
+                </p>
+              </div>
+            </div>
+            <Button asChild>
+              <Link to={`/property/${property.id}/vacation`}><Plane className="mr-2 h-4 w-4" />Start Vacation Checklist</Link>
+            </Button>
+          </div>
         </div>
 
         <Tabs defaultValue="upcoming" className="mt-8">
