@@ -5029,6 +5029,13 @@ export type Database = {
       }
     }
     Functions: {
+      get_share_link_property: {
+        Args: { p_token: string }
+        Returns: {
+          expires_at: string
+          property_id: string
+        }[]
+      }
       has_active_subscription: {
         Args: { check_env?: string; user_uuid: string }
         Returns: boolean
