@@ -51,10 +51,21 @@ export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add recor
 
     if (error || !rec) { setLoading(false); toast.error(error?.message ?? "Failed to add"); return; }
 
-    // Upload files
+    // Upload files (validated)
     for (const file of files) {
-      const path = `${user.id}/${rec.id}/${Date.now()}-${file.name}`;
-      const { error: upErr } = await supabase.storage.from("property-files").upload(path, file);
+      if (!ALLOWED_MIME.includes(file.type)) {
+        toast.error(`Skipped ${file.name}: file type not allowed`);
+        continue;
+      }
+      if (file.size > MAX_FILE_BYTES) {
+        toast.error(`Skipped ${file.name}: exceeds 10 MB`);
+        continue;
+      }
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120);
+      const path = `${user.id}/${rec.id}/${Date.now()}-${safeName}`;
+      const { error: upErr } = await supabase.storage
+        .from("property-files")
+        .upload(path, file, { contentType: file.type, upsert: false });
       if (upErr) { toast.error(`Upload failed: ${upErr.message}`); continue; }
       const { data: { publicUrl } } = supabase.storage.from("property-files").getPublicUrl(path);
       await supabase.from("record_attachments").insert({
