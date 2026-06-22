@@ -172,12 +172,17 @@ export default function MaintenanceCenter() {
         </div>
 
         <Tabs defaultValue="upcoming" className="mt-8">
-          <TabsList className="flex flex-wrap">
+          <TabsList className="flex flex-wrap h-auto">
             <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
             <TabsTrigger value="overdue">Overdue</TabsTrigger>
-            <TabsTrigger value="calendar">Seasonal calendar</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar</TabsTrigger>
+            <TabsTrigger value="safety">Safety</TabsTrigger>
+            <TabsTrigger value="weather">Weather</TabsTrigger>
+            <TabsTrigger value="utility">Utility</TabsTrigger>
             <TabsTrigger value="warranties">Warranties</TabsTrigger>
             <TabsTrigger value="insurance">Insurance</TabsTrigger>
+            <TabsTrigger value="financial">Financial</TabsTrigger>
+            <TabsTrigger value="followups">Follow-ups</TabsTrigger>
             <TabsTrigger value="ai">AI assistant</TabsTrigger>
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
           </TabsList>
@@ -198,12 +203,32 @@ export default function MaintenanceCenter() {
             <SeasonalCalendar tasks={plan.tasks} />
           </TabsContent>
 
+          <TabsContent value="safety" className="mt-4">
+            <GroupView tasks={plan.tasks} group="safety" onComplete={markComplete} icon={Shield} title="Safety Reminder Center" />
+          </TabsContent>
+
+          <TabsContent value="weather" className="mt-4">
+            <WeatherSection tasks={plan.tasks.filter((t) => t.group === "weather")} onComplete={markComplete} />
+          </TabsContent>
+
+          <TabsContent value="utility" className="mt-4">
+            <GroupView tasks={plan.tasks} group="utility" onComplete={markComplete} icon={Droplets} title="Utility Reminder Center" />
+          </TabsContent>
+
           <TabsContent value="warranties" className="mt-4">
             <WarrantySection records={warranties} />
           </TabsContent>
 
           <TabsContent value="insurance" className="mt-4">
             <InsuranceSection lastReviewDays={insuranceDays} score={insuranceScore} regions={plan.regions} />
+          </TabsContent>
+
+          <TabsContent value="financial" className="mt-4">
+            <GroupView tasks={plan.tasks} group="financial" onComplete={markComplete} icon={DollarSign} title="Financial Reminder Center" />
+          </TabsContent>
+
+          <TabsContent value="followups" className="mt-4">
+            <FollowupsSection />
           </TabsContent>
 
           <TabsContent value="ai" className="mt-4">
