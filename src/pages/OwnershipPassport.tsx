@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Passport, Share2, FileDown, Send, Copy } from "lucide-react";
+import { BookKey, Share2, FileDown, Send, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -17,7 +17,7 @@ interface Passport { id: string; current_owner_id: string | null; transfer_statu
 export default function OwnershipPassport() {
   const { id } = useParams();
   const { user } = useAuth();
-  const [pass, setPass] = useState<Passport | null>(null);
+  const [pass, setPass] = useState<BookKey | null>(null);
   const [property, setProperty] = useState<any>(null);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [transferEmail, setTransferEmail] = useState("");
@@ -90,7 +90,7 @@ export default function OwnershipPassport() {
       <div className="container py-8 space-y-6 max-w-4xl">
         <div>
           <Link to={`/property/${id}`} className="text-sm text-muted-foreground hover:text-foreground">← Back to property</Link>
-          <h1 className="mt-2 text-3xl font-bold flex items-center gap-2"><Passport className="h-7 w-7 text-primary" />Ownership Passport</h1>
+          <h1 className="mt-2 text-3xl font-bold flex items-center gap-2"><BookKey className="h-7 w-7 text-primary" />Ownership Passport</h1>
           <p className="text-muted-foreground">The complete, transferable digital identity of this home.</p>
         </div>
 
