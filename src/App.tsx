@@ -11,7 +11,7 @@ import PropertySearch from "./pages/PropertySearch";
 import PropertyView from "./pages/PropertyView";
 import HomeownerDashboard from "./pages/HomeownerDashboard";
 import ContractorDashboard from "./pages/ContractorDashboard";
-import RealtorDashboard from "./pages/RealtorDashboard";
+import RealtorSuccessCenter from "./pages/RealtorSuccessCenter";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminFraudReview from "./pages/AdminFraudReview";
 import DemoReport from "./pages/DemoReport";
