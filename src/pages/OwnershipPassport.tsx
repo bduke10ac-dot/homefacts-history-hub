@@ -12,7 +12,7 @@ import { BookKey, Share2, FileDown, Send, Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
-interface Passport { id: string; current_owner_id: string | null; transfer_status: string; transfer_to_email: string | null; full_access: boolean; share_token: string | null; expires_at: string | null; last_transferred_at: string | null; }
+interface PassportRow { id: string; current_owner_id: string | null; transfer_status: string; transfer_to_email: string | null; full_access: boolean; share_token: string | null; expires_at: string | null; last_transferred_at: string | null; }
 
 export default function OwnershipPassport() {
   const { id } = useParams();
@@ -31,7 +31,7 @@ export default function OwnershipPassport() {
       const ins = await supabase.from("ownership_passports").insert({ property_id: id, current_owner_id: user.id }).select().single();
       data = ins.data;
     }
-    setPass(data as Passport | null);
+    setPass(data as PassportRow | null);
 
     const cnt = async (table: string) => (await supabase.from(table as any).select("id", { count: "exact", head: true }).eq("property_id", id)).count ?? 0;
     setCounts({
