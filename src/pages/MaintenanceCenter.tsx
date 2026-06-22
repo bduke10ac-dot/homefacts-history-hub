@@ -527,3 +527,103 @@ function EmptyState({ icon: Icon, title, body }: { icon: any; title: string; bod
     </div>
   );
 }
+
+function GroupView({ tasks, group, onComplete, icon: Icon, title }: { tasks: MaintenanceTask[]; group: TaskGroup; onComplete: (id: string) => void; icon: any; title: string }) {
+  const filtered = tasks.filter((t) => t.group === group);
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 rounded-2xl border bg-card p-4 shadow-card">
+        <Icon className="h-4 w-4 text-primary" />
+        <h2 className="font-semibold">{title}</h2>
+        <Badge variant="outline" className="ml-auto">{filtered.length} reminders</Badge>
+      </div>
+      {filtered.length === 0
+        ? <EmptyState icon={Icon} title="Nothing here yet" body="No reminders in this category for your region." />
+        : <TaskList tasks={filtered} onComplete={onComplete} />}
+    </div>
+  );
+}
+
+function WeatherSection({ tasks, onComplete }: { tasks: MaintenanceTask[]; onComplete: (id: string) => void }) {
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-5 shadow-card">
+          <div className="flex items-center gap-2"><CloudRain className="h-4 w-4 text-primary" /><h3 className="font-semibold">Before a storm</h3></div>
+          <ul className="mt-3 space-y-1.5 text-sm">
+            {WEATHER_BEFORE_STORM.map((s) => (
+              <li key={s} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary" />{s}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-2xl border bg-card p-5 shadow-card">
+          <div className="flex items-center gap-2"><Cloud className="h-4 w-4 text-accent" /><h3 className="font-semibold">After a storm</h3></div>
+          <ul className="mt-3 space-y-1.5 text-sm">
+            {WEATHER_AFTER_STORM.map((s) => (
+              <li key={s} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-accent" />{s}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      {tasks.length > 0 && (
+        <div>
+          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Regional weather tasks</h3>
+          <TaskList tasks={tasks} onComplete={onComplete} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FollowupsSection() {
+  const channelIcon = (ch: string) =>
+    ch === "email" ? Mail : ch === "sms" ? MessageSquare : ch === "call" ? Phone : Smartphone;
+
+  return (
+    <div className="space-y-6">
+      <FollowupBlock title="Realtor follow-ups" icon={Users} items={REALTOR_FOLLOWUPS} channelIcon={channelIcon} />
+      <FollowupBlock title="Builder follow-ups" icon={Wrench} items={BUILDER_FOLLOWUPS} channelIcon={channelIcon} />
+      <div className="rounded-2xl border bg-card p-5 shadow-card">
+        <div className="flex items-center gap-2"><Wrench className="h-4 w-4 text-primary" /><h3 className="font-semibold">Contractor follow-ups</h3></div>
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
+          {Object.entries(CONTRACTOR_FOLLOWUPS).map(([trade, items]) => (
+            <div key={trade} className="rounded-xl border bg-muted/30 p-3">
+              <p className="text-sm font-medium capitalize">{trade.replace("_", " ")} installed</p>
+              <ul className="mt-2 space-y-1 text-sm">
+                {items.map((f) => {
+                  const Icon = channelIcon(f.channel);
+                  return (
+                    <li key={f.id} className="flex items-center justify-between gap-2">
+                      <span>{f.label}</span>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground"><Icon className="h-3 w-3" />{Math.round(f.days / 30)}mo</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FollowupBlock({ title, icon: Icon, items, channelIcon }: { title: string; icon: any; items: { id: string; label: string; days: number; channel: string }[]; channelIcon: (c: string) => any }) {
+  return (
+    <div className="rounded-2xl border bg-card p-5 shadow-card">
+      <div className="flex items-center gap-2"><Icon className="h-4 w-4 text-primary" /><h3 className="font-semibold">{title}</h3></div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+        {items.map((f) => {
+          const Ch = channelIcon(f.channel);
+          return (
+            <div key={f.id} className="flex items-center justify-between gap-2 rounded-lg border bg-muted/30 px-3 py-2 text-sm">
+              <span>{f.label}</span>
+              <span className="flex items-center gap-1 text-xs text-muted-foreground capitalize"><Ch className="h-3 w-3" />{f.channel} • {f.days < 60 ? `${f.days}d` : `${Math.round(f.days / 30)}mo`}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
