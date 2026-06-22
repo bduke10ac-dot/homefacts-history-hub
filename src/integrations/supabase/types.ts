@@ -362,6 +362,65 @@ export type Database = {
           },
         ]
       }
+      contractor_scores: {
+        Row: {
+          badge: string | null
+          complaint_count: number
+          contractor_name: string
+          created_at: string
+          created_by: string | null
+          id: string
+          jobs_completed: number
+          notes: string | null
+          on_time_rate: number | null
+          property_id: string
+          quality_rating: number | null
+          score: number
+          trade: string | null
+          updated_at: string
+        }
+        Insert: {
+          badge?: string | null
+          complaint_count?: number
+          contractor_name: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          jobs_completed?: number
+          notes?: string | null
+          on_time_rate?: number | null
+          property_id: string
+          quality_rating?: number | null
+          score?: number
+          trade?: string | null
+          updated_at?: string
+        }
+        Update: {
+          badge?: string | null
+          complaint_count?: number
+          contractor_name?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          jobs_completed?: number
+          notes?: string | null
+          on_time_rate?: number | null
+          property_id?: string
+          quality_rating?: number | null
+          score?: number
+          trade?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contractor_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contractors: {
         Row: {
           bond_status: string | null
@@ -508,6 +567,118 @@ export type Database = {
           table_name?: string
         }
         Relationships: []
+      }
+      deferred_maintenance_items: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          estimated_cost_high: number | null
+          estimated_cost_low: number | null
+          id: string
+          issue: string
+          notes: string | null
+          property_id: string
+          severity: string
+          status: string
+          system: string
+          updated_at: string
+          urgency_months: number | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          estimated_cost_high?: number | null
+          estimated_cost_low?: number | null
+          id?: string
+          issue: string
+          notes?: string | null
+          property_id: string
+          severity?: string
+          status?: string
+          system: string
+          updated_at?: string
+          urgency_months?: number | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          estimated_cost_high?: number | null
+          estimated_cost_low?: number | null
+          id?: string
+          issue?: string
+          notes?: string | null
+          property_id?: string
+          severity?: string
+          status?: string
+          system?: string
+          updated_at?: string
+          urgency_months?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deferred_maintenance_items_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      digital_twin_rooms: {
+        Row: {
+          condition: string | null
+          created_at: string
+          created_by: string | null
+          features: Json
+          floor: string | null
+          id: string
+          notes: string | null
+          photo_url: string | null
+          property_id: string
+          room_name: string
+          room_type: string | null
+          square_feet: number | null
+          updated_at: string
+        }
+        Insert: {
+          condition?: string | null
+          created_at?: string
+          created_by?: string | null
+          features?: Json
+          floor?: string | null
+          id?: string
+          notes?: string | null
+          photo_url?: string | null
+          property_id: string
+          room_name: string
+          room_type?: string | null
+          square_feet?: number | null
+          updated_at?: string
+        }
+        Update: {
+          condition?: string | null
+          created_at?: string
+          created_by?: string | null
+          features?: Json
+          floor?: string | null
+          id?: string
+          notes?: string | null
+          photo_url?: string | null
+          property_id?: string
+          room_name?: string
+          room_type?: string | null
+          square_feet?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "digital_twin_rooms_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       env_claim_predictions: {
         Row: {
@@ -1050,6 +1221,68 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "insurance_claims_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insurance_reviews: {
+        Row: {
+          ai_summary: string | null
+          carrier: string | null
+          coverage_amount: number | null
+          created_at: string
+          created_by: string | null
+          deductible: number | null
+          effective_date: string | null
+          gaps: Json
+          id: string
+          policy_number: string | null
+          premium: number | null
+          property_id: string
+          recommendations: Json
+          renewal_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          carrier?: string | null
+          coverage_amount?: number | null
+          created_at?: string
+          created_by?: string | null
+          deductible?: number | null
+          effective_date?: string | null
+          gaps?: Json
+          id?: string
+          policy_number?: string | null
+          premium?: number | null
+          property_id: string
+          recommendations?: Json
+          renewal_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_summary?: string | null
+          carrier?: string | null
+          coverage_amount?: number | null
+          created_at?: string
+          created_by?: string | null
+          deductible?: number | null
+          effective_date?: string | null
+          gaps?: Json
+          id?: string
+          policy_number?: string | null
+          premium?: number | null
+          property_id?: string
+          recommendations?: Json
+          renewal_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insurance_reviews_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
