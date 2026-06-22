@@ -105,7 +105,22 @@ export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add recor
             <label className="mt-1 flex cursor-pointer items-center gap-2 rounded-lg border-2 border-dashed p-4 text-sm text-muted-foreground hover:border-primary/50">
               <Upload className="h-4 w-4" />
               {files.length ? `${files.length} file(s) selected` : "Click to upload (multiple)"}
-              <input type="file" multiple className="hidden" onChange={(e) => setFiles(Array.from(e.target.files ?? []))} />
+              <input
+                type="file"
+                multiple
+                accept={ALLOWED_ACCEPT}
+                className="hidden"
+                onChange={(e) => {
+                  const picked = Array.from(e.target.files ?? []);
+                  const ok: File[] = [];
+                  for (const f of picked) {
+                    if (!ALLOWED_MIME.includes(f.type)) { toast.error(`${f.name}: type not allowed`); continue; }
+                    if (f.size > MAX_FILE_BYTES) { toast.error(`${f.name}: over 10 MB`); continue; }
+                    ok.push(f);
+                  }
+                  setFiles(ok);
+                }}
+              />
             </label>
           </div>
           <DialogFooter>
