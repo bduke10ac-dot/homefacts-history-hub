@@ -32,6 +32,7 @@ import BuilderCloneDetail from "./pages/BuilderCloneDetail";
 import BeginnerGuide from "./pages/BeginnerGuide";
 import BuilderProfile from "./pages/BuilderProfile";
 import BuilderMarketing from "./pages/BuilderMarketing";
+import PropertyBoundary from "./pages/PropertyBoundary";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
