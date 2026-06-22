@@ -13,12 +13,16 @@ import { computeHealthScore } from "@/lib/healthScore";
 import {
   buildMaintenancePlan,
   predictiveRecommendations,
+  WEATHER_BEFORE_STORM, WEATHER_AFTER_STORM,
+  REALTOR_FOLLOWUPS, BUILDER_FOLLOWUPS, CONTRACTOR_FOLLOWUPS,
   type MaintenanceTask,
   type Season,
+  type TaskGroup,
 } from "@/lib/maintenancePlan";
 import {
   AlertTriangle, Bell, CalendarDays, CheckCircle2, FileWarning, Mail,
-  MessageSquare, Shield, Smartphone, Sparkles, Sun, Snowflake, Leaf, Cloud, Wrench
+  MessageSquare, Shield, Smartphone, Sparkles, Sun, Snowflake, Leaf, Cloud, Wrench,
+  CloudRain, Droplets, DollarSign, Phone, Users
 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
@@ -168,12 +172,17 @@ export default function MaintenanceCenter() {
         </div>
 
         <Tabs defaultValue="upcoming" className="mt-8">
-          <TabsList className="flex flex-wrap">
+          <TabsList className="flex flex-wrap h-auto">
             <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
             <TabsTrigger value="overdue">Overdue</TabsTrigger>
-            <TabsTrigger value="calendar">Seasonal calendar</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar</TabsTrigger>
+            <TabsTrigger value="safety">Safety</TabsTrigger>
+            <TabsTrigger value="weather">Weather</TabsTrigger>
+            <TabsTrigger value="utility">Utility</TabsTrigger>
             <TabsTrigger value="warranties">Warranties</TabsTrigger>
             <TabsTrigger value="insurance">Insurance</TabsTrigger>
+            <TabsTrigger value="financial">Financial</TabsTrigger>
+            <TabsTrigger value="followups">Follow-ups</TabsTrigger>
             <TabsTrigger value="ai">AI assistant</TabsTrigger>
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
           </TabsList>
@@ -194,12 +203,32 @@ export default function MaintenanceCenter() {
             <SeasonalCalendar tasks={plan.tasks} />
           </TabsContent>
 
+          <TabsContent value="safety" className="mt-4">
+            <GroupView tasks={plan.tasks} group="safety" onComplete={markComplete} icon={Shield} title="Safety Reminder Center" />
+          </TabsContent>
+
+          <TabsContent value="weather" className="mt-4">
+            <WeatherSection tasks={plan.tasks.filter((t) => t.group === "weather")} onComplete={markComplete} />
+          </TabsContent>
+
+          <TabsContent value="utility" className="mt-4">
+            <GroupView tasks={plan.tasks} group="utility" onComplete={markComplete} icon={Droplets} title="Utility Reminder Center" />
+          </TabsContent>
+
           <TabsContent value="warranties" className="mt-4">
             <WarrantySection records={warranties} />
           </TabsContent>
 
           <TabsContent value="insurance" className="mt-4">
             <InsuranceSection lastReviewDays={insuranceDays} score={insuranceScore} regions={plan.regions} />
+          </TabsContent>
+
+          <TabsContent value="financial" className="mt-4">
+            <GroupView tasks={plan.tasks} group="financial" onComplete={markComplete} icon={DollarSign} title="Financial Reminder Center" />
+          </TabsContent>
+
+          <TabsContent value="followups" className="mt-4">
+            <FollowupsSection />
           </TabsContent>
 
           <TabsContent value="ai" className="mt-4">
@@ -498,3 +527,103 @@ function EmptyState({ icon: Icon, title, body }: { icon: any; title: string; bod
     </div>
   );
 }
+
+function GroupView({ tasks, group, onComplete, icon: Icon, title }: { tasks: MaintenanceTask[]; group: TaskGroup; onComplete: (id: string) => void; icon: any; title: string }) {
+  const filtered = tasks.filter((t) => t.group === group);
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2 rounded-2xl border bg-card p-4 shadow-card">
+        <Icon className="h-4 w-4 text-primary" />
+        <h2 className="font-semibold">{title}</h2>
+        <Badge variant="outline" className="ml-auto">{filtered.length} reminders</Badge>
+      </div>
+      {filtered.length === 0
+        ? <EmptyState icon={Icon} title="Nothing here yet" body="No reminders in this category for your region." />
+        : <TaskList tasks={filtered} onComplete={onComplete} />}
+    </div>
+  );
+}
+
+function WeatherSection({ tasks, onComplete }: { tasks: MaintenanceTask[]; onComplete: (id: string) => void }) {
+  return (
+    <div className="space-y-4">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-2xl border bg-card p-5 shadow-card">
+          <div className="flex items-center gap-2"><CloudRain className="h-4 w-4 text-primary" /><h3 className="font-semibold">Before a storm</h3></div>
+          <ul className="mt-3 space-y-1.5 text-sm">
+            {WEATHER_BEFORE_STORM.map((s) => (
+              <li key={s} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-primary" />{s}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-2xl border bg-card p-5 shadow-card">
+          <div className="flex items-center gap-2"><Cloud className="h-4 w-4 text-accent" /><h3 className="font-semibold">After a storm</h3></div>
+          <ul className="mt-3 space-y-1.5 text-sm">
+            {WEATHER_AFTER_STORM.map((s) => (
+              <li key={s} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 flex-none rounded-full bg-accent" />{s}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      {tasks.length > 0 && (
+        <div>
+          <h3 className="mb-2 text-sm font-semibold text-muted-foreground">Regional weather tasks</h3>
+          <TaskList tasks={tasks} onComplete={onComplete} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FollowupsSection() {
+  const channelIcon = (ch: string) =>
+    ch === "email" ? Mail : ch === "sms" ? MessageSquare : ch === "call" ? Phone : Smartphone;
+
+  return (
+    <div className="space-y-6">
+      <FollowupBlock title="Realtor follow-ups" icon={Users} items={REALTOR_FOLLOWUPS} channelIcon={channelIcon} />
+      <FollowupBlock title="Builder follow-ups" icon={Wrench} items={BUILDER_FOLLOWUPS} channelIcon={channelIcon} />
+      <div className="rounded-2xl border bg-card p-5 shadow-card">
+        <div className="flex items-center gap-2"><Wrench className="h-4 w-4 text-primary" /><h3 className="font-semibold">Contractor follow-ups</h3></div>
+        <div className="mt-3 grid gap-3 md:grid-cols-2">
+          {Object.entries(CONTRACTOR_FOLLOWUPS).map(([trade, items]) => (
+            <div key={trade} className="rounded-xl border bg-muted/30 p-3">
+              <p className="text-sm font-medium capitalize">{trade.replace("_", " ")} installed</p>
+              <ul className="mt-2 space-y-1 text-sm">
+                {items.map((f) => {
+                  const Icon = channelIcon(f.channel);
+                  return (
+                    <li key={f.id} className="flex items-center justify-between gap-2">
+                      <span>{f.label}</span>
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground"><Icon className="h-3 w-3" />{Math.round(f.days / 30)}mo</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FollowupBlock({ title, icon: Icon, items, channelIcon }: { title: string; icon: any; items: { id: string; label: string; days: number; channel: string }[]; channelIcon: (c: string) => any }) {
+  return (
+    <div className="rounded-2xl border bg-card p-5 shadow-card">
+      <div className="flex items-center gap-2"><Icon className="h-4 w-4 text-primary" /><h3 className="font-semibold">{title}</h3></div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2">
+        {items.map((f) => {
+          const Ch = channelIcon(f.channel);
+          return (
+            <div key={f.id} className="flex items-center justify-between gap-2 rounded-lg border bg-muted/30 px-3 py-2 text-sm">
+              <span>{f.label}</span>
+              <span className="flex items-center gap-1 text-xs text-muted-foreground capitalize"><Ch className="h-3 w-3" />{f.channel} • {f.days < 60 ? `${f.days}d` : `${Math.round(f.days / 30)}mo`}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
