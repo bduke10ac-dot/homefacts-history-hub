@@ -32,6 +32,7 @@ import BuilderCloneDetail from "./pages/BuilderCloneDetail";
 import BeginnerGuide from "./pages/BeginnerGuide";
 import BuilderProfile from "./pages/BuilderProfile";
 import BuilderMarketing from "./pages/BuilderMarketing";
+import PropertyBoundary from "./pages/PropertyBoundary";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -66,6 +67,7 @@ const App = () => (
             <Route path="/property/:id" element={<PropertyView />} />
             <Route path="/property/:id/vault" element={<ProtectedRoute><PropertyVault /></ProtectedRoute>} />
             <Route path="/property/:id/projects" element={<ProtectedRoute><PropertyProjects /></ProtectedRoute>} />
+            <Route path="/property/:id/boundary" element={<PropertyBoundary />} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
             <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
             <Route path="/report/:id" element={<AddressReport />} />

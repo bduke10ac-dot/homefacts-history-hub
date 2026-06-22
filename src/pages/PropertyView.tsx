@@ -206,10 +206,11 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
           <RegionalSection propertyId={property.id} state={property.state} />
 
           {/* Vault + Projects quick links */}
-          {!shared && user && (
+          {!shared && (
             <div className="flex flex-wrap gap-2 no-print">
-              <Link to={`/property/${property.id}/vault`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Document Vault</Button></Link>
-              <Link to={`/property/${property.id}/projects`}><Button variant="outline" size="sm">Projects</Button></Link>
+              <Link to={`/property/${property.id}/boundary`}><Button variant="outline" size="sm"><MapPin className="mr-2 h-4 w-4" />Boundary & Land</Button></Link>
+              {user && <Link to={`/property/${property.id}/vault`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Document Vault</Button></Link>}
+              {user && <Link to={`/property/${property.id}/projects`}><Button variant="outline" size="sm">Projects</Button></Link>}
             </div>
           )}
 
