@@ -346,7 +346,7 @@ const WhyHomeFacts = () => {
         <div className="container relative py-20 md:py-28 text-center text-primary-foreground">
           <h2 className="text-3xl font-bold md:text-5xl">HomeFacts Is More Than a Real Estate App</h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-primary-foreground/85">
-            HomeFacts is building the trusted digital infrastructure behind every home. Just as Carfax became the trusted history report for vehicles, HomeFacts aims to become the universal record for residential properties.
+            HomeFacts is the digital identity and lifelong operating system for every property — bringing ownership history, maintenance, insurance, contractors, inspections, warranties, public records, AI guidance, and verified documentation into one trusted platform that follows the home from construction through every owner.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button size="lg" variant="secondary" asChild>

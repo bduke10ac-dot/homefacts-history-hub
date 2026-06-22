@@ -14,6 +14,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_assistant_queries: {
+        Row: {
+          answer: string | null
+          confidence: string | null
+          created_at: string
+          id: string
+          property_id: string
+          question: string
+          sources: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          answer?: string | null
+          confidence?: string | null
+          created_at?: string
+          id?: string
+          property_id: string
+          question: string
+          sources?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          answer?: string | null
+          confidence?: string | null
+          created_at?: string
+          id?: string
+          property_id?: string
+          question?: string
+          sources?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_assistant_queries_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       amenities: {
         Row: {
           address: string | null
@@ -865,6 +906,112 @@ export type Database = {
             columns: ["professional_id"]
             isOneToOne: false
             referencedRelation: "professionals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      home_confidence_scores: {
+        Row: {
+          ai_summary: Json | null
+          categories: Json
+          computed_at: string
+          created_at: string
+          id: string
+          overall_score: number
+          property_id: string
+          updated_at: string
+        }
+        Insert: {
+          ai_summary?: Json | null
+          categories?: Json
+          computed_at?: string
+          created_at?: string
+          id?: string
+          overall_score?: number
+          property_id: string
+          updated_at?: string
+        }
+        Update: {
+          ai_summary?: Json | null
+          categories?: Json
+          computed_at?: string
+          created_at?: string
+          id?: string
+          overall_score?: number
+          property_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_confidence_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      home_health_sections: {
+        Row: {
+          ai_notes: string | null
+          contractor_name: string | null
+          created_at: string
+          id: string
+          install_date: string | null
+          lifespan_years: number | null
+          next_maintenance_date: string | null
+          notes: string | null
+          photos: Json | null
+          property_id: string
+          replacement_estimate_cents: number | null
+          risk_level: string | null
+          section: string
+          status: string | null
+          updated_at: string
+          warranty_expires: string | null
+        }
+        Insert: {
+          ai_notes?: string | null
+          contractor_name?: string | null
+          created_at?: string
+          id?: string
+          install_date?: string | null
+          lifespan_years?: number | null
+          next_maintenance_date?: string | null
+          notes?: string | null
+          photos?: Json | null
+          property_id: string
+          replacement_estimate_cents?: number | null
+          risk_level?: string | null
+          section: string
+          status?: string | null
+          updated_at?: string
+          warranty_expires?: string | null
+        }
+        Update: {
+          ai_notes?: string | null
+          contractor_name?: string | null
+          created_at?: string
+          id?: string
+          install_date?: string | null
+          lifespan_years?: number | null
+          next_maintenance_date?: string | null
+          notes?: string | null
+          photos?: Json | null
+          property_id?: string
+          replacement_estimate_cents?: number | null
+          risk_level?: string | null
+          section?: string
+          status?: string | null
+          updated_at?: string
+          warranty_expires?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_health_sections_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
             referencedColumns: ["id"]
           },
         ]
@@ -4436,6 +4583,62 @@ export type Database = {
           },
         ]
       }
+      timeline_events: {
+        Row: {
+          attachments: Json | null
+          category: string
+          contractor_name: string | null
+          cost_cents: number | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          occurred_at: string
+          property_id: string
+          title: string
+          updated_at: string
+          verified: boolean | null
+        }
+        Insert: {
+          attachments?: Json | null
+          category: string
+          contractor_name?: string | null
+          cost_cents?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          occurred_at?: string
+          property_id: string
+          title: string
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Update: {
+          attachments?: Json | null
+          category?: string
+          contractor_name?: string | null
+          cost_cents?: number | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          occurred_at?: string
+          property_id?: string
+          title?: string
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "timeline_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -4491,6 +4694,50 @@ export type Database = {
             columns: ["report_id"]
             isOneToOne: false
             referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      verification_badges: {
+        Row: {
+          badge_type: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          property_id: string
+          status: string
+          updated_at: string
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          badge_type: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          property_id: string
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          badge_type?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          property_id?: string
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_badges_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
             referencedColumns: ["id"]
           },
         ]

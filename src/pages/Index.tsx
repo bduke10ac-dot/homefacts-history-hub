@@ -24,13 +24,13 @@ const Index = () => {
         <div className="container relative py-24 md:py-32">
           <div className="max-w-3xl animate-fade-in">
             <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur">
-              <CheckCircle2 className="h-3.5 w-3.5" /> The Carfax for homes
+              <CheckCircle2 className="h-3.5 w-3.5" /> The digital operating system for every home
             </span>
             <h1 className="mt-6 text-4xl font-bold leading-tight text-primary-foreground md:text-6xl">
-              Know the full story behind every home.
+              The lifelong digital identity for every property.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-primary-foreground/85 md:text-xl">
-              Get an instant property history, neighborhood intelligence, and risk report on any U.S. address.
+              HomeFacts brings ownership, maintenance, insurance, contractors, inspections, warranties, public records, and AI guidance into one trusted platform that follows the home from construction through every owner.
             </p>
             <div className="mt-8 max-w-2xl rounded-2xl bg-background/95 p-3 shadow-elevated backdrop-blur">
               <AddressSearch />
