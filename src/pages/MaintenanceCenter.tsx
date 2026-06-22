@@ -13,12 +13,16 @@ import { computeHealthScore } from "@/lib/healthScore";
 import {
   buildMaintenancePlan,
   predictiveRecommendations,
+  WEATHER_BEFORE_STORM, WEATHER_AFTER_STORM,
+  REALTOR_FOLLOWUPS, BUILDER_FOLLOWUPS, CONTRACTOR_FOLLOWUPS,
   type MaintenanceTask,
   type Season,
+  type TaskGroup,
 } from "@/lib/maintenancePlan";
 import {
   AlertTriangle, Bell, CalendarDays, CheckCircle2, FileWarning, Mail,
-  MessageSquare, Shield, Smartphone, Sparkles, Sun, Snowflake, Leaf, Cloud, Wrench
+  MessageSquare, Shield, Smartphone, Sparkles, Sun, Snowflake, Leaf, Cloud, Wrench,
+  CloudRain, Droplets, DollarSign, Phone, Users
 } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
