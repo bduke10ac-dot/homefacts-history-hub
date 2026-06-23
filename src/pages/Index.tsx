@@ -103,8 +103,8 @@ const Index = () => {
               { n: "2", t: "Add or claim records", d: "Homeowners log work, contractors submit jobs." },
               { n: "3", t: "Share with confidence", d: "Realtors generate a printable PDF for buyers." },
             ].map((s) => (
-              <div key={s.n} className="text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-lg font-bold text-primary-foreground shadow-glow">{s.n}</div>
+              <div key={s.n} className="group text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-glow text-lg font-bold text-primary-foreground shadow-glow transition-transform duration-500 group-hover:scale-110" style={{ animation: "glow-pulse 3.5s ease-in-out infinite", animationDelay: `${(Number(s.n) - 1) * 0.6}s` }}>{s.n}</div>
                 <h3 className="mt-4 font-semibold">{s.t}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{s.d}</p>
               </div>
