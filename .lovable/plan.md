@@ -1,62 +1,54 @@
+## Builder Program + Creekside Homes founding partner
 
-## Scope review
+Most of the Builder Program already exists (BuilderDashboard, BuilderTemplates, BuilderClones, BuilderProfile, BuilderMarketing, `nb_templates`/`nb_property_clones`, HandoffQRDialog, WarrantyCenter). This plan **fills gaps and seeds Creekside Homes as Founding Builder #001** rather than rebuilding.
 
-Most of the 15 requested modules already exist in HomeFacts from prior phases. This plan **fills the real gaps** and **unifies everything** under one PropStream-style "Property Intelligence" experience, rather than re-creating pages that already work.
+### Schema gaps (1 migration)
+Add to `builder_companies`:
+- `founding_builder_number int` (e.g. 1)
+- `is_founding_builder bool`
+- `description text`
+- `badges text[]` (e.g. `{Founding Builder #001, Certified Builder, Digital Home Record Included, Warranty Packet Included, Construction Timeline Included}`)
 
-### Already built (will be wired into the new hub, not rebuilt)
-- Property Health Score → `HomeHealth.tsx` (13 categories)
-- Property Timeline → `PropertyTimeline.tsx` + `HomeTimeline.tsx`
-- AI Advisor → `AskPropertyAI.tsx`, `PropertyAssistant.tsx`, `home-coach`
-- Risk Analysis → `PropertyRiskScore.tsx` (7 sub-scores)
-- Insurance Center → `InsuranceReview.tsx` + `InsuranceReadinessScore.tsx`
-- Maintenance → `MaintenanceCenter.tsx` + `MaintenanceReminders.tsx`
-- Future Cost Forecast → `FutureCostForecast.tsx`
-- Home Passport → `OwnershipPassport.tsx`
-- Contractor Scores → `ContractorScores.tsx`
-- Buyer Decision Report → `BuyerDecisionReport.tsx`
-- Neighborhood / Market → `NeighborhoodIntelligence.tsx`
-- Hazards (cards) → `HazardMap.tsx`
+Add to `nb_property_clones`:
+- `construction_stage text` (current stage)
+- `construction_stages jsonb` (array of 18 stages with photos/notes/contractor/date/status — driven from the UI, no extra tables needed)
+- `handoff_packet_url text` (generated PDF link, optional)
 
-### Real gaps to build
+Add storage bucket `builder-logos` (public) for logo uploads.
 
-**1. Interactive Property Intelligence Map (Leaflet)** — new page `PropertyIntelMap.tsx`
-- Leaflet map centered on property (already have `PropertyMap.tsx` infra)
-- 17 toggleable overlay layers (hail, tornado, flood, wildfire, storm, roof age heatmap, home age, permits, taxes, appreciation, crime, schools, insurance risk, utilities, internet, FEMA, nearby developments)
-- Each layer: toggle, short explanation, risk badge, data-source placeholder, "Why this matters" homeowner note
-- Layers backed by `hazard_intelligence`, `crime_timeline`, `weather_environmental_events`, `permits`, `schools`, `amenities`, `regional_property_profile` + placeholder GeoJSON when no data
+### New pages (5)
+1. **`BuilderProgram.tsx`** — public landing at `/builders` (What/Why/Benefits/Founding spotlight/CTA).
+2. **`AdminBuilders.tsx`** — admin-only at `/admin/builders` (add/edit builder, upload logo, toggle Founding/Certified, manage badges, generate QR).
+3. **`ConstructionTimeline.tsx`** — clone-scoped at `/builder/clones/:id/timeline` (18-stage visual timeline with photos/notes/contractor/inspection/date editor — writes to `construction_stages` jsonb).
+4. **`HomeownerHandoff.tsx`** — at `/builder/clones/:id/handoff` (one-click generates Welcome packet, Warranty packet, Maintenance checklist, Emergency sheet, Contractor list, Utility setup, **QR code** — uses existing `HandoffQRDialog` for the QR, jsPDF for packets).
+5. Enhance existing **`BuilderProfile.tsx`** with: logo upload, Founding Builder badge row, Communities/Floor plans/Standard features/Warranties/HOA docs/Lot maps/School zones/Construction photo history/Final walkthrough/Contact sections.
 
-**2. Home Improvement ROI Calculator** — new page `ImprovementROI.tsx`
-- 12 project types with cost ranges, value lift %, insurance savings, energy savings, warranty, resale, doc checklist
-- Interactive sliders for home value / sq ft → personalized estimates
-- "Save to projects" button writing to existing `platform_projects`
+### New components (3)
+- **`BuilderLogoUpload.tsx`** — drag/drop uploader to `builder-logos` bucket, writes `logo_url` to `builder_companies`. Placeholder shown until upload.
+- **`BuilderBadgeRow.tsx`** — renders badges array with semantic-token chips.
+- **`CreeksideMarketingBlock.tsx`** — reusable callout (the exact marketing text + 3 buttons), embeddable on profile and home pages.
 
-**3. Annual "What Changed?" Report** — new page `AnnualReport.tsx` + edge function `generate-annual-report`
-- Pulls year-over-year deltas: value, insurance, tax, nearby permits, storms, maintenance done/missed, warranties, neighborhood
-- AI summary + "Generate Annual HomeFacts Report" button → PDF via jsPDF
+### Existing pages — light additions
+- **`BuilderDashboard.tsx`** — add the requested stat cards (Total homes, Active communities, Under construction, Ready for handoff, Warranty requests, Documents, Activations) by aggregating existing tables; add tabs row (Homes/Communities/Documents/Warranties/Contractors/Handoff/Marketing/Settings) linking to existing screens + new ones.
+- **`Navbar.tsx`** — add public "Builders" link to `/builders`.
 
-**4. Unified "Property Intelligence" hub** — refactor `PropertyView.tsx`
-- Replace the current 35-button link grid with a **tabbed dashboard** (shadcn Tabs):
-  `Dashboard | Map | Timeline | Health | AI Advisor | Risk | Insurance | Maintenance | Forecast | Market | Passport | Contractors | Reports`
-- Each tab renders the existing page's component or links to it. Mobile-friendly horizontal-scroll tab bar.
+### Seed data (one insert via supabase--insert after migration)
+- Builder: **Creekside Homes**, website `creeksidenewhomes.com`, `founding_builder_number=1`, `is_founding_builder=true`, `certification_level='certified'`, `certified_since=today`, full description, badges array, slug `creekside-homes`, public profile enabled.
+- Community: **Bellsford Landing** (added via `nb_templates` as a community template, or a simple community row if needed — using template name).
+- Clone: **Creekside Demo Home** with seeded `construction_stages` and a sample address.
+- Logo: NOT seeded — uses placeholder until user uploads via admin.
 
-**5. Role-based access surface** — small additions
-- Show/hide tabs based on `useAuth().hasRole()` for buyer / realtor / contractor / inspector / insurance / municipality views (data layer already enforces RLS)
+### Tech notes
+- All public — no AI key, no external integrations.
+- QR codes via existing `HandoffQRDialog` (already in `src/components/newbuild/`).
+- Packet PDFs via `jsPDF` (already installed).
+- Logo storage: Supabase Storage bucket `builder-logos` (public), no external URLs hardcoded.
+- Routes added in `App.tsx`: `/builders`, `/admin/builders`, `/builder/clones/:id/timeline`, `/builder/clones/:id/handoff`.
 
-### Out of scope (already covered)
-- Re-implementing the 11 modules from prior phases
-- New database tables — existing schema covers all required data; placeholders fill gaps until real integrations land
+### Deliverables checklist
+- 1 migration (column additions + storage bucket)
+- 1 seed insert (Creekside Homes + Bellsford Landing + demo home)
+- 5 new pages + 3 new components
+- Edits to `BuilderDashboard`, `BuilderProfile`, `Navbar`, `App.tsx`
 
-### Technical notes
-- Map: Leaflet (already installed) — no Mapbox token needed
-- Layer data: query existing tables; fall back to inline mock GeoJSON with clear "Sample data" badge
-- Annual report edge function: Lovable AI Gateway with `google/gemini-3-flash-preview`
-- All new pages use existing `ScoreRing`, shadcn cards, semantic tokens — no hardcoded colors
-- Routes added in `App.tsx`: `/property/:id/intel-map`, `/property/:id/roi`, `/property/:id/annual-report`
-
-### Deliverables
-- 3 new pages (`PropertyIntelMap.tsx`, `ImprovementROI.tsx`, `AnnualReport.tsx`)
-- 1 new edge function (`generate-annual-report`)
-- Refactored `PropertyView.tsx` with unified tab navigation
-- Routes + nav wiring in `App.tsx`
-
-Approve to build, or tell me to trim/expand.
+Approve to build.
