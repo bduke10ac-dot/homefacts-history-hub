@@ -50,15 +50,16 @@ export function FoundingBuilderSpotlight() {
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
               <Trophy className="h-3.5 w-3.5" />Founding Builder · #{String(c.founding_builder_number ?? 1).padStart(3, "0")}
             </div>
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl">{c.name}</h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
-              Proud Founding Builder of the HomeFacts Builder Program. Helping establish a new national
-              standard for Digital Home Records, homeowner education, and lifetime property documentation.
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">Founding Builder</h2>
+            <p className="mt-4 max-w-2xl text-base leading-relaxed">
+              <span className="font-semibold text-foreground">{c.name}</span> is the first official builder partner of the HomeFacts Builder Program.
             </p>
-            {c.tagline && <p className="mt-3 text-sm font-medium text-foreground">{c.tagline}</p>}
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Helping launch a new standard for new construction documentation, warranty organization, homeowner education, and long-term property history.
+            </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to={profile}>Learn About {c.name.split(" ")[0]}<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                <Link to={profile}>Learn About {c.name.split(" ")[0]} Homes<ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
               {website && (
                 <Button asChild size="lg" variant="outline">
