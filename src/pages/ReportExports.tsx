@@ -8,16 +8,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
 
 const REPORTS = [
+  { key: "homeowner", title: "Homeowner Report", desc: "Complete snapshot for the owner" },
   { key: "full", title: "Full HomeFacts Report", desc: "Comprehensive property record" },
   { key: "buyer", title: "Buyer Confidence Report", desc: "Built for prospective buyers" },
   { key: "seller", title: "Seller Listing Packet", desc: "Showcase your home's history" },
-  { key: "insurance_claim", title: "Insurance Claim Packet", desc: "Photos, timelines, contractors" },
+  { key: "realtor", title: "Realtor Listing Readiness", desc: "Pre-listing checklist + summary" },
+  { key: "insurance_claim", title: "Insurance Report", desc: "Photos, timelines, contractors" },
   { key: "disaster", title: "Disaster Recovery Packet", desc: "Everything an adjuster needs" },
-  { key: "contractor", title: "Contractor Project Report", desc: "Verified work history" },
+  { key: "contractor", title: "Contractor Report", desc: "Verified work history" },
   { key: "maintenance", title: "Maintenance History Report", desc: "Service log over time" },
   { key: "permit", title: "Permit Compliance Report", desc: "Permits and inspections" },
-  { key: "builder", title: "Builder New Home Manual", desc: "Handoff package for new builds" },
-  { key: "realtor", title: "Realtor Listing Readiness", desc: "Pre-listing checklist + summary" },
+  { key: "inspector", title: "Inspector Report", desc: "Findings, recommendations, photos" },
+  { key: "builder", title: "Builder Report", desc: "Handoff package for new builds" },
   { key: "investor", title: "Investor Portfolio Report", desc: "Asset-by-asset rollup" },
   { key: "value", title: "Property Value Protection", desc: "What's protecting/lowering value" },
   { key: "passport", title: "Ownership Passport PDF", desc: "Lifelong, transferable record" },
