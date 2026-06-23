@@ -66,6 +66,9 @@ import MaintenanceReminders from "./pages/MaintenanceReminders";
 import RegionalEducation from "./pages/RegionalEducation";
 import BuyerDecisionReport from "./pages/BuyerDecisionReport";
 import Certification from "./pages/Certification";
+import PropertyIntelMap from "./pages/PropertyIntelMap";
+import ImprovementROI from "./pages/ImprovementROI";
+import AnnualReport from "./pages/AnnualReport";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -133,6 +136,9 @@ const App = () => (
             <Route path="/property/:id/regional" element={<RegionalEducation />} />
             <Route path="/property/:id/buyer-report" element={<BuyerDecisionReport />} />
             <Route path="/property/:id/certification" element={<ProtectedRoute><Certification /></ProtectedRoute>} />
+            <Route path="/property/:id/intel-map" element={<PropertyIntelMap />} />
+            <Route path="/property/:id/roi" element={<ImprovementROI />} />
+            <Route path="/property/:id/annual-report" element={<ProtectedRoute><AnnualReport /></ProtectedRoute>} />
             <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
