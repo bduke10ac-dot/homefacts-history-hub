@@ -497,38 +497,43 @@ export default function BuilderPropertyEditor() {
 
           {/* HANDOFF */}
           <TabsContent value="handoff">
-            <Card>
-              <CardHeader>
-                <CardTitle>Homeowner Handoff</CardTitle>
-                <CardDescription>Transfer the complete Digital Home Record to the new homeowner.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <div className="rounded-md border p-3">
-                  <div className="text-xs font-semibold uppercase text-muted-foreground">Handoff package includes</div>
-                  <ul className="mt-2 grid grid-cols-1 gap-1 md:grid-cols-2">
-                    {[
-                      "Digital Home Record","QR code","Warranty packet","Maintenance checklist",
-                      "Emergency contacts","Utility setup guide","Contractor list",
-                      "Final walkthrough checklist","Owner manuals","Community guide",
-                      "HOA documents","Lot & plot information","Neighboring plot information",
-                    ].map((x) => <li key={x}>· {x}</li>)}
-                  </ul>
-                </div>
-                {handoffUrl && (
-                  <div>
-                    <Label className="text-xs">Handoff URL (QR code target)</Label>
-                    <Input readOnly value={handoffUrl} />
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Homeowner Handoff</CardTitle>
+                  <CardDescription>Transfer the complete Digital Home Record to the new homeowner.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="rounded-md border p-3">
+                    <div className="text-xs font-semibold uppercase text-muted-foreground">Handoff package includes</div>
+                    <ul className="mt-2 grid grid-cols-1 gap-1 md:grid-cols-2">
+                      {[
+                        "Digital Home Record","QR code","Warranty packet","Maintenance checklist",
+                        "Emergency contacts","Utility setup guide","Contractor list",
+                        "Final walkthrough checklist","Owner manuals","Community guide",
+                        "HOA documents","Lot & plot information","Neighboring plot information",
+                      ].map((x) => <li key={x}>· {x}</li>)}
+                    </ul>
                   </div>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  <Button onClick={generateHandoff}><Send className="mr-2 h-4 w-4" />Generate Homeowner Handoff</Button>
-                  {row.handoff_token && (
-                    <Button asChild variant="outline"><Link to={`/home/${row.handoff_token}`}><QrCode className="mr-2 h-4 w-4" />Open Digital Home Record</Link></Button>
+                  {handoffUrl && (
+                    <div>
+                      <Label className="text-xs">Handoff URL (QR code target)</Label>
+                      <Input readOnly value={handoffUrl} />
+                    </div>
                   )}
-                  <Button asChild variant="ghost"><Link to={`/builder/clones/${id}/handoff`}>Open handoff workflow</Link></Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="flex flex-wrap gap-2">
+                    <Button onClick={generateHandoff}><Send className="mr-2 h-4 w-4" />Generate Homeowner Handoff</Button>
+                    {row.handoff_token && (
+                      <Button asChild variant="outline"><Link to={`/home/${row.handoff_token}`}><QrCode className="mr-2 h-4 w-4" />Open Digital Home Record</Link></Button>
+                    )}
+                    <Button asChild variant="ghost"><Link to={`/builder/clones/${id}/handoff`}>Open handoff workflow</Link></Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <HomeownerInviteCard cloneRow={row} />
+            </div>
+          </TabsContent>
           </TabsContent>
         </Tabs>
       </div>
