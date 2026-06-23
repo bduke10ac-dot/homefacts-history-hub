@@ -479,7 +479,7 @@ function DocumentsTab({
                   <Button size="icon" variant="ghost" onClick={() => remove(d)}><Trash2 className="h-4 w-4" /></Button>
                 </div>
                 <div className="mt-2 flex flex-wrap gap-1 text-xs">
-                  <Badge variant="outline">{d.permission_level.replaceAll("_", " ")}</Badge>
+                  <Badge variant="outline">{d.permission_level.replace(/_/g, " ")}</Badge>
                   {d.review_date && <Badge variant="outline">Review {d.review_date}</Badge>}
                 </div>
                 {d.notes && <p className="mt-2 text-xs text-muted-foreground">{d.notes}</p>}
@@ -630,7 +630,7 @@ function LegalMarketplace({ pros }: { pros: LegalPro[] }) {
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <p className="font-semibold">{p.name}</p>
-                  <p className="text-xs text-muted-foreground">{p.company} · {p.profession_type.replaceAll("_", " ")}</p>
+                  <p className="text-xs text-muted-foreground">{p.company} · {p.profession_type.replace(/_/g, " ")}</p>
                 </div>
                 {p.verified && <Badge className="bg-emerald-500/15 text-emerald-700">Verified</Badge>}
               </div>
