@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -5,92 +6,101 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
-import Index from "./pages/Index";
-import Auth from "./pages/Auth";
-import PropertySearch from "./pages/PropertySearch";
-import PropertyView from "./pages/PropertyView";
-import HomeownerDashboard from "./pages/HomeownerDashboard";
-import ContractorDashboard from "./pages/ContractorDashboard";
-import RealtorSuccessCenter from "./pages/RealtorSuccessCenter";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminFraudReview from "./pages/AdminFraudReview";
-import DemoReport from "./pages/DemoReport";
-import PropertyReport from "./pages/PropertyReport";
-import PropertyHomeHistory from "./pages/PropertyHomeHistory";
-import AddressReport from "./pages/AddressReport";
-import MyReports from "./pages/MyReports";
-import NotFound from "./pages/NotFound";
-import Pricing from "./pages/Pricing";
-import CheckoutReturn from "./pages/CheckoutReturn";
-import PropertyVault from "./pages/PropertyVault";
-import PropertyProjects from "./pages/PropertyProjects";
-import BuilderDashboard from "./pages/BuilderDashboard";
-import BuilderTemplates from "./pages/BuilderTemplates";
-import BuilderTemplateDetail from "./pages/BuilderTemplateDetail";
-import BuilderClones from "./pages/BuilderClones";
-import BuilderCloneDetail from "./pages/BuilderCloneDetail";
-import BeginnerGuide from "./pages/BeginnerGuide";
-import BuilderProfile from "./pages/BuilderProfile";
-import BuilderImportWizard from "./pages/BuilderImportWizard";
-import BuilderPortal from "./pages/BuilderPortal";
-import BuilderPropertyEditor from "./pages/BuilderPropertyEditor";
-import BuilderMarketing from "./pages/BuilderMarketing";
-import PropertyBoundary from "./pages/PropertyBoundary";
-import HomeEngagement from "./pages/HomeEngagement";
-import WhyOrivaz from "./pages/WhyOrivaz";
-import MaintenanceCenter from "./pages/MaintenanceCenter";
-import VacationMode from "./pages/VacationMode";
-import HomeConfidenceScore from "./pages/HomeConfidenceScore";
-import HomeHealth from "./pages/HomeHealth";
-import PropertyTimeline from "./pages/PropertyTimeline";
-import AskPropertyAI from "./pages/AskPropertyAI";
-import ReportExports from "./pages/ReportExports";
-import ContractorScores from "./pages/ContractorScores";
-import InsuranceReview from "./pages/InsuranceReview";
-import DeferredMaintenance from "./pages/DeferredMaintenance";
-import DigitalTwin from "./pages/DigitalTwin";
-import GovernmentPortal from "./pages/GovernmentPortal";
-import NeighborhoodIntelligence from "./pages/NeighborhoodIntelligence";
-import Marketplace from "./pages/Marketplace";
-import InvestorDashboard from "./pages/InvestorDashboard";
-import EmergencyMode from "./pages/EmergencyMode";
-import DisasterVault from "./pages/DisasterVault";
-import EstatePlanning from "./pages/EstatePlanning";
-import NegotiationAssistant from "./pages/NegotiationAssistant";
-import OwnershipPassport from "./pages/OwnershipPassport";
-import PropertyRiskScore from "./pages/PropertyRiskScore";
-import HazardMap from "./pages/HazardMap";
-import CrimeTimeline from "./pages/CrimeTimeline";
-import WeatherTimeline from "./pages/WeatherTimeline";
-import InsuranceReadinessScore from "./pages/InsuranceReadinessScore";
-import HomeValueProtection from "./pages/HomeValueProtection";
-import FutureCostForecast from "./pages/FutureCostForecast";
-import MaintenanceReminders from "./pages/MaintenanceReminders";
-import RegionalEducation from "./pages/RegionalEducation";
-import BuyerDecisionReport from "./pages/BuyerDecisionReport";
-import Certification from "./pages/Certification";
-import PropertyIntelMap from "./pages/PropertyIntelMap";
-import ImprovementROI from "./pages/ImprovementROI";
-import AnnualReport from "./pages/AnnualReport";
-import BuilderProgram from "./pages/BuilderProgram";
-import AdminBuilders from "./pages/AdminBuilders";
-import ConstructionTimeline from "./pages/ConstructionTimeline";
-import HomeownerHandoff from "./pages/HomeownerHandoff";
-import BuilderReferrals from "./pages/BuilderReferrals";
-import BuilderAnalytics from "./pages/BuilderAnalytics";
-import BuilderCommunity from "./pages/BuilderCommunity";
-import WarrantyHub from "./pages/WarrantyHub";
-import PropertyWarranties from "./pages/PropertyWarranties";
-import WarrantyPassport from "./pages/WarrantyPassport";
-import EstatePlanningHub from "./pages/EstatePlanningHub";
-import PropertyCommandCenter from "./pages/PropertyCommandCenter";
-import ProfessionalNetwork from "./pages/ProfessionalNetwork";
-import CertificationCenter from "./pages/CertificationCenter";
-import PropertySystems from "./pages/PropertySystems";
-import PropertyIntelligence from "./pages/PropertyIntelligence";
+import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
+// Eager: landing + auth + 404 (needed on first paint or shell)
+import Index from "./pages/Index";
+import Auth from "./pages/Auth";
+import NotFound from "./pages/NotFound";
+import HomeownerDashboard from "./pages/HomeownerDashboard";
+
+// Everything else: lazy
+const PropertySearch = lazy(() => import("./pages/PropertySearch"));
+const PropertyView = lazy(() => import("./pages/PropertyView"));
+const ContractorDashboard = lazy(() => import("./pages/ContractorDashboard"));
+const RealtorSuccessCenter = lazy(() => import("./pages/RealtorSuccessCenter"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminFraudReview = lazy(() => import("./pages/AdminFraudReview"));
+const DemoReport = lazy(() => import("./pages/DemoReport"));
+const PropertyReport = lazy(() => import("./pages/PropertyReport"));
+const PropertyHomeHistory = lazy(() => import("./pages/PropertyHomeHistory"));
+const AddressReport = lazy(() => import("./pages/AddressReport"));
+const MyReports = lazy(() => import("./pages/MyReports"));
+const Pricing = lazy(() => import("./pages/Pricing"));
+const CheckoutReturn = lazy(() => import("./pages/CheckoutReturn"));
+const PropertyVault = lazy(() => import("./pages/PropertyVault"));
+const PropertyProjects = lazy(() => import("./pages/PropertyProjects"));
+const BuilderDashboard = lazy(() => import("./pages/BuilderDashboard"));
+const BuilderTemplates = lazy(() => import("./pages/BuilderTemplates"));
+const BuilderTemplateDetail = lazy(() => import("./pages/BuilderTemplateDetail"));
+const BuilderClones = lazy(() => import("./pages/BuilderClones"));
+const BuilderCloneDetail = lazy(() => import("./pages/BuilderCloneDetail"));
+const BeginnerGuide = lazy(() => import("./pages/BeginnerGuide"));
+const BuilderProfile = lazy(() => import("./pages/BuilderProfile"));
+const BuilderImportWizard = lazy(() => import("./pages/BuilderImportWizard"));
+const BuilderPortal = lazy(() => import("./pages/BuilderPortal"));
+const BuilderPropertyEditor = lazy(() => import("./pages/BuilderPropertyEditor"));
+const BuilderMarketing = lazy(() => import("./pages/BuilderMarketing"));
+const PropertyBoundary = lazy(() => import("./pages/PropertyBoundary"));
+const HomeEngagement = lazy(() => import("./pages/HomeEngagement"));
+const WhyOrivaz = lazy(() => import("./pages/WhyOrivaz"));
+const MaintenanceCenter = lazy(() => import("./pages/MaintenanceCenter"));
+const VacationMode = lazy(() => import("./pages/VacationMode"));
+const HomeConfidenceScore = lazy(() => import("./pages/HomeConfidenceScore"));
+const HomeHealth = lazy(() => import("./pages/HomeHealth"));
+const PropertyTimeline = lazy(() => import("./pages/PropertyTimeline"));
+const AskPropertyAI = lazy(() => import("./pages/AskPropertyAI"));
+const ReportExports = lazy(() => import("./pages/ReportExports"));
+const ContractorScores = lazy(() => import("./pages/ContractorScores"));
+const InsuranceReview = lazy(() => import("./pages/InsuranceReview"));
+const DeferredMaintenance = lazy(() => import("./pages/DeferredMaintenance"));
+const DigitalTwin = lazy(() => import("./pages/DigitalTwin"));
+const GovernmentPortal = lazy(() => import("./pages/GovernmentPortal"));
+const NeighborhoodIntelligence = lazy(() => import("./pages/NeighborhoodIntelligence"));
+const Marketplace = lazy(() => import("./pages/Marketplace"));
+const InvestorDashboard = lazy(() => import("./pages/InvestorDashboard"));
+const EmergencyMode = lazy(() => import("./pages/EmergencyMode"));
+const DisasterVault = lazy(() => import("./pages/DisasterVault"));
+const EstatePlanning = lazy(() => import("./pages/EstatePlanning"));
+const NegotiationAssistant = lazy(() => import("./pages/NegotiationAssistant"));
+const OwnershipPassport = lazy(() => import("./pages/OwnershipPassport"));
+const PropertyRiskScore = lazy(() => import("./pages/PropertyRiskScore"));
+const HazardMap = lazy(() => import("./pages/HazardMap"));
+const CrimeTimeline = lazy(() => import("./pages/CrimeTimeline"));
+const WeatherTimeline = lazy(() => import("./pages/WeatherTimeline"));
+const InsuranceReadinessScore = lazy(() => import("./pages/InsuranceReadinessScore"));
+const HomeValueProtection = lazy(() => import("./pages/HomeValueProtection"));
+const FutureCostForecast = lazy(() => import("./pages/FutureCostForecast"));
+const MaintenanceReminders = lazy(() => import("./pages/MaintenanceReminders"));
+const RegionalEducation = lazy(() => import("./pages/RegionalEducation"));
+const BuyerDecisionReport = lazy(() => import("./pages/BuyerDecisionReport"));
+const Certification = lazy(() => import("./pages/Certification"));
+const PropertyIntelMap = lazy(() => import("./pages/PropertyIntelMap"));
+const ImprovementROI = lazy(() => import("./pages/ImprovementROI"));
+const AnnualReport = lazy(() => import("./pages/AnnualReport"));
+const BuilderProgram = lazy(() => import("./pages/BuilderProgram"));
+const AdminBuilders = lazy(() => import("./pages/AdminBuilders"));
+const ConstructionTimeline = lazy(() => import("./pages/ConstructionTimeline"));
+const HomeownerHandoff = lazy(() => import("./pages/HomeownerHandoff"));
+const BuilderReferrals = lazy(() => import("./pages/BuilderReferrals"));
+const BuilderAnalytics = lazy(() => import("./pages/BuilderAnalytics"));
+const BuilderCommunity = lazy(() => import("./pages/BuilderCommunity"));
+const WarrantyHub = lazy(() => import("./pages/WarrantyHub"));
+const PropertyWarranties = lazy(() => import("./pages/PropertyWarranties"));
+const WarrantyPassport = lazy(() => import("./pages/WarrantyPassport"));
+const EstatePlanningHub = lazy(() => import("./pages/EstatePlanningHub"));
+const PropertyCommandCenter = lazy(() => import("./pages/PropertyCommandCenter"));
+const ProfessionalNetwork = lazy(() => import("./pages/ProfessionalNetwork"));
+const CertificationCenter = lazy(() => import("./pages/CertificationCenter"));
+const PropertySystems = lazy(() => import("./pages/PropertySystems"));
+const PropertyIntelligence = lazy(() => import("./pages/PropertyIntelligence"));
+
 const queryClient = new QueryClient();
+
+const RouteFallback = () => (
+  <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Loading…</div>
+);
 
 const DashboardRouter = () => {
   const { primaryRole, loading } = useAuth();
@@ -112,93 +122,97 @@ const App = () => (
       <BrowserRouter>
         <AuthProvider>
           <PaymentTestModeBanner />
-          <Routes>
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/checkout/return" element={<CheckoutReturn />} />
-            <Route path="/" element={<Index />} />
-            <Route path="/why" element={<WhyOrivaz />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/search" element={<PropertySearch />} />
-            <Route path="/demo" element={<DemoReport />} />
-            <Route path="/property/:id" element={<PropertyView />} />
-            <Route path="/property/:id/vault" element={<ProtectedRoute><PropertyVault /></ProtectedRoute>} />
-            <Route path="/property/:id/projects" element={<ProtectedRoute><PropertyProjects /></ProtectedRoute>} />
-            <Route path="/property/:id/boundary" element={<PropertyBoundary />} />
-            <Route path="/property/:id/engagement" element={<HomeEngagement />} />
-            <Route path="/property/:id/maintenance" element={<MaintenanceCenter />} />
-            <Route path="/property/:id/vacation" element={<VacationMode />} />
-            <Route path="/property/:id/confidence" element={<HomeConfidenceScore />} />
-            <Route path="/property/:id/health" element={<HomeHealth />} />
-            <Route path="/property/:id/timeline" element={<PropertyTimeline />} />
-            <Route path="/property/:id/systems" element={<PropertySystems />} />
-            <Route path="/property/:id/ask" element={<ProtectedRoute><AskPropertyAI /></ProtectedRoute>} />
-            <Route path="/property/:id/reports" element={<ReportExports />} />
-            <Route path="/property/:id/contractors" element={<ProtectedRoute><ContractorScores /></ProtectedRoute>} />
-            <Route path="/property/:id/insurance" element={<ProtectedRoute><InsuranceReview /></ProtectedRoute>} />
-            <Route path="/property/:id/deferred" element={<ProtectedRoute><DeferredMaintenance /></ProtectedRoute>} />
-            <Route path="/property/:id/twin" element={<ProtectedRoute><DigitalTwin /></ProtectedRoute>} />
-            <Route path="/property/:id/gov" element={<ProtectedRoute><GovernmentPortal /></ProtectedRoute>} />
-            <Route path="/property/:id/neighborhood" element={<NeighborhoodIntelligence />} />
-            <Route path="/property/:id/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
-            <Route path="/property/:id/emergency" element={<ProtectedRoute><EmergencyMode /></ProtectedRoute>} />
-            <Route path="/property/:id/vault-dr" element={<ProtectedRoute><DisasterVault /></ProtectedRoute>} />
-            <Route path="/property/:id/estate" element={<ProtectedRoute><EstatePlanning /></ProtectedRoute>} />
-            <Route path="/property/:id/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
-            <Route path="/property/:id/passport" element={<ProtectedRoute><OwnershipPassport /></ProtectedRoute>} />
-            <Route path="/property/:id/risk" element={<PropertyRiskScore />} />
-            <Route path="/property/:id/hazards" element={<HazardMap />} />
-            <Route path="/property/:id/crime" element={<CrimeTimeline />} />
-            <Route path="/property/:id/weather" element={<WeatherTimeline />} />
-            <Route path="/property/:id/insurance-readiness" element={<ProtectedRoute><InsuranceReadinessScore /></ProtectedRoute>} />
-            <Route path="/property/:id/value-protection" element={<ProtectedRoute><HomeValueProtection /></ProtectedRoute>} />
-            <Route path="/property/:id/forecast" element={<ProtectedRoute><FutureCostForecast /></ProtectedRoute>} />
-            <Route path="/property/:id/reminders" element={<ProtectedRoute><MaintenanceReminders /></ProtectedRoute>} />
-            <Route path="/property/:id/regional" element={<RegionalEducation />} />
-            <Route path="/property/:id/buyer-report" element={<BuyerDecisionReport />} />
-            <Route path="/property/:id/certification" element={<ProtectedRoute><Certification /></ProtectedRoute>} />
-            <Route path="/property/:id/intel-map" element={<PropertyIntelMap />} />
-            <Route path="/property/:id/roi" element={<ImprovementROI />} />
-            <Route path="/property/:id/annual-report" element={<ProtectedRoute><AnnualReport /></ProtectedRoute>} />
-            <Route path="/property/:id/warranties" element={<ProtectedRoute><PropertyWarranties /></ProtectedRoute>} />
-            <Route path="/property/:id/warranty-passport" element={<ProtectedRoute><WarrantyPassport /></ProtectedRoute>} />
-            <Route path="/warranty-hub" element={<WarrantyHub />} />
-            <Route path="/estate-planning" element={<EstatePlanningHub />} />
-            <Route path="/command-center" element={<PropertyCommandCenter />} />
-            <Route path="/network" element={<ProfessionalNetwork />} />
-            <Route path="/certification" element={<CertificationCenter />} />
-            <Route path="/intelligence" element={<PropertyIntelligence />} />
-            <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
-            <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
-            <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
-            <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
-            <Route path="/report/:id" element={<AddressReport />} />
-            <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
-            <Route path="/r/:token" element={<PropertyView shared />} />
-            <Route path="/home/:token" element={<BeginnerGuide />} />
-            <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
-            <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
-            <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorSuccessCenter /></ProtectedRoute>} />
-            <Route path="/builders/:slug" element={<BuilderProfile />} />
-            <Route path="/builders/:slug/communities/:id" element={<BuilderCommunity />} />
-            <Route path="/builder" element={<ProtectedRoute requireRole="builder"><BuilderDashboard /></ProtectedRoute>} />
-            <Route path="/builder/marketing" element={<ProtectedRoute requireRole="builder"><BuilderMarketing /></ProtectedRoute>} />
-            <Route path="/builder/templates" element={<ProtectedRoute requireRole="builder"><BuilderTemplates /></ProtectedRoute>} />
-            <Route path="/builder/templates/:id" element={<ProtectedRoute requireRole="builder"><BuilderTemplateDetail /></ProtectedRoute>} />
-            <Route path="/builder/clones" element={<ProtectedRoute requireRole="builder"><BuilderClones /></ProtectedRoute>} />
-            <Route path="/builder/clones/:id" element={<ProtectedRoute requireRole="builder"><BuilderCloneDetail /></ProtectedRoute>} />
-            <Route path="/admin" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
-            <Route path="/admin/fraud" element={<ProtectedRoute requireRole="admin"><AdminFraudReview /></ProtectedRoute>} />
-            <Route path="/admin/builders" element={<ProtectedRoute requireRole="admin"><AdminBuilders /></ProtectedRoute>} />
-            <Route path="/builders" element={<BuilderProgram />} />
-            <Route path="/builder/clones/:id/timeline" element={<ProtectedRoute requireRole="builder"><ConstructionTimeline /></ProtectedRoute>} />
-            <Route path="/builder/clones/:id/handoff" element={<ProtectedRoute requireRole="builder"><HomeownerHandoff /></ProtectedRoute>} />
-            <Route path="/builder/referrals" element={<ProtectedRoute requireRole="builder"><BuilderReferrals /></ProtectedRoute>} />
-            <Route path="/builder/analytics" element={<ProtectedRoute requireRole="builder"><BuilderAnalytics /></ProtectedRoute>} />
-            <Route path="/builder/import" element={<ProtectedRoute requireRole="admin"><BuilderImportWizard /></ProtectedRoute>} />
-            <Route path="/builder/portal" element={<ProtectedRoute requireRole="builder"><BuilderPortal /></ProtectedRoute>} />
-            <Route path="/builder/portal/:id" element={<ProtectedRoute requireRole="builder"><BuilderPropertyEditor /></ProtectedRoute>} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <ErrorBoundary>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/checkout/return" element={<CheckoutReturn />} />
+                <Route path="/" element={<Index />} />
+                <Route path="/why" element={<WhyOrivaz />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/search" element={<PropertySearch />} />
+                <Route path="/demo" element={<DemoReport />} />
+                <Route path="/property/:id" element={<PropertyView />} />
+                <Route path="/property/:id/vault" element={<ProtectedRoute><PropertyVault /></ProtectedRoute>} />
+                <Route path="/property/:id/projects" element={<ProtectedRoute><PropertyProjects /></ProtectedRoute>} />
+                <Route path="/property/:id/boundary" element={<PropertyBoundary />} />
+                <Route path="/property/:id/engagement" element={<HomeEngagement />} />
+                <Route path="/property/:id/maintenance" element={<MaintenanceCenter />} />
+                <Route path="/property/:id/vacation" element={<VacationMode />} />
+                <Route path="/property/:id/confidence" element={<HomeConfidenceScore />} />
+                <Route path="/property/:id/health" element={<HomeHealth />} />
+                <Route path="/property/:id/timeline" element={<PropertyTimeline />} />
+                <Route path="/property/:id/systems" element={<PropertySystems />} />
+                <Route path="/property/:id/ask" element={<ProtectedRoute><AskPropertyAI /></ProtectedRoute>} />
+                <Route path="/property/:id/reports" element={<ReportExports />} />
+                <Route path="/property/:id/contractors" element={<ProtectedRoute><ContractorScores /></ProtectedRoute>} />
+                <Route path="/property/:id/insurance" element={<ProtectedRoute><InsuranceReview /></ProtectedRoute>} />
+                <Route path="/property/:id/deferred" element={<ProtectedRoute><DeferredMaintenance /></ProtectedRoute>} />
+                <Route path="/property/:id/twin" element={<ProtectedRoute><DigitalTwin /></ProtectedRoute>} />
+                <Route path="/property/:id/gov" element={<ProtectedRoute><GovernmentPortal /></ProtectedRoute>} />
+                <Route path="/property/:id/neighborhood" element={<NeighborhoodIntelligence />} />
+                <Route path="/property/:id/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
+                <Route path="/property/:id/emergency" element={<ProtectedRoute><EmergencyMode /></ProtectedRoute>} />
+                <Route path="/property/:id/vault-dr" element={<ProtectedRoute><DisasterVault /></ProtectedRoute>} />
+                <Route path="/property/:id/estate" element={<ProtectedRoute><EstatePlanning /></ProtectedRoute>} />
+                <Route path="/property/:id/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
+                <Route path="/property/:id/passport" element={<ProtectedRoute><OwnershipPassport /></ProtectedRoute>} />
+                <Route path="/property/:id/risk" element={<PropertyRiskScore />} />
+                <Route path="/property/:id/hazards" element={<HazardMap />} />
+                <Route path="/property/:id/crime" element={<CrimeTimeline />} />
+                <Route path="/property/:id/weather" element={<WeatherTimeline />} />
+                <Route path="/property/:id/insurance-readiness" element={<ProtectedRoute><InsuranceReadinessScore /></ProtectedRoute>} />
+                <Route path="/property/:id/value-protection" element={<ProtectedRoute><HomeValueProtection /></ProtectedRoute>} />
+                <Route path="/property/:id/forecast" element={<ProtectedRoute><FutureCostForecast /></ProtectedRoute>} />
+                <Route path="/property/:id/reminders" element={<ProtectedRoute><MaintenanceReminders /></ProtectedRoute>} />
+                <Route path="/property/:id/regional" element={<RegionalEducation />} />
+                <Route path="/property/:id/buyer-report" element={<BuyerDecisionReport />} />
+                <Route path="/property/:id/certification" element={<ProtectedRoute><Certification /></ProtectedRoute>} />
+                <Route path="/property/:id/intel-map" element={<PropertyIntelMap />} />
+                <Route path="/property/:id/roi" element={<ImprovementROI />} />
+                <Route path="/property/:id/annual-report" element={<ProtectedRoute><AnnualReport /></ProtectedRoute>} />
+                <Route path="/property/:id/warranties" element={<ProtectedRoute><PropertyWarranties /></ProtectedRoute>} />
+                <Route path="/property/:id/warranty-passport" element={<ProtectedRoute><WarrantyPassport /></ProtectedRoute>} />
+                <Route path="/warranty-hub" element={<WarrantyHub />} />
+                <Route path="/estate-planning" element={<EstatePlanningHub />} />
+                <Route path="/command-center" element={<PropertyCommandCenter />} />
+                <Route path="/network" element={<ProfessionalNetwork />} />
+                <Route path="/certification" element={<CertificationCenter />} />
+                <Route path="/intelligence" element={<PropertyIntelligence />} />
+                <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
+                <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
+                <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
+                <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
+                <Route path="/report/:id" element={<AddressReport />} />
+                <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
+                <Route path="/r/:token" element={<PropertyView shared />} />
+                <Route path="/home/:token" element={<BeginnerGuide />} />
+                <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
+                <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
+                <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorSuccessCenter /></ProtectedRoute>} />
+                <Route path="/builders/:slug" element={<BuilderProfile />} />
+                <Route path="/builders/:slug/communities/:id" element={<BuilderCommunity />} />
+                <Route path="/builder" element={<ProtectedRoute requireRole="builder"><BuilderDashboard /></ProtectedRoute>} />
+                <Route path="/builder/marketing" element={<ProtectedRoute requireRole="builder"><BuilderMarketing /></ProtectedRoute>} />
+                <Route path="/builder/templates" element={<ProtectedRoute requireRole="builder"><BuilderTemplates /></ProtectedRoute>} />
+                <Route path="/builder/templates/:id" element={<ProtectedRoute requireRole="builder"><BuilderTemplateDetail /></ProtectedRoute>} />
+                <Route path="/builder/clones" element={<ProtectedRoute requireRole="builder"><BuilderClones /></ProtectedRoute>} />
+                <Route path="/builder/clones/:id" element={<ProtectedRoute requireRole="builder"><BuilderCloneDetail /></ProtectedRoute>} />
+                <Route path="/admin" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
+                <Route path="/admin/fraud" element={<ProtectedRoute requireRole="admin"><AdminFraudReview /></ProtectedRoute>} />
+                <Route path="/admin/builders" element={<ProtectedRoute requireRole="admin"><AdminBuilders /></ProtectedRoute>} />
+                <Route path="/builders" element={<BuilderProgram />} />
+                <Route path="/builder/clones/:id/timeline" element={<ProtectedRoute requireRole="builder"><ConstructionTimeline /></ProtectedRoute>} />
+                <Route path="/builder/clones/:id/handoff" element={<ProtectedRoute requireRole="builder"><HomeownerHandoff /></ProtectedRoute>} />
+                <Route path="/builder/referrals" element={<ProtectedRoute requireRole="builder"><BuilderReferrals /></ProtectedRoute>} />
+                <Route path="/builder/analytics" element={<ProtectedRoute requireRole="builder"><BuilderAnalytics /></ProtectedRoute>} />
+                <Route path="/builder/import" element={<ProtectedRoute requireRole="admin"><BuilderImportWizard /></ProtectedRoute>} />
+                <Route path="/builder/portal" element={<ProtectedRoute requireRole="builder"><BuilderPortal /></ProtectedRoute>} />
+                <Route path="/builder/portal/:id" element={<ProtectedRoute requireRole="builder"><BuilderPropertyEditor /></ProtectedRoute>} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

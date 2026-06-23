@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Home, LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users, Award, Sparkles } from "lucide-react";
+import { LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users, Award, Sparkles, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 
 export function Navbar() {
@@ -34,31 +35,30 @@ export function Navbar() {
             ))}
           </span>
         </Link>
-        <nav className="flex items-center gap-2">
+        <nav className="flex items-center gap-1 sm:gap-2">
           <Button variant="ghost" size="sm" asChild>
             <Link to="/search"><Search className="mr-1.5 h-4 w-4" />Search</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild>
-            <Link to="/intelligence"><Sparkles className="mr-1.5 h-4 w-4" />Property Intelligence</Link>
+            <Link to="/intelligence"><Sparkles className="mr-1.5 h-4 w-4" />Intelligence</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
             <Link to="/builders">Builders</Link>
           </Button>
-          <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-            <Link to="/command-center"><LayoutGrid className="mr-1.5 h-4 w-4" />Command Center</Link>
-          </Button>
-          <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
-            <Link to="/warranty-hub"><ShieldCheck className="mr-1.5 h-4 w-4" />Warranty Hub</Link>
-          </Button>
-          <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
-            <Link to="/network"><Users className="mr-1.5 h-4 w-4" />Network</Link>
-          </Button>
-          <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
-            <Link to="/certification"><Award className="mr-1.5 h-4 w-4" />Certify</Link>
-          </Button>
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/estate-planning"><Shield className="mr-1.5 h-4 w-4" />Estate Planning</Link>
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="hidden sm:inline-flex">
+                Platform <ChevronDown className="ml-1 h-3.5 w-3.5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuItem asChild><Link to="/command-center"><LayoutGrid className="mr-2 h-4 w-4" />Command Center</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link to="/warranty-hub"><ShieldCheck className="mr-2 h-4 w-4" />Warranty Hub</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link to="/network"><Users className="mr-2 h-4 w-4" />Professional Network</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link to="/certification"><Award className="mr-2 h-4 w-4" />Certification</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild><Link to="/estate-planning"><Shield className="mr-2 h-4 w-4" />Estate Planning</Link></DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {user ? (
             <>
               <Button variant="ghost" size="sm" asChild>
