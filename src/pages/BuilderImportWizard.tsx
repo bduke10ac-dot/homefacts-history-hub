@@ -252,8 +252,8 @@ export default function BuilderImportWizard() {
                     <Label>Builder logo</Label>
                     <BuilderLogoUpload
                       companyId={companyId}
-                      currentLogoUrl={profile.logo_url}
-                      onUploaded={(url) => setProfile({ ...profile, logo_url: url })}
+                      currentUrl={profile.logo_url}
+                      onUpdated={(url) => setProfile({ ...profile, logo_url: url })}
                     />
                   </div>
                 )}
