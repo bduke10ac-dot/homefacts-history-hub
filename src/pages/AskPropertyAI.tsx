@@ -11,14 +11,15 @@ import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 
 const SUGGESTIONS = [
-  "What air filter size do I need?",
-  "When was my roof replaced?",
-  "Who installed my HVAC?",
-  "Is my water heater under warranty?",
-  "Where is my main water shutoff?",
-  "What repairs are overdue?",
-  "What should I fix first?",
+  "What maintenance is due this month?",
+  "What warranties are still active?",
+  "When should I replace my roof?",
+  "Explain this inspection report.",
   "What documents are missing?",
+  "What insurance claims exist?",
+  "What should I check before winter?",
+  "What systems are near end of life?",
+  "Generate a buyer-friendly property summary.",
 ];
 
 interface QA { id: string; question: string; answer: string | null; confidence: string | null; created_at: string; }
