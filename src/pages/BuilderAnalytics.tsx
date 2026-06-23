@@ -22,11 +22,14 @@ export default function BuilderAnalytics() {
       const ids = (mem ?? []).map((x: any) => x.company_id);
       if (!ids.length) return;
 
-      const [{ data: clones }, { count: qr }, { data: docs }, { count: reminders }] = await Promise.all([
-        supabase.from("nb_property_clones").select("id, status, construction_stages").in("company_id", ids),
+      const { data: clones } = await (supabase as any).from("nb_property_clones").select("id, status, construction_stages").in("company_id", ids);
+      const cloneIds = (clones ?? []).map((c: any) => c.id);
+      const [{ count: qr }, { data: docs }, { count: reminders }] = await Promise.all([
         (supabase as any).from("builder_qr_scans").select("id", { count: "exact", head: true }).in("company_id", ids),
-        supabase.from("nb_clone_documents").select("id, category, clone_id, nb_property_clones!inner(company_id)").in("nb_property_clones.company_id", ids),
-        supabase.from("maintenance_reminders").select("id", { count: "exact", head: true }).eq("status" as any, "completed"),
+        cloneIds.length
+          ? (supabase as any).from("nb_clone_documents").select("id, category").in("clone_id", cloneIds)
+          : Promise.resolve({ data: [] as any[] }),
+        (supabase as any).from("maintenance_reminders").select("id", { count: "exact", head: true }).eq("status", "completed"),
       ]);
 
       const homeRows = clones ?? [];
