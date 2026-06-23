@@ -96,6 +96,10 @@ const CertificationCenter = lazy(() => import("./pages/CertificationCenter"));
 const PropertySystems = lazy(() => import("./pages/PropertySystems"));
 const PropertyIntelligence = lazy(() => import("./pages/PropertyIntelligence"));
 const ClaimProperty = lazy(() => import("./pages/ClaimProperty"));
+const Unauthorized = lazy(() => import("./pages/Unauthorized"));
+
+import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
+import { useLocation } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -103,14 +107,29 @@ const RouteFallback = () => (
   <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Loading…</div>
 );
 
+const PilotGuard = ({ children }: { children: JSX.Element }) => {
+  const location = useLocation();
+  if (PILOT_MODE && !isPilotAllowedRoute(location.pathname)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return children;
+};
+
 const DashboardRouter = () => {
-  const { primaryRole, loading } = useAuth();
+  const { primaryRole, loading, roles } = useAuth();
   if (loading) return <div className="flex min-h-screen items-center justify-center text-muted-foreground">Loading…</div>;
+  if (roles.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-6 text-center text-muted-foreground">
+        Your account has no role yet. Contact an Orivaz administrator to be assigned.
+      </div>
+    );
+  }
   switch (primaryRole) {
     case "admin": return <Navigate to="/admin" replace />;
-    case "realtor": return <Navigate to="/realtor" replace />;
-    case "contractor": return <Navigate to="/contractor" replace />;
     case "builder": return <Navigate to="/builder" replace />;
+    case "contractor": return <Navigate to="/contractor" replace />;
+    case "realtor": return <Navigate to="/realtor" replace />;
     default: return <HomeownerDashboard />;
   }
 };
