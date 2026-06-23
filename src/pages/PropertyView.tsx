@@ -207,42 +207,75 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
           {/* Regional & Systems */}
           <RegionalSection propertyId={property.id} state={property.state} />
 
-          {/* Vault + Projects quick links */}
+          {/* Unified Property Intelligence hub */}
           {!shared && (
-            <div className="flex flex-wrap gap-2 no-print">
-              <Link to={`/property/${property.id}/confidence`}><Button size="sm"><ShieldCheck className="mr-2 h-4 w-4" />Home Confidence Score</Button></Link>
-              <Link to={`/property/${property.id}/health`}><Button variant="outline" size="sm">Home Health</Button></Link>
-              <Link to={`/property/${property.id}/timeline`}><Button variant="outline" size="sm">Timeline</Button></Link>
-              <Link to={`/property/${property.id}/ask`}><Button variant="outline" size="sm">Ask HomeFacts AI</Button></Link>
-              <Link to={`/property/${property.id}/reports`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Reports</Button></Link>
-              <Link to={`/property/${property.id}/contractors`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Contractor Scores</Button></Link>
-              <Link to={`/property/${property.id}/insurance`}><Button variant="outline" size="sm"><ShieldCheck className="mr-2 h-4 w-4" />Insurance Review</Button></Link>
-              <Link to={`/property/${property.id}/deferred`}><Button variant="outline" size="sm">Deferred Maintenance</Button></Link>
-              <Link to={`/property/${property.id}/twin`}><Button variant="outline" size="sm">Digital Twin</Button></Link>
-              <Link to={`/property/${property.id}/neighborhood`}><Button variant="outline" size="sm">Neighborhood</Button></Link>
-              <Link to={`/property/${property.id}/marketplace`}><Button variant="outline" size="sm">Marketplace</Button></Link>
-              <Link to={`/property/${property.id}/gov`}><Button variant="outline" size="sm">Permit Portal</Button></Link>
-              <Link to={`/property/${property.id}/vault-dr`}><Button variant="outline" size="sm">Disaster Vault</Button></Link>
-              <Link to={`/property/${property.id}/estate`}><Button variant="outline" size="sm">Estate Planning</Button></Link>
-              <Link to={`/property/${property.id}/negotiate`}><Button variant="outline" size="sm">Negotiation AI</Button></Link>
-              <Link to={`/property/${property.id}/passport`}><Button variant="outline" size="sm">Ownership Passport</Button></Link>
-              <Link to={`/property/${property.id}/risk`}><Button variant="outline" size="sm">Property Risk Score</Button></Link>
-              <Link to={`/property/${property.id}/hazards`}><Button variant="outline" size="sm">Hazard Intelligence</Button></Link>
-              <Link to={`/property/${property.id}/crime`}><Button variant="outline" size="sm">Crime Timeline</Button></Link>
-              <Link to={`/property/${property.id}/weather`}><Button variant="outline" size="sm">Weather Timeline</Button></Link>
-              <Link to={`/property/${property.id}/insurance-readiness`}><Button variant="outline" size="sm">Insurance Readiness</Button></Link>
-              <Link to={`/property/${property.id}/value-protection`}><Button variant="outline" size="sm">Value Protection</Button></Link>
-              <Link to={`/property/${property.id}/forecast`}><Button variant="outline" size="sm">Future Cost Forecast</Button></Link>
-              <Link to={`/property/${property.id}/reminders`}><Button variant="outline" size="sm">Reminders</Button></Link>
-              <Link to={`/property/${property.id}/regional`}><Button variant="outline" size="sm">Regional Education</Button></Link>
-              <Link to={`/property/${property.id}/buyer-report`}><Button variant="outline" size="sm">Buyer Decision Report</Button></Link>
-              <Link to={`/property/${property.id}/certification`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />HomeFacts Certified™</Button></Link>
-              <Link to={`/property/${property.id}/emergency`}><Button variant="destructive" size="sm">Emergency Mode</Button></Link>
-              <Link to={`/property/${property.id}/maintenance`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Maintenance</Button></Link>
-              <Link to={`/property/${property.id}/engagement`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Home Score & Rewards</Button></Link>
-              <Link to={`/property/${property.id}/boundary`}><Button variant="outline" size="sm"><MapPin className="mr-2 h-4 w-4" />Boundary & Land</Button></Link>
-              {user && <Link to={`/property/${property.id}/vault`}><Button variant="outline" size="sm"><FileText className="mr-2 h-4 w-4" />Document Vault</Button></Link>}
-              {user && <Link to={`/property/${property.id}/projects`}><Button variant="outline" size="sm">Projects</Button></Link>}
+            <div className="no-print rounded-2xl border bg-card p-5 shadow-card">
+              <h2 className="text-base font-semibold">Property Intelligence</h2>
+              <p className="mt-0.5 text-sm text-muted-foreground">Complete operating system for this home.</p>
+              {[
+                { group: "Dashboard", items: [
+                  ["Map", `/property/${property.id}/intel-map`],
+                  ["Health", `/property/${property.id}/health`],
+                  ["Confidence", `/property/${property.id}/confidence`],
+                  ["Timeline", `/property/${property.id}/timeline`],
+                ]},
+                { group: "AI & Reports", items: [
+                  ["AI Advisor", `/property/${property.id}/ask`],
+                  ["Buyer Report", `/property/${property.id}/buyer-report`],
+                  ["Annual Report", `/property/${property.id}/annual-report`],
+                  ["Reports", `/property/${property.id}/reports`],
+                ]},
+                { group: "Risk", items: [
+                  ["Risk Score", `/property/${property.id}/risk`],
+                  ["Hazards", `/property/${property.id}/hazards`],
+                  ["Crime", `/property/${property.id}/crime`],
+                  ["Weather", `/property/${property.id}/weather`],
+                ]},
+                { group: "Insurance & Value", items: [
+                  ["Insurance Review", `/property/${property.id}/insurance`],
+                  ["Insurance Readiness", `/property/${property.id}/insurance-readiness`],
+                  ["Value Protection", `/property/${property.id}/value-protection`],
+                  ["ROI Calculator", `/property/${property.id}/roi`],
+                ]},
+                { group: "Maintenance", items: [
+                  ["Maintenance Center", `/property/${property.id}/maintenance`],
+                  ["Reminders", `/property/${property.id}/reminders`],
+                  ["Forecast", `/property/${property.id}/forecast`],
+                  ["Deferred", `/property/${property.id}/deferred`],
+                ]},
+                { group: "Market & Neighborhood", items: [
+                  ["Neighborhood", `/property/${property.id}/neighborhood`],
+                  ["Regional Education", `/property/${property.id}/regional`],
+                  ["Marketplace", `/property/${property.id}/marketplace`],
+                  ["Boundary", `/property/${property.id}/boundary`],
+                ]},
+                { group: "Ownership & Trust", items: [
+                  ["Home Passport", `/property/${property.id}/passport`],
+                  ["Contractor Scores", `/property/${property.id}/contractors`],
+                  ["Certified™", `/property/${property.id}/certification`],
+                  ["Engagement", `/property/${property.id}/engagement`],
+                ]},
+                { group: "Lifecycle & Tools", items: [
+                  ["Digital Twin", `/property/${property.id}/twin`],
+                  ["Negotiation AI", `/property/${property.id}/negotiate`],
+                  ["Estate Planning", `/property/${property.id}/estate`],
+                  ["Permit Portal", `/property/${property.id}/gov`],
+                  ["Disaster Vault", `/property/${property.id}/vault-dr`],
+                  ["Emergency Mode", `/property/${property.id}/emergency`],
+                  ...(user ? [["Document Vault", `/property/${property.id}/vault`] as [string, string], ["Projects", `/property/${property.id}/projects`] as [string, string]] : []),
+                ]},
+              ].map((section) => (
+                <div key={section.group} className="mt-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{section.group}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {section.items.map(([label, href]) => (
+                      <Link key={href as string} to={href as string}>
+                        <Button variant="outline" size="sm">{label as string}</Button>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
