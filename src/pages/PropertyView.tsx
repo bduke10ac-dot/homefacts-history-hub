@@ -119,6 +119,11 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
     <div className="min-h-screen bg-background">
       {!shared && <Navbar />}
       <div className="container py-8">
+        {property.id === "c7ee5510-d3e5-4000-8000-000000000001" && (
+          <div className="no-print mb-4 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-sm text-amber-900 dark:text-amber-200">
+            <strong>Sample property.</strong> This is a demo home record used to showcase Orivaz — data is illustrative.
+          </div>
+        )}
         {/* Action bar */}
         <div className="no-print mb-4 flex flex-wrap items-center justify-between gap-3">
           <Link to="/search" className="text-sm text-muted-foreground hover:text-foreground">← Back to search</Link>

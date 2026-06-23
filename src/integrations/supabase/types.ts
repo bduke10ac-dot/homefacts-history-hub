@@ -5301,6 +5301,56 @@ export type Database = {
           },
         ]
       }
+      property_invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          created_at: string
+          created_by: string
+          expires_at: string
+          id: string
+          invitee_email: string
+          property_id: string
+          status: string
+          token: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          created_by?: string
+          expires_at?: string
+          id?: string
+          invitee_email: string
+          property_id: string
+          status?: string
+          token?: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          created_at?: string
+          created_by?: string
+          expires_at?: string
+          id?: string
+          invitee_email?: string
+          property_id?: string
+          status?: string
+          token?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_invites_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_jurisdictions: {
         Row: {
           congressional_district: string | null
@@ -7961,6 +8011,13 @@ export type Database = {
       }
     }
     Functions: {
+      claim_property_invite: {
+        Args: { _token: string }
+        Returns: {
+          address_line: string
+          property_id: string
+        }[]
+      }
       get_share_link_property: {
         Args: { p_token: string }
         Returns: {
