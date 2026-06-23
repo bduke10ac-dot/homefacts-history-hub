@@ -90,7 +90,7 @@ export default function HomeownerHandoff() {
       const url = `${window.location.origin}/home/${clone.handoff_token}`;
       line(`Scan the QR or visit: ${url}`);
 
-      pdf.save(`HomeFacts-Handoff-${(clone.address_line ?? "home").replace(/\s+/g, "-")}.pdf`);
+      pdf.save(`Orivaz-Handoff-${(clone.address_line ?? "home").replace(/\s+/g, "-")}.pdf`);
       toast.success("Handoff packet generated");
     } catch (e: any) {
       toast.error(e.message ?? "Failed to build packet");
@@ -118,7 +118,7 @@ export default function HomeownerHandoff() {
 
 
         <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <PacketCard title="HomeFacts digital home profile" desc="Verified record of this home for the next owner." count={1} />
+          <PacketCard title="Orivaz digital home profile" desc="Verified record of this home for the next owner." count={1} />
           <PacketCard title="Welcome packet" desc="Cover sheet + property profile." count={1} />
           <PacketCard title="Warranty packet" desc="All warranties pulled from the home record." count={warranties.length} />
           <PacketCard title="Maintenance checklist" desc="Monthly / quarterly / yearly tasks." count={7} />

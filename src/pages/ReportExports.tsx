@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const REPORTS = [
   { key: "homeowner", title: "Homeowner Report", desc: "Complete snapshot for the owner" },
-  { key: "full", title: "Full HomeFacts Report", desc: "Comprehensive property record" },
+  { key: "full", title: "Full Orivaz Property Report", desc: "Comprehensive property record" },
   { key: "buyer", title: "Buyer Confidence Report", desc: "Built for prospective buyers" },
   { key: "seller", title: "Seller Listing Packet", desc: "Showcase your home's history" },
   { key: "realtor", title: "Realtor Listing Readiness", desc: "Pre-listing checklist + summary" },

@@ -37,7 +37,7 @@ import BuilderPropertyEditor from "./pages/BuilderPropertyEditor";
 import BuilderMarketing from "./pages/BuilderMarketing";
 import PropertyBoundary from "./pages/PropertyBoundary";
 import HomeEngagement from "./pages/HomeEngagement";
-import WhyHomeFacts from "./pages/WhyHomeFacts";
+import WhyOrivaz from "./pages/WhyOrivaz";
 import MaintenanceCenter from "./pages/MaintenanceCenter";
 import VacationMode from "./pages/VacationMode";
 import HomeConfidenceScore from "./pages/HomeConfidenceScore";
@@ -111,7 +111,7 @@ const App = () => (
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/checkout/return" element={<CheckoutReturn />} />
             <Route path="/" element={<Index />} />
-            <Route path="/why" element={<WhyHomeFacts />} />
+            <Route path="/why" element={<WhyOrivaz />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/search" element={<PropertySearch />} />
             <Route path="/demo" element={<DemoReport />} />

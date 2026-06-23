@@ -30,7 +30,7 @@ const comparisonRows: { feature: string; values: ("full" | "partial" | "none")[]
 ];
 
 const competitorColumns = [
-  "HomeFacts",
+  "Orivaz",
   "Real Estate Sites",
   "Contractor Marketplaces",
   "Home Management Apps",
@@ -51,7 +51,7 @@ const competitors = [
 ];
 
 const differentiators = [
-  { icon: ShieldCheck, title: "Permanent Property Identity", desc: "HomeFacts creates a secure record that stays with the property forever." },
+  { icon: ShieldCheck, title: "Permanent Property Identity", desc: "Orivaz creates a secure record that stays with the property forever." },
   { icon: Wrench, title: "Verified Contractor Documentation", desc: "Contractors can upload invoices, photos, warranties, permits, notes, and completion records." },
   { icon: Activity, title: "AI Home Health Score", desc: "AI analyzes home condition, maintenance history, risk factors, warranties, repairs, and future needs." },
   { icon: Umbrella, title: "Insurance & Storm Intelligence", desc: "Track claim history, hail exposure, wind events, flood risk, tornado history, and weather-related property risks." },
@@ -97,7 +97,7 @@ const phases = [
   { n: "Phase 2", t: "Verified Documentation", d: "Contractor portal, builder portal, inspection reports, permit integration, AI verification." },
   { n: "Phase 3", t: "Property Intelligence", d: "AI Home Health Score, storm history, climate risk, insurance insights, predictive maintenance, cost forecasting." },
   { n: "Phase 4", t: "Transaction Platform", d: "Buyer portal, seller portal, digital disclosures, property transfer, AI buying assistant, mortgage integrations." },
-  { n: "Phase 5", t: "National Property Network", d: "Government, insurance, utility, and lender integrations. National HomeFacts property standard and API platform." },
+  { n: "Phase 5", t: "National Property Network", d: "Government, insurance, utility, and lender integrations. National Orivaz property standard and API platform." },
 ];
 
 const CellIcon = ({ v }: { v: "full" | "partial" | "none" }) => {
@@ -106,7 +106,7 @@ const CellIcon = ({ v }: { v: "full" | "partial" | "none" }) => {
   return <X className="mx-auto h-5 w-5 text-muted-foreground/40" />;
 };
 
-const WhyHomeFacts = () => {
+const WhyOrivaz = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -115,25 +115,25 @@ const WhyHomeFacts = () => {
       <section className="relative overflow-hidden border-b bg-gradient-to-br from-primary via-primary to-primary/80">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 20% 30%, white 1px, transparent 1px), radial-gradient(circle at 80% 70%, white 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         <div className="container relative py-20 md:py-28 text-primary-foreground">
-          <Badge variant="secondary" className="mb-5">Why HomeFacts</Badge>
+          <Badge variant="secondary" className="mb-5">Why Orivaz</Badge>
           <h1 className="text-4xl font-bold leading-tight md:text-6xl max-w-4xl">
-            Every Home Deserves a HomeFacts Record
+            Every Home Deserves a Orivaz Record
           </h1>
           <p className="mt-5 max-w-3xl text-lg text-primary-foreground/85 md:text-xl">
-            HomeFacts creates a permanent digital identity for every property — connecting homeowners, buyers, sellers, builders, contractors, inspectors, insurers, lenders, and government records into one verified home history.
+            Orivaz creates a permanent digital identity for every property — connecting homeowners, buyers, sellers, builders, contractors, inspectors, insurers, lenders, and government records into one verified home history.
           </p>
 
           <div className="mt-12 max-w-3xl rounded-2xl border border-primary-foreground/20 bg-primary-foreground/5 p-6 backdrop-blur md:p-8">
             <p className="text-sm font-semibold uppercase tracking-wider text-primary-foreground/70">The Operating System for Home Ownership</p>
             <p className="mt-3 text-base text-primary-foreground/90 md:text-lg">
-              Most real estate platforms only help people buy, sell, or search for homes. HomeFacts follows the property for its entire life — from land development and construction to every repair, inspection, insurance claim, renovation, and future sale.
+              Most real estate platforms only help people buy, sell, or search for homes. Orivaz follows the property for its entire life — from land development and construction to every repair, inspection, insurance claim, renovation, and future sale.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button size="lg" variant="secondary" asChild>
                 <a href="#comparison">View Competitive Advantage<ArrowRight className="ml-2 h-4 w-4" /></a>
               </Button>
               <Button size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <a href="#ecosystem">Explore HomeFacts Ecosystem</a>
+                <a href="#ecosystem">Explore Orivaz Ecosystem</a>
               </Button>
             </div>
           </div>
@@ -143,8 +143,8 @@ const WhyHomeFacts = () => {
       {/* Comparison */}
       <section id="comparison" className="container py-20 md:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">HomeFacts vs. Traditional Platforms</h2>
-          <p className="mt-4 text-muted-foreground">A side-by-side look at what existing tools cover — and where HomeFacts goes further.</p>
+          <h2 className="text-3xl font-bold md:text-4xl">Orivaz vs. Traditional Platforms</h2>
+          <p className="mt-4 text-muted-foreground">A side-by-side look at what existing tools cover — and where Orivaz goes further.</p>
         </div>
 
         <div className="mt-12 overflow-x-auto rounded-xl border shadow-card">
@@ -186,7 +186,7 @@ const WhyHomeFacts = () => {
         <div className="container py-20 md:py-24">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Current Market Competitors</h2>
-            <p className="mt-4 text-muted-foreground">Each platform solves a slice of the home journey. HomeFacts unites every slice into one verified record.</p>
+            <p className="mt-4 text-muted-foreground">Each platform solves a slice of the home journey. Orivaz unites every slice into one verified record.</p>
           </div>
           <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {competitors.map((c) => (
@@ -216,7 +216,7 @@ const WhyHomeFacts = () => {
       {/* Differentiators */}
       <section className="container py-20 md:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">What Makes HomeFacts Different</h2>
+          <h2 className="text-3xl font-bold md:text-4xl">What Makes Orivaz Different</h2>
           <p className="mt-4 text-muted-foreground">The capabilities that turn a property into a verified, lifelong digital asset.</p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -246,7 +246,7 @@ const WhyHomeFacts = () => {
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow">
                 <ShieldCheck className="h-7 w-7" />
               </div>
-              <p className="mt-3 text-lg font-bold">HomeFacts Property Record</p>
+              <p className="mt-3 text-lg font-bold">Orivaz Property Record</p>
               <p className="text-xs text-muted-foreground">The single source of truth for every home</p>
             </div>
 
@@ -269,7 +269,7 @@ const WhyHomeFacts = () => {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold md:text-4xl">The Record Never Resets</h2>
           <p className="mt-4 text-muted-foreground">
-            Unlike traditional real estate data, HomeFacts follows the property forever. Every repair, inspection, document, permit, warranty, and improvement strengthens the home's verified history.
+            Unlike traditional real estate data, Orivaz follows the property forever. Every repair, inspection, document, permit, warranty, and improvement strengthens the home's verified history.
           </p>
         </div>
 
@@ -301,7 +301,7 @@ const WhyHomeFacts = () => {
             <Badge className="mb-4"><Sparkles className="mr-1 h-3 w-3" /> AI Intelligence</Badge>
             <h2 className="text-3xl font-bold md:text-4xl">AI That Understands the Home</h2>
             <p className="mt-4 text-muted-foreground">
-              HomeFacts uses AI to turn scattered documents, photos, public records, inspections, permits, and contractor updates into clear, useful insights for homeowners and buyers.
+              Orivaz uses AI to turn scattered documents, photos, public records, inspections, permits, and contractor updates into clear, useful insights for homeowners and buyers.
             </p>
           </div>
           <div className="mt-12 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
@@ -320,7 +320,7 @@ const WhyHomeFacts = () => {
       {/* Roadmap */}
       <section className="container py-20 md:py-28">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">HomeFacts Growth Roadmap</h2>
+          <h2 className="text-3xl font-bold md:text-4xl">Orivaz Growth Roadmap</h2>
           <p className="mt-4 text-muted-foreground">A staged path from homeowner records to a national property network.</p>
         </div>
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -344,29 +344,29 @@ const WhyHomeFacts = () => {
       <section className="relative overflow-hidden border-t bg-gradient-to-br from-primary via-primary to-primary/80">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 30% 40%, white 1px, transparent 1px)", backgroundSize: "50px 50px" }} />
         <div className="container relative py-20 md:py-28 text-center text-primary-foreground">
-          <h2 className="text-3xl font-bold md:text-5xl">HomeFacts Is More Than a Real Estate App</h2>
+          <h2 className="text-3xl font-bold md:text-5xl">Orivaz Is More Than a Real Estate App</h2>
           <p className="mx-auto mt-5 max-w-2xl text-lg text-primary-foreground/85">
-            HomeFacts is the digital identity and lifelong operating system for every property — bringing ownership history, maintenance, insurance, contractors, inspections, warranties, public records, AI guidance, and verified documentation into one trusted platform that follows the home from construction through every owner.
+            Orivaz is the digital identity and lifelong operating system for every property — bringing ownership history, maintenance, insurance, contractors, inspections, warranties, public records, AI guidance, and verified documentation into one trusted platform that follows the home from construction through every owner.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button size="lg" variant="secondary" asChild>
-              <Link to="/auth?mode=signup">Start Building Your HomeFacts Record<ArrowRight className="ml-2 h-4 w-4" /></Link>
+              <Link to="/auth?mode=signup">Start Building Your Orivaz Record<ArrowRight className="ml-2 h-4 w-4" /></Link>
             </Button>
             <Button size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
               <Link to="/auth?mode=signup&role=contractor">Join the Verified Contractor Network</Link>
             </Button>
             <Button size="lg" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-              <Link to="/auth?mode=signup&role=builder">Partner With HomeFacts</Link>
+              <Link to="/auth?mode=signup&role=builder">Partner With Orivaz</Link>
             </Button>
           </div>
         </div>
       </section>
 
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} HomeFacts Report. Built on trust.
+        © {new Date().getFullYear()} Orivaz Property Report. Built on trust.
       </footer>
     </div>
   );
 };
 
-export default WhyHomeFacts;
+export default WhyOrivaz;

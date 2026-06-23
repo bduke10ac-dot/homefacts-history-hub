@@ -59,7 +59,7 @@ const Auth = () => {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-hero shadow-glow">
             <Home className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span>HomeFacts Report</span>
+          <span>Orivaz Property Report</span>
         </Link>
         <div className="rounded-xl border bg-card p-6 shadow-elevated">
           <Tabs value={tab} onValueChange={setTab}>

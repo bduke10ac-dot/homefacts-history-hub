@@ -52,7 +52,7 @@ export function FoundingBuilderSpotlight() {
             </div>
             <h2 className="mt-3 text-3xl font-bold md:text-4xl">Founding Builder</h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed">
-              <span className="font-semibold text-foreground">{c.name}</span> is the first official builder partner of the HomeFacts Builder Program.
+              <span className="font-semibold text-foreground">{c.name}</span> is the first official builder partner of the Orivaz Builder Program.
             </p>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Helping launch a new standard for new construction documentation, warranty organization, homeowner education, and long-term property history.

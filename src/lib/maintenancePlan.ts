@@ -81,7 +81,7 @@ const TEMPLATES: Template[] = [
   t("disposal_clean", "Clean garbage disposal", "appliance", "maintenance", "all", "any", "monthly", 1, "low", "Citrus + ice keeps blades clean and odor-free."),
   t("ext_lighting", "Check exterior lighting", "exterior", "safety", "all", "any", "monthly", 1, "low", "Burned-out bulbs are a security risk."),
   t("irrigation_check", "Inspect irrigation system", "exterior", "utility", "all", "any", "monthly", 1, "low", "Catch broken heads early to avoid water waste."),
-  t("hf_backup", "Back up HomeFacts documents", "vault", "maintenance", "all", "any", "monthly", 1, "low", "Keep an offline copy of critical records."),
+  t("hf_backup", "Back up Orivaz documents", "vault", "maintenance", "all", "any", "monthly", 1, "low", "Keep an offline copy of critical records."),
 
   // QUARTERLY
   t("fridge_filter", "Replace refrigerator water filter", "appliance", "utility", "all", "any", "quarterly", 3, "low", "Most fridges call for filter swaps every 6 months — verify yours."),
@@ -318,7 +318,7 @@ export const REALTOR_FOLLOWUPS: FollowupTemplate[] = [
   { id: "r365", label: "Annual home anniversary", days: 365, channel: "email" },
   { id: "rcma", label: "CMA (Comparative Market Analysis)", days: 365, channel: "email" },
   { id: "rvalue", label: "Property value update", days: 180, channel: "push" },
-  { id: "rreport", label: "HomeFacts annual report review", days: 365, channel: "email" },
+  { id: "rreport", label: "Orivaz annual report review", days: 365, channel: "email" },
   { id: "rrefer", label: "Referral request", days: 120, channel: "email" },
   { id: "rbday", label: "Birthday greeting", days: 365, channel: "sms" },
   { id: "rholiday", label: "Holiday greeting", days: 365, channel: "email" },

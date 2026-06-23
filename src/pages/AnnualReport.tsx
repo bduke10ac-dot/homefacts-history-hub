@@ -62,7 +62,7 @@ export default function AnnualReport() {
 
   const downloadPdf = () => {
     const pdf = new jsPDF();
-    pdf.setFontSize(18); pdf.text("HomeFacts Annual Report", 14, 20);
+    pdf.setFontSize(18); pdf.text("Orivaz Annual Report", 14, 20);
     pdf.setFontSize(11); pdf.text(`${property?.address_line ?? ""}, ${property?.city ?? ""} ${property?.state ?? ""}`, 14, 28);
     let y = 40;
     pdf.setFontSize(14); pdf.text("What changed this year", 14, y); y += 8;
@@ -74,7 +74,7 @@ export default function AnnualReport() {
       missed.forEach((t) => { pdf.text(`! ${t}`, 16, y); y += 6; }); }
     if (summary) { y += 4; pdf.setFontSize(14); pdf.text("AI summary", 14, y); y += 8; pdf.setFontSize(10);
       pdf.splitTextToSize(summary, 180).forEach((line: string) => { pdf.text(line, 14, y); y += 5; }); }
-    pdf.save(`HomeFacts-Annual-${property?.address_line?.replace(/\s+/g, "-") ?? id}.pdf`);
+    pdf.save(`Orivaz-Annual-${property?.address_line?.replace(/\s+/g, "-") ?? id}.pdf`);
   };
 
   if (loading) return <div className="flex min-h-screen items-center justify-center text-muted-foreground"><Loader2 className="mr-2 h-4 w-4 animate-spin" />Loading…</div>;

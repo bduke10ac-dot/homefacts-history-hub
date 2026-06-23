@@ -133,7 +133,7 @@ export default function WarrantyPassport() {
                   </p>
                 )}
                 <p className="text-xs text-muted-foreground">
-                  Generated {new Date().toLocaleDateString()} · HomeFacts Verified
+                  Generated {new Date().toLocaleDateString()} · Orivaz Verified
                 </p>
               </div>
             </div>
@@ -241,7 +241,7 @@ export default function WarrantyPassport() {
 
         <Separator />
         <p className="text-center text-xs text-muted-foreground">
-          This passport is generated from HomeFacts records. Buyers and insurers can verify authenticity at homefacts.com.
+          This passport is generated from Orivaz records. Buyers and insurers can verify authenticity at homefacts.com.
         </p>
       </div>
     </div>

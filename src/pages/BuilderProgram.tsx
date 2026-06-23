@@ -30,9 +30,9 @@ export default function BuilderProgram() {
       <section className="bg-gradient-hero px-6 py-16 text-primary-foreground">
         <div className="container">
           <div className="flex items-center gap-2 text-xs uppercase tracking-wider opacity-85">
-            <ShieldCheck className="h-4 w-4" />HomeFacts Builder Program
+            <ShieldCheck className="h-4 w-4" />Orivaz Builder Program
           </div>
-          <h1 className="mt-3 text-3xl font-bold md:text-5xl">HomeFacts Builder Program</h1>
+          <h1 className="mt-3 text-3xl font-bold md:text-5xl">Orivaz Builder Program</h1>
           <p className="mt-3 max-w-2xl text-lg opacity-90">
             Give every new home a verified digital record from day one.
           </p>
@@ -55,7 +55,7 @@ export default function BuilderProgram() {
           <div>
             <h2 className="text-2xl font-bold">What the Builder Program is</h2>
             <p className="mt-3 text-muted-foreground">
-              A partnership between HomeFacts and forward-thinking home builders to deliver
+              A partnership between Orivaz and forward-thinking home builders to deliver
               every new home with a verified, lifelong digital record — warranties, construction
               history, contractor info, maintenance plans, and homeowner education in one place.
             </p>
@@ -82,7 +82,7 @@ export default function BuilderProgram() {
             "Easy transfer to the next owner",
           ]} />
           <Card title="Benefits for builders" icon={Building2} items={[
-            "HomeFacts Certified Builder badge",
+            "Orivaz Verified Builder badge",
             "Reduced warranty inquiries",
             "Marketing block for every listing",
             "Bulk-clone home records per lot",
@@ -134,7 +134,7 @@ export default function BuilderProgram() {
         <div className="container text-center">
           <h2 className="text-2xl font-bold md:text-3xl">Ready to join?</h2>
           <p className="mx-auto mt-2 max-w-xl opacity-90">
-            Become a HomeFacts Certified Builder and start delivering homes with verified digital records.
+            Become a Orivaz Verified Builder and start delivering homes with verified digital records.
           </p>
           <Button asChild size="lg" variant="secondary" className="mt-5">
             <Link to="/auth?mode=signup&role=builder">Join the Builder Program</Link>

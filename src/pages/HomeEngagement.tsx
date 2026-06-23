@@ -177,7 +177,7 @@ export default function HomeEngagement() {
         {/* Rewards */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">HomeFacts Rewards</CardTitle>
+            <CardTitle className="text-lg">Orivaz Rewards</CardTitle>
             <CardDescription>Points earned for each documented action. Redeem with partners for contractor discounts, warranties, inspections, and more.</CardDescription>
           </CardHeader>
           <CardContent>

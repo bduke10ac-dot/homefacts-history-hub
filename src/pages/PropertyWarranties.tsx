@@ -543,7 +543,7 @@ function TransferWizard({
               ["fee_paid","Transfer fee paid"],
               ["buyer_registered","Buyer registered"],
               ["confirmation_received","Confirmation received"],
-              ["updated_in_homefacts","Warranty updated in HomeFacts"],
+              ["updated_in_homefacts","Warranty updated in Orivaz"],
               ["reminder_scheduled","Reminder scheduled"],
             ] as const).map(([k, label]) => (
               <label key={k} className="flex items-center gap-2 rounded-md border p-3">

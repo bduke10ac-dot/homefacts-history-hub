@@ -52,7 +52,7 @@ export default function Certification() {
         <Link to={`/property/${id}`} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="mr-1 h-4 w-4" />Back</Link>
         <div className="flex items-end justify-between">
           <div>
-            <h1 className="text-3xl font-bold">HomeFacts Certified™</h1>
+            <h1 className="text-3xl font-bold">Orivaz Verified™</h1>
             <p className="text-muted-foreground">Earn Bronze, Silver, Gold or Platinum certification.</p>
           </div>
           <Button onClick={apply} disabled={loading}><Award className="mr-2 h-4 w-4" />Apply for Certified</Button>
