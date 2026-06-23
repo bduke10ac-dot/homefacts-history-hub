@@ -21,14 +21,14 @@ Deno.serve(async (req) => {
     }
 
     const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    const { data: property } = await sb.from("properties").select("id,address,city,state,zip").eq("id", propertyId).maybeSingle();
+    const { data: property } = await sb.from("properties").select("id,address_line,city,state,zip").eq("id", propertyId).maybeSingle();
     const { data: warranties } = await sb
       .from("warranties")
       .select("category,provider,product_name,model_number,serial_number,install_date,expiration_date,is_registered,is_transferable,transfer_deadline_days,transfer_fee,status,claim_phone,claim_website,installer_name,notes")
       .eq("property_id", propertyId);
 
     const ctx = {
-      address: property ? [property.address, property.city, property.state, property.zip].filter(Boolean).join(", ") : null,
+      address: property ? [(property as any).address_line, property.city, property.state, property.zip].filter(Boolean).join(", ") : null,
       warranties: warranties ?? [],
       today: new Date().toISOString().slice(0, 10),
     };
