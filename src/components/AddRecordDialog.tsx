@@ -67,9 +67,8 @@ export function AddRecordDialog({ propertyId, onAdded, triggerLabel = "Add recor
         .from("property-files")
         .upload(path, file, { contentType: file.type, upsert: false });
       if (upErr) { toast.error(`Upload failed: ${upErr.message}`); continue; }
-      const { data: { publicUrl } } = supabase.storage.from("property-files").getPublicUrl(path);
       await supabase.from("record_attachments").insert({
-        record_id: rec.id, file_url: publicUrl, file_name: file.name, file_type: file.type, uploaded_by: user.id,
+        record_id: rec.id, file_url: path, file_name: file.name, file_type: file.type, uploaded_by: user.id,
       });
     }
 

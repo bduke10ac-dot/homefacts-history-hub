@@ -96,6 +96,10 @@ const CertificationCenter = lazy(() => import("./pages/CertificationCenter"));
 const PropertySystems = lazy(() => import("./pages/PropertySystems"));
 const PropertyIntelligence = lazy(() => import("./pages/PropertyIntelligence"));
 const ClaimProperty = lazy(() => import("./pages/ClaimProperty"));
+const Unauthorized = lazy(() => import("./pages/Unauthorized"));
+
+import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
+import { useLocation } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -103,14 +107,29 @@ const RouteFallback = () => (
   <div className="flex min-h-[60vh] items-center justify-center text-sm text-muted-foreground">Loading…</div>
 );
 
+const PilotGuard = ({ children }: { children: JSX.Element }) => {
+  const location = useLocation();
+  if (PILOT_MODE && !isPilotAllowedRoute(location.pathname)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  return children;
+};
+
 const DashboardRouter = () => {
-  const { primaryRole, loading } = useAuth();
+  const { primaryRole, loading, roles } = useAuth();
   if (loading) return <div className="flex min-h-screen items-center justify-center text-muted-foreground">Loading…</div>;
+  if (roles.length === 0) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-6 text-center text-muted-foreground">
+        Your account has no role yet. Contact an Orivaz administrator to be assigned.
+      </div>
+    );
+  }
   switch (primaryRole) {
     case "admin": return <Navigate to="/admin" replace />;
-    case "realtor": return <Navigate to="/realtor" replace />;
-    case "contractor": return <Navigate to="/contractor" replace />;
     case "builder": return <Navigate to="/builder" replace />;
+    case "contractor": return <Navigate to="/contractor" replace />;
+    case "realtor": return <Navigate to="/realtor" replace />;
     default: return <HomeownerDashboard />;
   }
 };
@@ -125,70 +144,76 @@ const App = () => (
           <PaymentTestModeBanner />
           <ErrorBoundary>
             <Suspense fallback={<RouteFallback />}>
+              <PilotGuard>
               <Routes>
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/checkout/return" element={<CheckoutReturn />} />
                 <Route path="/" element={<Index />} />
                 <Route path="/why" element={<WhyOrivaz />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/unauthorized" element={<Unauthorized />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="/checkout/return" element={<CheckoutReturn />} />
                 <Route path="/search" element={<PropertySearch />} />
                 <Route path="/demo" element={<DemoReport />} />
-                <Route path="/property/:id" element={<PropertyView />} />
+                <Route path="/claim/:token" element={<ClaimProperty />} />
+                <Route path="/r/:token" element={<PropertyView shared />} />
+                <Route path="/home/:token" element={<BeginnerGuide />} />
+                <Route path="/report/:id" element={<AddressReport />} />
+
+                {/* All property/* routes require auth + verified email */}
+                <Route path="/property/:id" element={<ProtectedRoute><PropertyView /></ProtectedRoute>} />
                 <Route path="/property/:id/vault" element={<ProtectedRoute><PropertyVault /></ProtectedRoute>} />
                 <Route path="/property/:id/projects" element={<ProtectedRoute><PropertyProjects /></ProtectedRoute>} />
-                <Route path="/property/:id/boundary" element={<PropertyBoundary />} />
-                <Route path="/property/:id/engagement" element={<HomeEngagement />} />
-                <Route path="/property/:id/maintenance" element={<MaintenanceCenter />} />
-                <Route path="/property/:id/vacation" element={<VacationMode />} />
-                <Route path="/property/:id/confidence" element={<HomeConfidenceScore />} />
-                <Route path="/property/:id/health" element={<HomeHealth />} />
-                <Route path="/property/:id/timeline" element={<PropertyTimeline />} />
-                <Route path="/property/:id/systems" element={<PropertySystems />} />
+                <Route path="/property/:id/boundary" element={<ProtectedRoute><PropertyBoundary /></ProtectedRoute>} />
+                <Route path="/property/:id/engagement" element={<ProtectedRoute><HomeEngagement /></ProtectedRoute>} />
+                <Route path="/property/:id/maintenance" element={<ProtectedRoute><MaintenanceCenter /></ProtectedRoute>} />
+                <Route path="/property/:id/vacation" element={<ProtectedRoute><VacationMode /></ProtectedRoute>} />
+                <Route path="/property/:id/confidence" element={<ProtectedRoute><HomeConfidenceScore /></ProtectedRoute>} />
+                <Route path="/property/:id/health" element={<ProtectedRoute><HomeHealth /></ProtectedRoute>} />
+                <Route path="/property/:id/timeline" element={<ProtectedRoute><PropertyTimeline /></ProtectedRoute>} />
+                <Route path="/property/:id/systems" element={<ProtectedRoute><PropertySystems /></ProtectedRoute>} />
                 <Route path="/property/:id/ask" element={<ProtectedRoute><AskPropertyAI /></ProtectedRoute>} />
-                <Route path="/property/:id/reports" element={<ReportExports />} />
+                <Route path="/property/:id/reports" element={<ProtectedRoute><ReportExports /></ProtectedRoute>} />
                 <Route path="/property/:id/contractors" element={<ProtectedRoute><ContractorScores /></ProtectedRoute>} />
                 <Route path="/property/:id/insurance" element={<ProtectedRoute><InsuranceReview /></ProtectedRoute>} />
                 <Route path="/property/:id/deferred" element={<ProtectedRoute><DeferredMaintenance /></ProtectedRoute>} />
                 <Route path="/property/:id/twin" element={<ProtectedRoute><DigitalTwin /></ProtectedRoute>} />
                 <Route path="/property/:id/gov" element={<ProtectedRoute><GovernmentPortal /></ProtectedRoute>} />
-                <Route path="/property/:id/neighborhood" element={<NeighborhoodIntelligence />} />
+                <Route path="/property/:id/neighborhood" element={<ProtectedRoute><NeighborhoodIntelligence /></ProtectedRoute>} />
                 <Route path="/property/:id/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
                 <Route path="/property/:id/emergency" element={<ProtectedRoute><EmergencyMode /></ProtectedRoute>} />
                 <Route path="/property/:id/vault-dr" element={<ProtectedRoute><DisasterVault /></ProtectedRoute>} />
                 <Route path="/property/:id/estate" element={<ProtectedRoute><EstatePlanning /></ProtectedRoute>} />
                 <Route path="/property/:id/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
                 <Route path="/property/:id/passport" element={<ProtectedRoute><OwnershipPassport /></ProtectedRoute>} />
-                <Route path="/property/:id/risk" element={<PropertyRiskScore />} />
-                <Route path="/property/:id/hazards" element={<HazardMap />} />
-                <Route path="/property/:id/crime" element={<CrimeTimeline />} />
-                <Route path="/property/:id/weather" element={<WeatherTimeline />} />
+                <Route path="/property/:id/risk" element={<ProtectedRoute><PropertyRiskScore /></ProtectedRoute>} />
+                <Route path="/property/:id/hazards" element={<ProtectedRoute><HazardMap /></ProtectedRoute>} />
+                <Route path="/property/:id/crime" element={<ProtectedRoute><CrimeTimeline /></ProtectedRoute>} />
+                <Route path="/property/:id/weather" element={<ProtectedRoute><WeatherTimeline /></ProtectedRoute>} />
                 <Route path="/property/:id/insurance-readiness" element={<ProtectedRoute><InsuranceReadinessScore /></ProtectedRoute>} />
                 <Route path="/property/:id/value-protection" element={<ProtectedRoute><HomeValueProtection /></ProtectedRoute>} />
                 <Route path="/property/:id/forecast" element={<ProtectedRoute><FutureCostForecast /></ProtectedRoute>} />
                 <Route path="/property/:id/reminders" element={<ProtectedRoute><MaintenanceReminders /></ProtectedRoute>} />
-                <Route path="/property/:id/regional" element={<RegionalEducation />} />
-                <Route path="/property/:id/buyer-report" element={<BuyerDecisionReport />} />
+                <Route path="/property/:id/regional" element={<ProtectedRoute><RegionalEducation /></ProtectedRoute>} />
+                <Route path="/property/:id/buyer-report" element={<ProtectedRoute><BuyerDecisionReport /></ProtectedRoute>} />
                 <Route path="/property/:id/certification" element={<ProtectedRoute><Certification /></ProtectedRoute>} />
-                <Route path="/property/:id/intel-map" element={<PropertyIntelMap />} />
-                <Route path="/property/:id/roi" element={<ImprovementROI />} />
+                <Route path="/property/:id/intel-map" element={<ProtectedRoute><PropertyIntelMap /></ProtectedRoute>} />
+                <Route path="/property/:id/roi" element={<ProtectedRoute><ImprovementROI /></ProtectedRoute>} />
                 <Route path="/property/:id/annual-report" element={<ProtectedRoute><AnnualReport /></ProtectedRoute>} />
                 <Route path="/property/:id/warranties" element={<ProtectedRoute><PropertyWarranties /></ProtectedRoute>} />
                 <Route path="/property/:id/warranty-passport" element={<ProtectedRoute><WarrantyPassport /></ProtectedRoute>} />
-                <Route path="/warranty-hub" element={<WarrantyHub />} />
-                <Route path="/estate-planning" element={<EstatePlanningHub />} />
-                <Route path="/command-center" element={<PropertyCommandCenter />} />
-                <Route path="/network" element={<ProfessionalNetwork />} />
-                <Route path="/certification" element={<CertificationCenter />} />
-                <Route path="/intelligence" element={<PropertyIntelligence />} />
+                <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
+                <Route path="/properties/:id/home-history" element={<ProtectedRoute><PropertyHomeHistory /></ProtectedRoute>} />
+
+                <Route path="/warranty-hub" element={<ProtectedRoute><WarrantyHub /></ProtectedRoute>} />
+                <Route path="/estate-planning" element={<ProtectedRoute><EstatePlanningHub /></ProtectedRoute>} />
+                <Route path="/command-center" element={<ProtectedRoute><PropertyCommandCenter /></ProtectedRoute>} />
+                <Route path="/network" element={<ProtectedRoute><ProfessionalNetwork /></ProtectedRoute>} />
+                <Route path="/certification" element={<ProtectedRoute><CertificationCenter /></ProtectedRoute>} />
+                <Route path="/intelligence" element={<ProtectedRoute><PropertyIntelligence /></ProtectedRoute>} />
                 <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
                 <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
-                <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
-                <Route path="/property/:id/report/:type" element={<ProtectedRoute><PropertyReport /></ProtectedRoute>} />
-                <Route path="/report/:id" element={<AddressReport />} />
                 <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
-                <Route path="/r/:token" element={<PropertyView shared />} />
-                <Route path="/claim/:token" element={<ClaimProperty />} />
-                <Route path="/home/:token" element={<BeginnerGuide />} />
+
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
                 <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
                 <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorSuccessCenter /></ProtectedRoute>} />
@@ -213,6 +238,7 @@ const App = () => (
                 <Route path="/builder/portal/:id" element={<ProtectedRoute requireRole="builder"><BuilderPropertyEditor /></ProtectedRoute>} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </PilotGuard>
             </Suspense>
           </ErrorBoundary>
         </AuthProvider>

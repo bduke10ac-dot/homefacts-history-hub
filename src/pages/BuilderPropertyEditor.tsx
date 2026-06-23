@@ -78,12 +78,14 @@ export default function BuilderPropertyEditor() {
 
   async function uploadFile(file: File, category: string) {
     if (!id || !row?.company_id) return;
-    const path = `clones/${id}/${Date.now()}-${file.name}`;
-    const { error: upErr } = await supabase.storage.from("property-files").upload(path, file, { upsert: false });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return toast.error("Sign in required");
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const path = `${user.id}/clones/${id}/${Date.now()}-${safeName}`;
+    const { error: upErr } = await supabase.storage.from("property-files").upload(path, file, { upsert: false, contentType: file.type });
     if (upErr) return toast.error(upErr.message);
-    const { data: pub } = supabase.storage.from("property-files").getPublicUrl(path);
     const { error } = await supabase.from("nb_clone_documents").insert([{
-      clone_id: id, title: file.name, file_url: pub.publicUrl, storage_path: path, category, file_type: file.type,
+      clone_id: id, title: file.name, file_url: path, storage_path: path, category, file_type: file.type,
     }]);
     if (error) return toast.error(error.message);
     toast.success(`${file.name} uploaded`);

@@ -42,11 +42,11 @@ export default function DisasterVault() {
   const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file || !id || !user) return;
     setUploading(true);
-    const path = `${user.id}/${id}/vault/${Date.now()}-${file.name}`;
-    const { error } = await supabase.storage.from("property-files").upload(path, file);
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const path = `${id}/vault/${Date.now()}-${safeName}`;
+    const { error } = await supabase.storage.from("property-files").upload(path, file, { contentType: file.type });
     if (error) { toast.error(error.message); setUploading(false); return; }
-    const { data: pub } = supabase.storage.from("property-files").getPublicUrl(path);
-    setFileUrl(pub.publicUrl); setFileType(file.type);
+    setFileUrl(path); setFileType(file.type);
     if (!form.title) setForm({ ...form, title: file.name });
     setUploading(false);
     toast.success("File uploaded");

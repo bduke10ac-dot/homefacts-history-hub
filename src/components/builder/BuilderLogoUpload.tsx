@@ -21,11 +21,12 @@ export function BuilderLogoUpload({ companyId, currentUrl, onUpdated, size = 96,
     setBusy(true);
     try {
       const ext = file.name.split(".").pop() ?? "png";
-      const path = `builder-logos/${companyId}/logo-${Date.now()}.${ext}`;
-      const { error: upErr } = await supabase.storage.from("property-files").upload(path, file, { upsert: true, contentType: file.type });
+      const path = `${companyId}/logo-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("builder-logos").upload(path, file, { upsert: true, contentType: file.type });
       if (upErr) throw upErr;
-      const { data: pub } = supabase.storage.from("property-files").getPublicUrl(path);
-      const url = pub.publicUrl;
+      const { data: signed, error: sErr } = await supabase.storage.from("builder-logos").createSignedUrl(path, 60 * 60 * 24 * 365);
+      if (sErr || !signed?.signedUrl) throw sErr ?? new Error("Could not sign URL");
+      const url = signed.signedUrl;
       const { error: dbErr } = await supabase.from("builder_companies").update({ logo_url: url }).eq("id", companyId);
       if (dbErr) throw dbErr;
       toast.success("Logo updated");

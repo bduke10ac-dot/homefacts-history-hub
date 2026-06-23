@@ -405,15 +405,15 @@ function DocumentsTab({
     if (!userId) return;
     setUploading(true);
     try {
-      const path = `estate/${propertyId}/${Date.now()}-${file.name}`;
-      const { error: upErr } = await supabase.storage.from("property-files").upload(path, file);
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const path = `${propertyId}/estate/${Date.now()}-${safeName}`;
+      const { error: upErr } = await supabase.storage.from("property-files").upload(path, file, { contentType: file.type });
       if (upErr) throw upErr;
-      const { data: { publicUrl } } = supabase.storage.from("property-files").getPublicUrl(path);
       const { error } = await supabase.from("estate_documents").insert({
         property_id: propertyId, created_by: userId,
         document_name: form.document_name || file.name,
         document_type: form.document_type,
-        file_url: publicUrl, file_path: path,
+        file_url: path, file_path: path,
         notes: form.notes || null,
         review_date: form.review_date || null,
         permission_level: form.permission_level,
