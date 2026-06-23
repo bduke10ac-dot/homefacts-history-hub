@@ -177,6 +177,8 @@ const App = () => (
             <Route path="/builder/referrals" element={<ProtectedRoute requireRole="builder"><BuilderReferrals /></ProtectedRoute>} />
             <Route path="/builder/analytics" element={<ProtectedRoute requireRole="builder"><BuilderAnalytics /></ProtectedRoute>} />
             <Route path="/builder/import" element={<ProtectedRoute requireRole="admin"><BuilderImportWizard /></ProtectedRoute>} />
+            <Route path="/builder/portal" element={<ProtectedRoute requireRole="builder"><BuilderPortal /></ProtectedRoute>} />
+            <Route path="/builder/portal/:id" element={<ProtectedRoute requireRole="builder"><BuilderPropertyEditor /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
