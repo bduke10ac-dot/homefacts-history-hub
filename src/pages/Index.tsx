@@ -29,23 +29,23 @@ const Index = () => {
         <div className="container relative py-24 md:py-32">
           <div className="max-w-3xl">
             <span className="reveal inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-foreground backdrop-blur">
-              <CheckCircle2 className="h-3.5 w-3.5" /> From Foundation to Future
+              <CheckCircle2 className="h-3.5 w-3.5" /> The Digital Operating System for Every Property
             </span>
             <h1 className="reveal reveal-delay-1 mt-6 text-4xl font-bold leading-[1.05] md:text-6xl">
-              <span className="text-gradient">Every Property Has an Origin.</span>
+              <span className="text-gradient">Your home has a history. Orivaz protects it forever.</span>
             </h1>
             <p className="reveal reveal-delay-2 mt-5 max-w-2xl text-lg text-primary-foreground/85 md:text-xl">
-              Orivaz creates a trusted digital identity for every property — from the first foundation pour to every owner, repair, warranty, insurance claim, renovation, and future sale.
+              Orivaz gives homeowners, builders, contractors, and future buyers one trusted place for documents, warranties, repairs, insurance claims, maintenance, and property history.
             </p>
             <div className="reveal reveal-delay-3 mt-8 max-w-2xl rounded-2xl bg-background/95 p-3 shadow-deep backdrop-blur ring-1 ring-primary-foreground/10">
               <AddressSearch />
             </div>
             <div className="reveal reveal-delay-4 mt-5 flex flex-wrap gap-3">
               <Button size="sm" className="shine-btn shadow-glow" asChild>
-                <Link to="/auth?mode=signup">Create Orivaz ID<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                <Link to="/auth?mode=signup">Get Started<ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
               <Button size="sm" variant="outline" className="shine-btn border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link to="/demo"><FileText className="mr-2 h-4 w-4" />View Sample Property Report</Link>
+                <Link to="/property/c7ee5510-d3e5-4000-8000-000000000001"><FileText className="mr-2 h-4 w-4" />View Demo Property</Link>
               </Button>
               <Button size="sm" variant="outline" className="shine-btn border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
                 <Link to="/why">Why Orivaz? →</Link>
