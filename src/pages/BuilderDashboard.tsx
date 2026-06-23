@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BuilderBadgeRow } from "@/components/builder/BuilderBadgeRow";
-import { LayoutTemplate, Home as HomeIcon, ShieldCheck, AlertTriangle, Hammer, PackageCheck, FileText, Users, Star, Wrench, Megaphone, Settings, ClipboardList, Building2 } from "lucide-react";
+import { LayoutTemplate, Home as HomeIcon, ShieldCheck, AlertTriangle, Hammer, PackageCheck, FileText, Users, Wrench, Megaphone, Settings, Building2, Activity, UserPlus } from "lucide-react";
 
 const TABS: Array<{ label: string; href: string; icon: any }> = [
   { label: "Homes", href: "/builder/clones", icon: HomeIcon },
@@ -15,6 +15,8 @@ const TABS: Array<{ label: string; href: string; icon: any }> = [
   { label: "Warranties", href: "/builder/clones", icon: ShieldCheck },
   { label: "Contractors", href: "/builder/clones", icon: Users },
   { label: "Handoff", href: "/builder/clones", icon: PackageCheck },
+  { label: "Analytics", href: "/builder/analytics", icon: Activity },
+  { label: "Referrals", href: "/builder/referrals", icon: UserPlus },
   { label: "Marketing", href: "/builder/marketing", icon: Megaphone },
   { label: "Settings", href: "/admin/builders", icon: Settings },
 ];

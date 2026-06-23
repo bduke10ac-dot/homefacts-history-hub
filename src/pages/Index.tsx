@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/Navbar";
 import { AddressSearch } from "@/components/address/AddressSearch";
 import heroImage from "@/assets/hero-home.jpg";
+import { FoundingBuilderSpotlight } from "@/components/builder/FoundingBuilderSpotlight";
 
 const features = [
   { icon: ShieldCheck, title: "Verified history", desc: "Every record reviewed and confirmed by our admin team for accuracy you can trust." },
@@ -250,6 +251,7 @@ const Index = () => {
         </div>
       </section>
 
+      <FoundingBuilderSpotlight />
 
       {/* CTA */}
       <section className="container py-20 text-center">

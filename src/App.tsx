@@ -73,6 +73,8 @@ import BuilderProgram from "./pages/BuilderProgram";
 import AdminBuilders from "./pages/AdminBuilders";
 import ConstructionTimeline from "./pages/ConstructionTimeline";
 import HomeownerHandoff from "./pages/HomeownerHandoff";
+import BuilderReferrals from "./pages/BuilderReferrals";
+import BuilderAnalytics from "./pages/BuilderAnalytics";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -167,6 +169,8 @@ const App = () => (
             <Route path="/builders" element={<BuilderProgram />} />
             <Route path="/builder/clones/:id/timeline" element={<ProtectedRoute requireRole="builder"><ConstructionTimeline /></ProtectedRoute>} />
             <Route path="/builder/clones/:id/handoff" element={<ProtectedRoute requireRole="builder"><HomeownerHandoff /></ProtectedRoute>} />
+            <Route path="/builder/referrals" element={<ProtectedRoute requireRole="builder"><BuilderReferrals /></ProtectedRoute>} />
+            <Route path="/builder/analytics" element={<ProtectedRoute requireRole="builder"><BuilderAnalytics /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
