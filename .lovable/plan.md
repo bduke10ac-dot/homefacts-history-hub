@@ -1,79 +1,82 @@
-# HomeFacts → Digital Property Operating System
+# HomeFacts Competitor-Inspired Upgrade — Build Plan
 
-This is a massive, multi-phase build (27 modules, dozens of pages, ~30 new data models). I'll deliver it in shippable phases so you can review and steer between each one. Below is the phased plan plus what I'd ship first.
+Most of the 27 requested sections already exist in the project (Home Health, Property Timeline, Ask AI, Contractor Scores, Insurance Review, Ownership Passport, Neighborhood Intelligence, Digital Twin, Deferred Maintenance, Negotiation Assistant, Emergency Mode, Disaster Vault, Estate Planning, Investor Dashboard, Government Portal, Marketplace, Report Exports, Home Confidence Score, Builder Portal). This plan **adds what's missing**, **upgrades existing modules to full spec depth**, and **unifies everything into a single dashboard + report generator**.
 
----
-
-## Positioning update (ship immediately, Phase 0)
-- New tagline across Home, Why, Pricing, Realtor Success Center, Onboarding:
-  > "HomeFacts is the digital identity and lifelong operating system for every property — ownership, maintenance, insurance, contractors, inspections, warranties, public records, and AI guidance in one trusted platform that follows the home from construction through every owner."
-- Update hero copy on `Index.tsx` and `WhyHomeFacts.tsx`, plus dashboard intro banner.
+Ships in 4 batches so each is reviewable.
 
 ---
 
-## Phase 1 — Core homeowner OS (this PR, if you approve)
-**Goal: every property gets a Confidence Score, Health dashboard, Timeline, AI Assistant, and Reports.**
+## Batch 1 — Data foundation + new score engines
 
-New DB tables (one migration):
-- `home_confidence_scores` (property_id, overall, category jsonb, updated_at)
-- `home_health_sections` (property_id, section, install_date, lifespan_years, contractor, warranty_id, risk_level, notes, photos jsonb)
-- `timeline_events` (property_id, occurred_at, category, title, description, cost, contractor, verified, attachments jsonb)
-- `ai_assistant_queries` (property_id, user_id, question, answer, confidence, sources jsonb)
-- `verification_badges` (property_id, badge_type, status, verified_at, verified_by)
-- `report_exports` already exists — extend with `report_type` enum.
+**Migration:** new tables with full RLS + grants
+- `property_risk_scores` (overall + 7 sub-scores: structural, weather, insurance, environmental, maintenance, neighborhood, appreciation; each with score/level/ai_explanation/recommended_action)
+- `hazard_intelligence` (type, distance_m, risk_level, historical_events jsonb, insurance_impact, homeowner_explanation, recommended_action, lat/lng)
+- `crime_timeline` (period, category, count, trend, ai_summary)
+- `weather_environmental_events` (date, type, severity, distance_m, property_impact, insurance_impact, recommended_action)
+- `home_value_protection_scores` (overall + 11 component scores)
+- `insurance_readiness_scores` (18 sub-factors, premium_savings_estimate, checklist jsonb)
+- `future_cost_forecasts` (item, category, horizon_years, low_cost, high_cost, urgency, recommended_timing, reminder_id)
+- `maintenance_reminders` (title, category, cadence, next_due, region_specific, last_completed, recurrence_rule)
+- `regional_education_topics` (region, topic, recommended_inspection, insurance_note, education_md)
+- `buyer_decision_reports` (ai_recommendation, hidden_risks, expected_maintenance, negotiation_items, etc.)
+- `certification_status` (level: none/bronze/silver/gold/platinum, criteria_met jsonb, issued_at)
 
-New pages/components:
-- `HomeConfidenceScore.tsx` — 15-category radial + AI summary (uses existing `home-coach` edge fn)
-- `HomeHealth.tsx` — 24 system cards (Roof, HVAC, …) reusing `MaintenanceCenter` patterns
-- `PropertyTimeline.tsx` — visual chronological feed sourced from `property_records` + `timeline_events`
-- `AskHomeFactsAI.tsx` — chat panel scoped to one property (new edge fn `ask-property-ai` grounded on that property's records)
-- `ReportExports.tsx` — 13 report templates; reuse `generate-report` edge fn with a `template` param.
-
-Integration:
-- Add tabs to existing `PropertyView.tsx`: Confidence · Health · Timeline · Ask AI · Reports.
-- Reminder system already exists in `maintenancePlan.ts`; wire it into Confidence Score's "Maintenance compliance" category.
-
----
-
-## Phase 2 — Pro tools
-- `ContractorScore.tsx` + `contractor_scores` table; add badge to existing `professionals` records.
-- Extend `RealtorSuccessCenter` with listing-readiness checklist, buyer confidence report, anniversary reminders (reuse follow-up engine).
-- `InsuranceReview.tsx` + `insurance_policies`, `insurance_reviews` tables; annual renewal reminders.
-- `DeferredMaintenance.tsx` — projects 1/3/5/10-yr costs from `home_health_sections` lifespans.
-- `DigitalTwin.tsx` — room-by-room CRUD with photo/video upload to existing `property-files` bucket.
-
-## Phase 3 — Ecosystem
-- `BuilderMode` (extend existing `BuilderTemplates`/`BuilderClones`) with full handoff manual.
-- `GovernmentPortal.tsx` + new `government_reviews` table; new role `code_official`.
-- `NeighborhoodIntelligence.tsx` — aggregate existing crime/school/tax/env data into one page.
-- `Marketplace.tsx` — contextual recommendations driven by Confidence Score gaps.
-- `InvestorDashboard.tsx` — portfolio rollup across user's properties.
-
-## Phase 4 — Lifecycle & resilience
-- `EmergencyMode.tsx` + `emergency_events` table, claim packet PDF.
-- `DisasterVault.tsx` + `disaster_vault_documents` table (reuse `property-files` bucket, encrypted naming).
-- `EstatePlanning.tsx` + `estate_contacts`, `property_access_grants` tables with tiered permissions.
-- `NegotiationAssistant.tsx` — buyer-side AI tool that ingests inspection PDFs (uses `document--parse_document` pattern in edge fn).
-- `OwnershipPassport.tsx` — transferable bundle + signed share links (extend `share_links`).
+**Edge functions** (Lovable AI Gateway, AI SDK pattern):
+- `compute-risk-score` — generates 7-category risk score from property + records + hazards
+- `compute-insurance-readiness` — scores 18 factors, returns savings estimate + checklist
+- `compute-value-protection` — composite from maintenance, contractors, permits, insurance
+- `compute-certification` — evaluates bronze→platinum criteria
+- `generate-buyer-decision-report` — structured AI report
+- `forecast-future-costs` — generates 1/3/5/10yr forecasts from systems data
+- `summarize-crime-trend` — AI explanation per audience
 
 ---
 
-## Roles (added incrementally as phases land)
-Extend `app_role` enum: add `buyer`, `seller`, `inspector`, `insurance_agent`, `lender`, `appraiser`, `code_official`, `investor`, `estate_contact`. Each phase adds only the roles it needs, with RLS policies via `has_role()`.
+## Batch 2 — New pages (full spec depth)
+
+1. `PropertyRiskScore.tsx` — overall ring + 7 sub-category cards, each with score/level/AI explanation/recommended action/supporting docs
+2. `HazardMap.tsx` — Mapbox interactive map with 17 hazard layer toggles, property pin, distance-ranked hazard cards, "How this affects me" panels
+3. `CrimeTimeline.tsx` — 30d / 6mo / 12mo / 5yr tabs, 7 categories, trend chips, AI summaries per audience
+4. `WeatherTimeline.tsx` — chronological event timeline, severity badges, property/insurance impact, inspection CTAs
+5. `InsuranceReadinessScore.tsx` — 18-factor scorecard, premium savings estimate, claim readiness checklist, documentation checklist
+6. `HomeValueProtectionScore.tsx` — composite ring + 11 components, trend over time
+7. `FutureCostForecast.tsx` — 1/3/5/10yr horizon tabs, 15 item categories, cost ranges, "Create reminder" inline action
+8. `MaintenanceReminders.tsx` — one-time / recurring / seasonal / region-specific tabs, 21 default reminders, completion tracking
+9. `RegionalEducation.tsx` — auto-detected region (South/North/West/Midwest) → tailored inspections/reminders/insurance notes
+10. `BuyerDecisionReport.tsx` — AI-generated buyer report with all 14 sections, shareable
+11. `Certification.tsx` — HomeFacts Certified™ badge with 4 tiers, criteria checklist, "Apply for Certified" flow
+
+Plus **enhancements** to existing pages:
+- Home Health: add Age / Last Service / Warranty / Remaining Useful Life / Photos per category (13 categories)
+- Property Timeline: add Permit#, Warranty link, Verification chip, Photo gallery per event
+- Contractor Scores: surface all 16 fields from spec
+- Realtor dashboard: add referral tracking, verified badge, invite-homeowner, prep-for-sale checklist
 
 ---
 
-## Technical notes
-- All AI calls go through existing `_shared/ai-gateway.ts` using `google/gemini-3-flash-preview`.
-- All new public tables get GRANTs + RLS + `has_role`-based policies (no recursion).
-- Reuse existing `homeScore.ts` math as the foundation for Confidence Score so we don't fork scoring logic.
-- Reuse existing reminder engine in `maintenancePlan.ts` for the Notification Center; add a `notification_preferences` table for snooze/channel.
+## Batch 3 — Unified Dashboard + Report Generator
+
+**`HomeownerDashboard.tsx` rebuild:** 13 cards — Home Health, Property Risk, Insurance Readiness, Value Protection, Passport, Certification, Upcoming Maintenance, Recent Timeline, Weather Alerts, Open Documents Needed, Contractor Verification, Future Cost Forecast, Generate Report.
+
+**Report Generator (`ReportExports.tsx` expansion):** 8 report types (Homeowner / Buyer / Seller / Realtor / Insurance / Contractor / Builder / Inspector), each PDF via jsPDF, pulling scores + timeline + photos + documents + AI recommendation.
 
 ---
 
-## What I need from you
-1. **Approve the phasing** (or reorder — e.g. push Emergency Mode earlier).
-2. **Confirm Phase 1 scope** is what you want shipped next (Confidence Score + Health + Timeline + Ask AI + Reports + positioning copy).
-3. Anything you want **cut from MVP** (e.g. skip Investor/Builder if you're focused on homeowners first)?
+## Batch 4 — Navigation + Positioning + Polish
 
-Once you say go, I'll ship Phase 1 in one pass: migration → edge functions → pages → wired into `PropertyView`.
+- Add all new pages to `App.tsx` routes and `PropertyView.tsx` nav
+- Update homepage messaging: "complete digital operating system" + Zillow/Carfax/HomeFacts comparison
+- Empty states + CTAs everywhere (Upload Document, Add Timeline Event, Verify Contractor, Generate Report, Create Reminder, Apply for Certified, Transfer Passport)
+- Score rings, badges, risk color tokens (low/medium/high) added to `index.css`
+- Mobile responsive pass
+
+---
+
+## Prerequisites
+
+- **Mapbox public token** — I will request this as a secret (`MAPBOX_PUBLIC_TOKEN`) when starting Batch 2. Get one free at mapbox.com → Account → Tokens.
+- Lovable AI Gateway already configured (`LOVABLE_API_KEY` present).
+
+## Approval needed
+
+Confirm to start **Batch 1** (migration + 7 edge functions). I'll pause between batches so you can review before the next ships.
