@@ -158,6 +158,7 @@ const App = () => (
             <Route path="/property/:id/warranty-passport" element={<ProtectedRoute><WarrantyPassport /></ProtectedRoute>} />
             <Route path="/warranty-hub" element={<WarrantyHub />} />
             <Route path="/estate-planning" element={<EstatePlanningHub />} />
+            <Route path="/command-center" element={<PropertyCommandCenter />} />
             <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
