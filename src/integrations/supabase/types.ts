@@ -3678,6 +3678,278 @@ export type Database = {
         }
         Relationships: []
       }
+      orivaz_ce_courses: {
+        Row: {
+          active: boolean
+          category: string
+          created_at: string
+          description: string | null
+          hours: number
+          id: string
+          level_required: Database["public"]["Enums"]["orivaz_cert_level"]
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          category: string
+          created_at?: string
+          description?: string | null
+          hours?: number
+          id?: string
+          level_required?: Database["public"]["Enums"]["orivaz_cert_level"]
+          title: string
+        }
+        Update: {
+          active?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          hours?: number
+          id?: string
+          level_required?: Database["public"]["Enums"]["orivaz_cert_level"]
+          title?: string
+        }
+        Relationships: []
+      }
+      orivaz_ce_enrollments: {
+        Row: {
+          completed_at: string | null
+          course_id: string
+          created_at: string
+          id: string
+          score: number | null
+          status: Database["public"]["Enums"]["orivaz_ce_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          course_id: string
+          created_at?: string
+          id?: string
+          score?: number | null
+          status?: Database["public"]["Enums"]["orivaz_ce_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          course_id?: string
+          created_at?: string
+          id?: string
+          score?: number | null
+          status?: Database["public"]["Enums"]["orivaz_ce_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orivaz_ce_enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "orivaz_ce_courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orivaz_certifications: {
+        Row: {
+          badge_url: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          issued_at: string | null
+          level: Database["public"]["Enums"]["orivaz_cert_level"]
+          next_recert_at: string | null
+          notes: string | null
+          status: Database["public"]["Enums"]["orivaz_cert_status"]
+          total_ce_hours: number
+          trust_score: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_url?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          level?: Database["public"]["Enums"]["orivaz_cert_level"]
+          next_recert_at?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["orivaz_cert_status"]
+          total_ce_hours?: number
+          trust_score?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_url?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          level?: Database["public"]["Enums"]["orivaz_cert_level"]
+          next_recert_at?: string | null
+          notes?: string | null
+          status?: Database["public"]["Enums"]["orivaz_cert_status"]
+          total_ce_hours?: number
+          trust_score?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      orivaz_compliance_docs: {
+        Row: {
+          created_at: string
+          doc_type: Database["public"]["Enums"]["orivaz_doc_type"]
+          expires_at: string | null
+          file_url: string | null
+          id: string
+          issued_at: string | null
+          issuer: string | null
+          notes: string | null
+          number: string | null
+          updated_at: string
+          user_id: string
+          verified: boolean
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          doc_type: Database["public"]["Enums"]["orivaz_doc_type"]
+          expires_at?: string | null
+          file_url?: string | null
+          id?: string
+          issued_at?: string | null
+          issuer?: string | null
+          notes?: string | null
+          number?: string | null
+          updated_at?: string
+          user_id: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          doc_type?: Database["public"]["Enums"]["orivaz_doc_type"]
+          expires_at?: string | null
+          file_url?: string | null
+          id?: string
+          issued_at?: string | null
+          issuer?: string | null
+          notes?: string | null
+          number?: string | null
+          updated_at?: string
+          user_id?: string
+          verified?: boolean
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
+      orivaz_partner_benefits: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          level_required: Database["public"]["Enums"]["orivaz_cert_level"]
+          sort_order: number
+          title: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          level_required?: Database["public"]["Enums"]["orivaz_cert_level"]
+          sort_order?: number
+          title: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          level_required?: Database["public"]["Enums"]["orivaz_cert_level"]
+          sort_order?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      orivaz_recertifications: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          cycle_start: string
+          due_date: string
+          id: string
+          notes: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          cycle_start?: string
+          due_date: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          cycle_start?: string
+          due_date?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      orivaz_verification_events: {
+        Row: {
+          created_at: string
+          detail: Json | null
+          event_type: string
+          id: string
+          result: string | null
+          source: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: Json | null
+          event_type: string
+          id?: string
+          result?: string | null
+          source?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detail?: Json | null
+          event_type?: string
+          id?: string
+          result?: string | null
+          source?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ownership_history: {
         Row: {
           data_license_status: string | null
@@ -7753,6 +8025,22 @@ export type Database = {
         | "siding_exterior"
         | "manufacturer"
         | "other"
+      orivaz_ce_status: "enrolled" | "in_progress" | "completed" | "failed"
+      orivaz_cert_level: "none" | "bronze" | "silver" | "gold" | "platinum"
+      orivaz_cert_status:
+        | "not_started"
+        | "in_review"
+        | "active"
+        | "expired"
+        | "suspended"
+      orivaz_doc_type:
+        | "license"
+        | "insurance"
+        | "bond"
+        | "workers_comp"
+        | "w9"
+        | "identity"
+        | "other"
       risk_level: "low" | "medium" | "high"
       warranty_category:
         | "roof"
@@ -7954,6 +8242,24 @@ export const Constants = {
         "flooring",
         "siding_exterior",
         "manufacturer",
+        "other",
+      ],
+      orivaz_ce_status: ["enrolled", "in_progress", "completed", "failed"],
+      orivaz_cert_level: ["none", "bronze", "silver", "gold", "platinum"],
+      orivaz_cert_status: [
+        "not_started",
+        "in_review",
+        "active",
+        "expired",
+        "suspended",
+      ],
+      orivaz_doc_type: [
+        "license",
+        "insurance",
+        "bond",
+        "workers_comp",
+        "w9",
+        "identity",
         "other",
       ],
       risk_level: ["low", "medium", "high"],
