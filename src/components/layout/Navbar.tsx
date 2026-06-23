@@ -37,6 +37,9 @@ export function Navbar() {
           <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
             <Link to="/warranty-hub"><ShieldCheck className="mr-1.5 h-4 w-4" />Warranty Hub</Link>
           </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/estate-planning"><Shield className="mr-1.5 h-4 w-4" />Estate Planning</Link>
+          </Button>
           {user ? (
             <>
               <Button variant="ghost" size="sm" asChild>

@@ -82,6 +82,7 @@ import BuilderCommunity from "./pages/BuilderCommunity";
 import WarrantyHub from "./pages/WarrantyHub";
 import PropertyWarranties from "./pages/PropertyWarranties";
 import WarrantyPassport from "./pages/WarrantyPassport";
+import EstatePlanningHub from "./pages/EstatePlanningHub";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -155,6 +156,7 @@ const App = () => (
             <Route path="/property/:id/warranties" element={<ProtectedRoute><PropertyWarranties /></ProtectedRoute>} />
             <Route path="/property/:id/warranty-passport" element={<ProtectedRoute><WarrantyPassport /></ProtectedRoute>} />
             <Route path="/warranty-hub" element={<WarrantyHub />} />
+            <Route path="/estate-planning" element={<EstatePlanningHub />} />
             <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
