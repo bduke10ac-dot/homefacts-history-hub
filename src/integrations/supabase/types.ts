@@ -1515,6 +1515,50 @@ export type Database = {
           },
         ]
       }
+      estate_checklist_items: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          id: string
+          item_key: string
+          notes: string | null
+          property_id: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          item_key: string
+          notes?: string | null
+          property_id: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          item_key?: string
+          notes?: string | null
+          property_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_checklist_items_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       estate_contacts: {
         Row: {
           accepted_at: string | null
@@ -1564,6 +1608,266 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "estate_contacts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      estate_documents: {
+        Row: {
+          created_at: string
+          created_by: string
+          document_name: string
+          document_type: string
+          file_path: string | null
+          file_url: string | null
+          id: string
+          notes: string | null
+          permission_level: string
+          property_id: string
+          review_date: string | null
+          shared_contact_ids: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          document_name: string
+          document_type: string
+          file_path?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          permission_level?: string
+          property_id: string
+          review_date?: string | null
+          shared_contact_ids?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          document_name?: string
+          document_type?: string
+          file_path?: string | null
+          file_url?: string | null
+          id?: string
+          notes?: string | null
+          permission_level?: string
+          property_id?: string
+          review_date?: string | null
+          shared_contact_ids?: string[]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_documents_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      estate_incapacity_plans: {
+        Row: {
+          attorney: string | null
+          created_at: string
+          created_by: string
+          emergency_instructions: string | null
+          financial_poa: string | null
+          hoa_contact: string | null
+          id: string
+          insurance_agent: string | null
+          maintenance_instructions: string | null
+          medical_poa: string | null
+          mortgage_company: string | null
+          property_id: string
+          property_manager: string | null
+          updated_at: string
+          utility_contacts: string | null
+        }
+        Insert: {
+          attorney?: string | null
+          created_at?: string
+          created_by: string
+          emergency_instructions?: string | null
+          financial_poa?: string | null
+          hoa_contact?: string | null
+          id?: string
+          insurance_agent?: string | null
+          maintenance_instructions?: string | null
+          medical_poa?: string | null
+          mortgage_company?: string | null
+          property_id: string
+          property_manager?: string | null
+          updated_at?: string
+          utility_contacts?: string | null
+        }
+        Update: {
+          attorney?: string | null
+          created_at?: string
+          created_by?: string
+          emergency_instructions?: string | null
+          financial_poa?: string | null
+          hoa_contact?: string | null
+          id?: string
+          insurance_agent?: string | null
+          maintenance_instructions?: string | null
+          medical_poa?: string | null
+          mortgage_company?: string | null
+          property_id?: string
+          property_manager?: string | null
+          updated_at?: string
+          utility_contacts?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_incapacity_plans_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      estate_legal_professionals: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string | null
+          id: string
+          license_status: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          profession_type: string
+          revenue_category: string | null
+          service_area: string | null
+          updated_at: string
+          verified: boolean
+          website: string | null
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          license_status?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          profession_type: string
+          revenue_category?: string | null
+          service_area?: string | null
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          license_status?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          profession_type?: string
+          revenue_category?: string | null
+          service_area?: string | null
+          updated_at?: string
+          verified?: boolean
+          website?: string | null
+        }
+        Relationships: []
+      }
+      estate_probate_tasks: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          created_by: string
+          id: string
+          notes: string | null
+          property_id: string
+          task_key: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          created_by: string
+          id?: string
+          notes?: string | null
+          property_id: string
+          task_key: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          created_by?: string
+          id?: string
+          notes?: string | null
+          property_id?: string
+          task_key?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_probate_tasks_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      estate_reviews: {
+        Row: {
+          created_at: string
+          created_by: string
+          due_date: string | null
+          id: string
+          last_reviewed_at: string | null
+          notes: string | null
+          property_id: string
+          reminder_enabled: boolean
+          review_type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          due_date?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          notes?: string | null
+          property_id: string
+          reminder_enabled?: boolean
+          review_type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          due_date?: string | null
+          id?: string
+          last_reviewed_at?: string | null
+          notes?: string | null
+          property_id?: string
+          reminder_enabled?: boolean
+          review_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_reviews_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
