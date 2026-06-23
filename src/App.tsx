@@ -81,6 +81,7 @@ import BuilderAnalytics from "./pages/BuilderAnalytics";
 import BuilderCommunity from "./pages/BuilderCommunity";
 import WarrantyHub from "./pages/WarrantyHub";
 import PropertyWarranties from "./pages/PropertyWarranties";
+import WarrantyPassport from "./pages/WarrantyPassport";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -152,6 +153,7 @@ const App = () => (
             <Route path="/property/:id/roi" element={<ImprovementROI />} />
             <Route path="/property/:id/annual-report" element={<ProtectedRoute><AnnualReport /></ProtectedRoute>} />
             <Route path="/property/:id/warranties" element={<ProtectedRoute><PropertyWarranties /></ProtectedRoute>} />
+            <Route path="/property/:id/warranty-passport" element={<ProtectedRoute><WarrantyPassport /></ProtectedRoute>} />
             <Route path="/warranty-hub" element={<WarrantyHub />} />
             <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
