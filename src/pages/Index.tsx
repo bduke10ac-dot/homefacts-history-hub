@@ -76,13 +76,18 @@ const Index = () => {
           <p className="mt-4 text-muted-foreground">Built for homeowners, realtors, contractors, and the buyers who trust them.</p>
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((f) => (
-            <div key={f.title} className="rounded-xl border bg-card p-6 shadow-card transition-all hover:shadow-elevated">
-              <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          {features.map((f, i) => (
+            <div
+              key={f.title}
+              className="lift group relative overflow-hidden rounded-xl border bg-card p-6 shadow-card"
+              style={{ animationDelay: `${i * 90}ms` }}
+            >
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br from-primary/25 to-cyan-400/20 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="relative flex h-11 w-11 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary-glow text-primary-foreground shadow-glow transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
                 <f.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-4 font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>
+              <h3 className="relative mt-4 font-semibold">{f.title}</h3>
+              <p className="relative mt-2 text-sm text-muted-foreground">{f.desc}</p>
             </div>
           ))}
         </div>
