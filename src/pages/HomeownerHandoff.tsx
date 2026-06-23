@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { HandoffQRDialog } from "@/components/newbuild/HandoffQRDialog";
+import { BuiltBy } from "@/components/builder/BuiltBy";
 import { ArrowLeft, FileText, Loader2, Sparkles, Home } from "lucide-react";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
