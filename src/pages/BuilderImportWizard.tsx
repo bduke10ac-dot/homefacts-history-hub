@@ -93,7 +93,7 @@ export default function BuilderImportWizard() {
         if (data) {
           setCompanyId(data.id);
           setProfile((p: any) => ({ ...p, ...data }));
-          setWebsiteInput(data.website || p.website);
+          setWebsiteInput(data.website || websiteInput);
         }
       });
   }, []);
