@@ -42,6 +42,9 @@ export function Navbar() {
             <Link to="/builders">Builders</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+            <Link to="/command-center"><LayoutGrid className="mr-1.5 h-4 w-4" />Command Center</Link>
+          </Button>
+          <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
             <Link to="/warranty-hub"><ShieldCheck className="mr-1.5 h-4 w-4" />Warranty Hub</Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
