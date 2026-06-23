@@ -31,6 +31,11 @@ function ext(url?: string | null) {
   return url.startsWith("http") ? url : `https://${url}`;
 }
 
+function logEvent(companyId: string, type: string) {
+  if (!companyId) return;
+  (supabase as any).from("builder_events").insert({ company_id: companyId, event_type: type });
+}
+
 export function BuiltBy({ company: companyProp, slug, variant = "full", className }: Props) {
   const [company, setCompany] = useState<any>(companyProp ?? null);
 
@@ -127,10 +132,11 @@ export function BuiltBy({ company: companyProp, slug, variant = "full", classNam
           </div>
         </div>
 
-        {(company.tagline || company.description) && (
-          <p className="mt-3 text-sm leading-relaxed text-foreground/85">
-            {company.tagline ?? company.description}
-          </p>
+        {company.description && (
+          <p className="mt-3 text-sm leading-relaxed text-foreground/85">{company.description}</p>
+        )}
+        {company.tagline && company.tagline !== company.description && (
+          <p className="mt-1 text-xs italic text-muted-foreground">{company.tagline}</p>
         )}
 
         {company.badges?.length > 0 && <div className="mt-3"><BuilderBadgeRow badges={company.badges} /></div>}
@@ -138,22 +144,22 @@ export function BuiltBy({ company: companyProp, slug, variant = "full", classNam
 
       <div className="grid gap-2 px-5 py-4 sm:grid-cols-2">
         <Button asChild>
-          <a href={website ?? "#"} target="_blank" rel="noreferrer">
+          <a href={website ?? "#"} target="_blank" rel="noreferrer" onClick={() => logEvent(company.id, "website_click")}>
             <Globe className="mr-2 h-4 w-4" />Visit Builder Website
           </a>
         </Button>
         <Button asChild variant="outline">
-          <a href={tour ?? "#"} target="_blank" rel="noreferrer">
+          <a href={tour ?? "#"} target="_blank" rel="noreferrer" onClick={() => logEvent(company.id, "tour_click")}>
             <CalendarCheck className="mr-2 h-4 w-4" />Schedule a Tour
           </a>
         </Button>
         <Button asChild variant="outline">
-          <a href={homes ?? "#"} target="_blank" rel="noreferrer">
+          <a href={homes ?? "#"} target="_blank" rel="noreferrer" onClick={() => logEvent(company.id, "homes_click")}>
             <Home className="mr-2 h-4 w-4" />View Available Homes
           </a>
         </Button>
         <Button asChild variant="outline">
-          <a href={contact ?? "#"} target="_blank" rel="noreferrer">
+          <a href={contact ?? "#"} target="_blank" rel="noreferrer" onClick={() => logEvent(company.id, "contact_click")}>
             <Mail className="mr-2 h-4 w-4" />Contact Builder
           </a>
         </Button>

@@ -17,7 +17,7 @@ export default function BuilderReferrals() {
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [list, setList] = useState<any[]>([]);
   const [form, setForm] = useState({
-    referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", notes: "",
+    referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", region: "", notes: "",
   });
   const [busy, setBusy] = useState(false);
 
@@ -42,7 +42,7 @@ export default function BuilderReferrals() {
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Referral submitted — our team will follow up.");
-    setForm({ referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", notes: "" });
+    setForm({ referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", region: "", notes: "" });
     const { data: refs } = await (supabase as any).from("builder_referrals").select("*").eq("referring_company_id", companyId).order("created_at", { ascending: false });
     setList(refs ?? []);
   };
@@ -64,6 +64,7 @@ export default function BuilderReferrals() {
               <Field label="Contact email"><Input type="email" value={form.contact_email} onChange={(e) => setForm({ ...form, contact_email: e.target.value })} /></Field>
               <Field label="Contact phone"><Input value={form.contact_phone} onChange={(e) => setForm({ ...form, contact_phone: e.target.value })} /></Field>
               <Field label="Website"><Input value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} /></Field>
+              <Field label="Region / market"><Input value={form.region} onChange={(e) => setForm({ ...form, region: e.target.value })} placeholder="e.g. Middle Tennessee" /></Field>
             </div>
             <Field label="Notes"><Textarea rows={4} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} /></Field>
             <Button onClick={submit} disabled={busy}><Send className="mr-2 h-4 w-4" />Submit referral</Button>
