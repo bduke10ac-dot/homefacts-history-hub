@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Home, LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users, Award } from "lucide-react";
+import { Home, LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users, Award, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -37,6 +37,9 @@ export function Navbar() {
         <nav className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>
             <Link to="/search"><Search className="mr-1.5 h-4 w-4" />Search</Link>
+          </Button>
+          <Button variant="ghost" size="sm" asChild>
+            <Link to="/intelligence"><Sparkles className="mr-1.5 h-4 w-4" />Property Intelligence</Link>
           </Button>
           <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
             <Link to="/builders">Builders</Link>
