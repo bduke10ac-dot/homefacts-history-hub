@@ -12,6 +12,7 @@ import {
   Camera, CheckCircle2, ClipboardList, FileText, Filter, Hammer, Home, Image as ImageIcon,
   LayoutGrid, Plus, Receipt, Send, ShieldCheck, Sparkles, Upload, Users, Wrench, Zap,
 } from "lucide-react";
+import { networkPros } from "@/lib/professionalsNetwork";
 
 const POSITIONING = "Home apps store your documents. Orivaz protects, verifies, transfers, and grows the full history of your property.";
 
