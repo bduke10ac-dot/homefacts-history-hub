@@ -86,6 +86,7 @@ import EstatePlanningHub from "./pages/EstatePlanningHub";
 import PropertyCommandCenter from "./pages/PropertyCommandCenter";
 import ProfessionalNetwork from "./pages/ProfessionalNetwork";
 import CertificationCenter from "./pages/CertificationCenter";
+import PropertySystems from "./pages/PropertySystems";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -128,6 +129,7 @@ const App = () => (
             <Route path="/property/:id/confidence" element={<HomeConfidenceScore />} />
             <Route path="/property/:id/health" element={<HomeHealth />} />
             <Route path="/property/:id/timeline" element={<PropertyTimeline />} />
+            <Route path="/property/:id/systems" element={<PropertySystems />} />
             <Route path="/property/:id/ask" element={<ProtectedRoute><AskPropertyAI /></ProtectedRoute>} />
             <Route path="/property/:id/reports" element={<ReportExports />} />
             <Route path="/property/:id/contractors" element={<ProtectedRoute><ContractorScores /></ProtectedRoute>} />
