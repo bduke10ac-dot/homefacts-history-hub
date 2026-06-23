@@ -95,6 +95,7 @@ const ProfessionalNetwork = lazy(() => import("./pages/ProfessionalNetwork"));
 const CertificationCenter = lazy(() => import("./pages/CertificationCenter"));
 const PropertySystems = lazy(() => import("./pages/PropertySystems"));
 const PropertyIntelligence = lazy(() => import("./pages/PropertyIntelligence"));
+const ClaimProperty = lazy(() => import("./pages/ClaimProperty"));
 
 const queryClient = new QueryClient();
 
@@ -186,6 +187,7 @@ const App = () => (
                 <Route path="/report/:id" element={<AddressReport />} />
                 <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
                 <Route path="/r/:token" element={<PropertyView shared />} />
+                <Route path="/claim/:token" element={<ClaimProperty />} />
                 <Route path="/home/:token" element={<BeginnerGuide />} />
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
                 <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
