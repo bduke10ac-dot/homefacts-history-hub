@@ -563,3 +563,120 @@ function UploadRow({ label, category, onPick }: { label: string; category: strin
     </div>
   );
 }
+
+function HomeownerInviteCard({ cloneRow }: { cloneRow: any }) {
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [invites, setInvites] = useState<any[]>([]);
+
+  const propertyId: string | null = cloneRow?.property_id ?? null;
+
+  async function loadInvites() {
+    if (!propertyId) { setInvites([]); return; }
+    const { data } = await (supabase as any)
+      .from("property_invites")
+      .select("id,invitee_email,status,token,expires_at,accepted_at,created_at")
+      .eq("property_id", propertyId)
+      .order("created_at", { ascending: false });
+    setInvites(data ?? []);
+  }
+  useEffect(() => { void loadInvites(); }, [propertyId]);
+
+  async function ensurePropertyId(): Promise<string | null> {
+    if (propertyId) return propertyId;
+    const { data: u } = await supabase.auth.getUser();
+    if (!u?.user) { toast.error("Sign in required"); return null; }
+    const { data: prop, error } = await supabase
+      .from("properties")
+      .insert({
+        address_line: cloneRow.address_line ?? "Unnamed property",
+        city: cloneRow.city ?? "",
+        state: cloneRow.state ?? "",
+        zip: cloneRow.zip ?? "",
+        created_by: u.user.id,
+      })
+      .select("id")
+      .single();
+    if (error || !prop) { toast.error(error?.message ?? "Could not create property"); return null; }
+    await supabase.from("nb_property_clones").update({ property_id: prop.id }).eq("id", cloneRow.id);
+    return prop.id;
+  }
+
+  async function sendInvite() {
+    const trimmed = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) { toast.error("Enter a valid email"); return; }
+    setBusy(true);
+    try {
+      const pid = await ensurePropertyId();
+      if (!pid) return;
+      const { error } = await (supabase as any)
+        .from("property_invites")
+        .insert({ property_id: pid, invitee_email: trimmed });
+      if (error) { toast.error(error.message); return; }
+      setEmail("");
+      toast.success("Invite created — share the link below with the homeowner.");
+      await loadInvites();
+    } finally { setBusy(false); }
+  }
+
+  async function revoke(id: string) {
+    const { error } = await (supabase as any).from("property_invites").update({ status: "revoked" }).eq("id", id);
+    if (error) toast.error(error.message); else { toast.success("Invite revoked"); void loadInvites(); }
+  }
+
+  function copyLink(token: string) {
+    const url = `${window.location.origin}/claim/${token}`;
+    void navigator.clipboard.writeText(url);
+    toast.success("Claim link copied");
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2"><Send className="h-4 w-4" />Assign to homeowner by email</CardTitle>
+        <CardDescription>The homeowner signs in with this exact email, opens the claim link, and ownership transfers to their account.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4 text-sm">
+        <div className="flex flex-wrap gap-2">
+          <Input
+            type="email"
+            placeholder="homeowner@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="flex-1 min-w-[220px]"
+          />
+          <Button onClick={sendInvite} disabled={busy}><Send className="mr-2 h-4 w-4" />Create invite</Button>
+        </div>
+
+        {invites.length > 0 && (
+          <div className="space-y-2">
+            <div className="text-xs font-semibold uppercase text-muted-foreground">Invites</div>
+            {invites.map((inv) => (
+              <div key={inv.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3">
+                <div>
+                  <div className="font-medium">{inv.invitee_email}</div>
+                  <div className="text-xs text-muted-foreground">
+                    {inv.status === "accepted"
+                      ? `Accepted ${new Date(inv.accepted_at).toLocaleDateString()}`
+                      : inv.status === "pending"
+                      ? `Expires ${new Date(inv.expires_at).toLocaleDateString()}`
+                      : inv.status}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  {inv.status === "pending" && (
+                    <>
+                      <Button size="sm" variant="outline" onClick={() => copyLink(inv.token)}>Copy link</Button>
+                      <Button size="sm" variant="ghost" onClick={() => revoke(inv.id)}>Revoke</Button>
+                    </>
+                  )}
+                  <Badge variant="outline">{inv.status}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
