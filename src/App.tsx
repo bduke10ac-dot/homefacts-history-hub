@@ -55,6 +55,17 @@ import DisasterVault from "./pages/DisasterVault";
 import EstatePlanning from "./pages/EstatePlanning";
 import NegotiationAssistant from "./pages/NegotiationAssistant";
 import OwnershipPassport from "./pages/OwnershipPassport";
+import PropertyRiskScore from "./pages/PropertyRiskScore";
+import HazardMap from "./pages/HazardMap";
+import CrimeTimeline from "./pages/CrimeTimeline";
+import WeatherTimeline from "./pages/WeatherTimeline";
+import InsuranceReadinessScore from "./pages/InsuranceReadinessScore";
+import HomeValueProtection from "./pages/HomeValueProtection";
+import FutureCostForecast from "./pages/FutureCostForecast";
+import MaintenanceReminders from "./pages/MaintenanceReminders";
+import RegionalEducation from "./pages/RegionalEducation";
+import BuyerDecisionReport from "./pages/BuyerDecisionReport";
+import Certification from "./pages/Certification";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -111,6 +122,17 @@ const App = () => (
             <Route path="/property/:id/estate" element={<ProtectedRoute><EstatePlanning /></ProtectedRoute>} />
             <Route path="/property/:id/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
             <Route path="/property/:id/passport" element={<ProtectedRoute><OwnershipPassport /></ProtectedRoute>} />
+            <Route path="/property/:id/risk" element={<PropertyRiskScore />} />
+            <Route path="/property/:id/hazards" element={<HazardMap />} />
+            <Route path="/property/:id/crime" element={<CrimeTimeline />} />
+            <Route path="/property/:id/weather" element={<WeatherTimeline />} />
+            <Route path="/property/:id/insurance-readiness" element={<ProtectedRoute><InsuranceReadinessScore /></ProtectedRoute>} />
+            <Route path="/property/:id/value-protection" element={<ProtectedRoute><HomeValueProtection /></ProtectedRoute>} />
+            <Route path="/property/:id/forecast" element={<ProtectedRoute><FutureCostForecast /></ProtectedRoute>} />
+            <Route path="/property/:id/reminders" element={<ProtectedRoute><MaintenanceReminders /></ProtectedRoute>} />
+            <Route path="/property/:id/regional" element={<RegionalEducation />} />
+            <Route path="/property/:id/buyer-report" element={<BuyerDecisionReport />} />
+            <Route path="/property/:id/certification" element={<ProtectedRoute><Certification /></ProtectedRoute>} />
             <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />

@@ -226,6 +226,17 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
               <Link to={`/property/${property.id}/estate`}><Button variant="outline" size="sm">Estate Planning</Button></Link>
               <Link to={`/property/${property.id}/negotiate`}><Button variant="outline" size="sm">Negotiation AI</Button></Link>
               <Link to={`/property/${property.id}/passport`}><Button variant="outline" size="sm">Ownership Passport</Button></Link>
+              <Link to={`/property/${property.id}/risk`}><Button variant="outline" size="sm">Property Risk Score</Button></Link>
+              <Link to={`/property/${property.id}/hazards`}><Button variant="outline" size="sm">Hazard Intelligence</Button></Link>
+              <Link to={`/property/${property.id}/crime`}><Button variant="outline" size="sm">Crime Timeline</Button></Link>
+              <Link to={`/property/${property.id}/weather`}><Button variant="outline" size="sm">Weather Timeline</Button></Link>
+              <Link to={`/property/${property.id}/insurance-readiness`}><Button variant="outline" size="sm">Insurance Readiness</Button></Link>
+              <Link to={`/property/${property.id}/value-protection`}><Button variant="outline" size="sm">Value Protection</Button></Link>
+              <Link to={`/property/${property.id}/forecast`}><Button variant="outline" size="sm">Future Cost Forecast</Button></Link>
+              <Link to={`/property/${property.id}/reminders`}><Button variant="outline" size="sm">Reminders</Button></Link>
+              <Link to={`/property/${property.id}/regional`}><Button variant="outline" size="sm">Regional Education</Button></Link>
+              <Link to={`/property/${property.id}/buyer-report`}><Button variant="outline" size="sm">Buyer Decision Report</Button></Link>
+              <Link to={`/property/${property.id}/certification`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />HomeFacts Certified™</Button></Link>
               <Link to={`/property/${property.id}/emergency`}><Button variant="destructive" size="sm">Emergency Mode</Button></Link>
               <Link to={`/property/${property.id}/maintenance`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Maintenance</Button></Link>
               <Link to={`/property/${property.id}/engagement`}><Button variant="outline" size="sm"><Award className="mr-2 h-4 w-4" />Home Score & Rewards</Button></Link>
