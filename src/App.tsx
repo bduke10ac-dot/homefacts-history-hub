@@ -81,6 +81,7 @@ import BuilderAnalytics from "./pages/BuilderAnalytics";
 import BuilderCommunity from "./pages/BuilderCommunity";
 import WarrantyHub from "./pages/WarrantyHub";
 import PropertyWarranties from "./pages/PropertyWarranties";
+import WarrantyPassport from "./pages/WarrantyPassport";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
