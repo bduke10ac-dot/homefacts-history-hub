@@ -43,11 +43,14 @@
 
     --radius: 0.625rem;
 
-    --gradient-hero: linear-gradient(135deg, hsl(215 75% 22%) 0%, hsl(215 70% 38%) 100%);
+    --gradient-hero: linear-gradient(120deg, hsl(220 80% 12%) 0%, hsl(215 75% 22%) 35%, hsl(200 85% 42%) 70%, hsl(180 70% 50%) 100%);
+    --gradient-mesh: radial-gradient(at 18% 22%, hsl(200 90% 55% / 0.55) 0px, transparent 50%), radial-gradient(at 82% 10%, hsl(265 85% 60% / 0.45) 0px, transparent 50%), radial-gradient(at 70% 85%, hsl(160 80% 50% / 0.4) 0px, transparent 50%), radial-gradient(at 10% 90%, hsl(215 90% 35% / 0.5) 0px, transparent 50%);
     --gradient-subtle: linear-gradient(180deg, hsl(210 40% 99%) 0%, hsl(210 35% 96%) 100%);
+    --gradient-shine: linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.35) 50%, transparent 70%);
     --shadow-card: 0 1px 3px 0 hsl(215 30% 14% / 0.06), 0 1px 2px -1px hsl(215 30% 14% / 0.06);
-    --shadow-elevated: 0 10px 30px -12px hsl(215 75% 22% / 0.18);
-    --shadow-glow: 0 0 40px hsl(215 70% 38% / 0.25);
+    --shadow-elevated: 0 18px 50px -18px hsl(215 75% 22% / 0.35);
+    --shadow-glow: 0 0 60px hsl(200 90% 50% / 0.45);
+    --shadow-deep: 0 30px 80px -30px hsl(215 90% 18% / 0.45);
 
     --sidebar-background: 215 40% 16%;
     --sidebar-foreground: 210 40% 96%;
@@ -92,11 +95,91 @@
 }
 
 @layer utilities {
-  .bg-gradient-hero { background: var(--gradient-hero); }
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+    background-size: 200% 200%;
+    animation: hero-pan 18s ease-in-out infinite;
+  }
+  .bg-gradient-mesh { background-image: var(--gradient-mesh); }
   .bg-gradient-subtle { background: var(--gradient-subtle); }
   .shadow-card { box-shadow: var(--shadow-card); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-deep { box-shadow: var(--shadow-deep); }
+
+  .text-gradient {
+    background: linear-gradient(90deg, hsl(var(--primary-foreground)) 0%, hsl(200 90% 80%) 45%, hsl(var(--primary-foreground)) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: text-shine 6s linear infinite;
+  }
+
+  .lift {
+    transition: transform 0.45s cubic-bezier(.2,.7,.2,1), box-shadow 0.45s ease, border-color 0.45s ease;
+  }
+  .lift:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-deep);
+    border-color: hsl(var(--primary) / 0.35);
+  }
+
+  .shine-btn { position: relative; overflow: hidden; isolation: isolate; }
+  .shine-btn::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: var(--gradient-shine);
+    transform: translateX(-120%);
+    transition: transform 0.9s ease;
+    pointer-events: none;
+  }
+  .shine-btn:hover::after { transform: translateX(120%); }
+
+  .float-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(60px);
+    opacity: 0.55;
+    animation: blob-float 14s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .reveal { opacity: 0; transform: translateY(24px); animation: reveal-up 0.9s cubic-bezier(.2,.7,.2,1) forwards; }
+  .reveal-delay-1 { animation-delay: 0.12s; }
+  .reveal-delay-2 { animation-delay: 0.24s; }
+  .reveal-delay-3 { animation-delay: 0.36s; }
+  .reveal-delay-4 { animation-delay: 0.48s; }
+
+  .grain::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(hsl(0 0% 100% / 0.06) 1px, transparent 1px);
+    background-size: 3px 3px;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+}
+
+@keyframes hero-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes text-shine {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes blob-float {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(40px,-30px) scale(1.1); }
+  66% { transform: translate(-30px,20px) scale(0.95); }
+}
+@keyframes reveal-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 30px hsl(200 90% 50% / 0.3); }
+  50% { box-shadow: 0 0 70px hsl(200 90% 60% / 0.65); }
 }
 
 @media print {
