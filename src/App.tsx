@@ -166,6 +166,7 @@ const App = () => (
             <Route path="/command-center" element={<PropertyCommandCenter />} />
             <Route path="/network" element={<ProfessionalNetwork />} />
             <Route path="/certification" element={<CertificationCenter />} />
+            <Route path="/intelligence" element={<PropertyIntelligence />} />
             <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
             <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
             <Route path="/properties/:id/home-history" element={<PropertyHomeHistory />} />
