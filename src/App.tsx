@@ -75,6 +75,7 @@ import ConstructionTimeline from "./pages/ConstructionTimeline";
 import HomeownerHandoff from "./pages/HomeownerHandoff";
 import BuilderReferrals from "./pages/BuilderReferrals";
 import BuilderAnalytics from "./pages/BuilderAnalytics";
+import BuilderCommunity from "./pages/BuilderCommunity";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -157,6 +158,7 @@ const App = () => (
             <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
             <Route path="/realtor" element={<ProtectedRoute requireRole="realtor"><RealtorSuccessCenter /></ProtectedRoute>} />
             <Route path="/builders/:slug" element={<BuilderProfile />} />
+            <Route path="/builders/:slug/communities/:id" element={<BuilderCommunity />} />
             <Route path="/builder" element={<ProtectedRoute requireRole="builder"><BuilderDashboard /></ProtectedRoute>} />
             <Route path="/builder/marketing" element={<ProtectedRoute requireRole="builder"><BuilderMarketing /></ProtectedRoute>} />
             <Route path="/builder/templates" element={<ProtectedRoute requireRole="builder"><BuilderTemplates /></ProtectedRoute>} />

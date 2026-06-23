@@ -22,7 +22,7 @@ export default function BuilderProfile() {
   const { slug } = useParams();
   const { hasRole } = useAuth();
   const [company, setCompany] = useState<any>(null);
-  const [stats, setStats] = useState({ homes: 0, communities: [] as string[], plans: [] as any[] });
+  const [stats, setStats] = useState({ homes: 0, communities: [] as any[], plans: [] as any[], demoHomes: [] as any[] });
   const [loading, setLoading] = useState(true);
 
   const load = async () => {
@@ -33,14 +33,18 @@ export default function BuilderProfile() {
       (supabase as any).from("builder_events").insert({ company_id: data.id, event_type: "profile_visit" });
     }
     if (data) {
-      const [{ count }, { data: templates }] = await Promise.all([
+      const [{ count }, { data: templates }, { data: homes }] = await Promise.all([
         supabase.from("nb_property_clones").select("id", { count: "exact", head: true }).eq("company_id", data.id),
-        supabase.from("nb_templates").select("id, name, subdivision, square_feet, bedrooms, bathrooms, kind").eq("company_id", data.id),
+        supabase.from("nb_templates").select("id, name, subdivision, square_feet, bedrooms, bathrooms, kind, elevation, description").eq("company_id", data.id),
+        (supabase as any).from("nb_property_clones")
+          .select("id, address_line, city, state, status, handoff_token, nb_templates(name, square_feet, bedrooms, bathrooms)")
+          .eq("company_id", data.id).order("created_at", { ascending: false }).limit(6),
       ]);
       setStats({
         homes: count ?? 0,
-        communities: Array.from(new Set((templates ?? []).map((t: any) => t.subdivision).filter(Boolean))),
+        communities: (templates ?? []).filter((t: any) => t.kind === "subdivision"),
         plans: (templates ?? []).filter((t: any) => t.kind !== "subdivision"),
+        demoHomes: homes ?? [],
       });
     }
     setLoading(false);
@@ -114,9 +118,37 @@ export default function BuilderProfile() {
 
             <Section title="Communities" icon={Building2}>
               {stats.communities.length ? (
-                <div className="flex flex-wrap gap-1.5">{stats.communities.map((c) => <Badge key={c} variant="outline">{c}</Badge>)}</div>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {stats.communities.map((c: any) => (
+                    <Link
+                      key={c.id}
+                      to={`/builders/${company.slug}/communities/${c.id}`}
+                      className="rounded-lg border bg-card p-3 text-left transition hover:border-primary"
+                    >
+                      <p className="font-medium">{c.name}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{c.description ?? "Explore amenities, floor plans, and available homes."}</p>
+                    </Link>
+                  ))}
+                </div>
               ) : <p className="text-muted-foreground">No communities yet.</p>}
             </Section>
+
+            {stats.demoHomes.length > 0 && (
+              <Section title="Demo homes" icon={ShieldCheck}>
+                <div className="space-y-1.5">
+                  {stats.demoHomes.map((h: any) => (
+                    <Link key={h.id} to={`/home/${h.handoff_token}`} className="flex items-center justify-between rounded-lg border bg-card px-3 py-2 text-sm transition hover:border-primary">
+                      <span className="truncate">
+                        {h.address_line}, {h.city} {h.state}
+                        <span className="ml-2 text-xs text-muted-foreground">{h.nb_templates?.name} · {h.nb_templates?.square_feet} sf</span>
+                      </span>
+                      <Badge variant="outline" className="capitalize text-[10px]">{(h.status ?? "").replace(/_/g, " ")}</Badge>
+                    </Link>
+                  ))}
+                </div>
+              </Section>
+            )}
+
 
             <Section title="Floor plans" icon={ClipboardCheck}>
               {stats.plans.length ? (
