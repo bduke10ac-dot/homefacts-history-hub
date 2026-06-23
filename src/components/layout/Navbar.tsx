@@ -20,12 +20,11 @@ export function Navbar() {
   return (
     <header className="no-print sticky top-0 z-40 w-full border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-semibold">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-hero shadow-glow">
-            <Home className="h-5 w-5 text-primary-foreground" />
+        <Link to="/" className="flex items-center gap-3 font-semibold">
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-hero shadow-glow ring-1 ring-primary/30">
+            <span className="text-sm font-black tracking-tighter text-primary-foreground">O</span>
           </div>
-          <span className="text-lg tracking-tight">Orivaz</span>
-          <span className="hidden text-xs text-muted-foreground sm:inline">Report</span>
+          <span className="text-lg font-black tracking-[0.18em]">ORIVAZ</span>
         </Link>
         <nav className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>
