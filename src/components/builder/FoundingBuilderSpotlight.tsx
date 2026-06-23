@@ -59,7 +59,7 @@ export function FoundingBuilderSpotlight() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild size="lg">
-                <Link to={profile}>Learn About {c.name.split(" ")[0]}<ArrowRight className="ml-2 h-4 w-4" /></Link>
+                <Link to={profile}>Learn About {c.name.split(" ")[0]} Homes<ArrowRight className="ml-2 h-4 w-4" /></Link>
               </Button>
               {website && (
                 <Button asChild size="lg" variant="outline">
