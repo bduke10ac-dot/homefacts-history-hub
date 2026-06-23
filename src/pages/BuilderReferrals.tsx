@@ -17,7 +17,7 @@ export default function BuilderReferrals() {
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [list, setList] = useState<any[]>([]);
   const [form, setForm] = useState({
-    referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", notes: "",
+    referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", region: "", notes: "",
   });
   const [busy, setBusy] = useState(false);
 
@@ -42,7 +42,7 @@ export default function BuilderReferrals() {
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     toast.success("Referral submitted — our team will follow up.");
-    setForm({ referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", notes: "" });
+    setForm({ referred_builder_name: "", contact_name: "", contact_email: "", contact_phone: "", website: "", region: "", notes: "" });
     const { data: refs } = await (supabase as any).from("builder_referrals").select("*").eq("referring_company_id", companyId).order("created_at", { ascending: false });
     setList(refs ?? []);
   };

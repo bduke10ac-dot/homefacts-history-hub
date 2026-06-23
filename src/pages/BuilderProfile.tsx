@@ -29,6 +29,9 @@ export default function BuilderProfile() {
     const { data } = await supabase
       .from("builder_companies").select("*").eq("slug", slug!).eq("public_profile_enabled", true).maybeSingle();
     setCompany(data);
+    if (data?.id) {
+      (supabase as any).from("builder_events").insert({ company_id: data.id, event_type: "profile_visit" });
+    }
     if (data) {
       const [{ count }, { data: templates }] = await Promise.all([
         supabase.from("nb_property_clones").select("id", { count: "exact", head: true }).eq("company_id", data.id),
