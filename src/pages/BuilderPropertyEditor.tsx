@@ -416,7 +416,7 @@ export default function BuilderPropertyEditor() {
                   {docs.map((d) => (
                     <div key={d.id} className="flex items-center justify-between gap-3 p-3 text-sm">
                       <div className="min-w-0 flex-1">
-                        <div className="truncate font-medium">{d.file_name}</div>
+                        <div className="truncate font-medium">{d.title ?? d.file_name}</div>
                         <div className="text-xs text-muted-foreground">{d.category}</div>
                       </div>
                       <a href={d.file_url} target="_blank" rel="noreferrer" className="text-xs text-primary hover:underline">Open</a>
