@@ -281,8 +281,16 @@ const Index = () => {
         </div>
       </section>
 
+      <section className="border-t bg-gradient-subtle">
+        <div className="container py-12 text-center">
+          <p className="mx-auto max-w-3xl text-base italic text-muted-foreground md:text-lg">
+            "Orivaz is building the global property intelligence network — giving every property a permanent digital identity that begins at construction and grows through every owner, improvement, claim, warranty, and sale."
+          </p>
+        </div>
+      </section>
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} Orivaz Property Report. Built on trust.
+        <p className="font-semibold tracking-[0.2em] text-foreground">ORIVAZ</p>
+        <p className="mt-2">© {new Date().getFullYear()} Orivaz. From Foundation to Future.</p>
       </footer>
     </div>
   );
