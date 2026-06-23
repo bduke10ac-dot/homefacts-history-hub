@@ -6505,6 +6505,387 @@ export type Database = {
           },
         ]
       }
+      warranties: {
+        Row: {
+          category: Database["public"]["Enums"]["warranty_category"]
+          claim_instructions: string | null
+          claim_phone: string | null
+          claim_website: string | null
+          created_at: string
+          created_by: string | null
+          expiration_date: string | null
+          id: string
+          install_date: string | null
+          installer_license: string | null
+          installer_name: string | null
+          installer_phone: string | null
+          is_registered: boolean
+          is_transferable: boolean
+          model_number: string | null
+          notes: string | null
+          product_name: string | null
+          property_id: string
+          provider: string | null
+          provider_email: string | null
+          provider_phone: string | null
+          provider_website: string | null
+          purchase_date: string | null
+          required_documents: string[] | null
+          serial_number: string | null
+          status: Database["public"]["Enums"]["warranty_status"]
+          transfer_deadline_days: number | null
+          transfer_fee: number | null
+          transfer_instructions: string | null
+          updated_at: string
+          warranty_start_date: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["warranty_category"]
+          claim_instructions?: string | null
+          claim_phone?: string | null
+          claim_website?: string | null
+          created_at?: string
+          created_by?: string | null
+          expiration_date?: string | null
+          id?: string
+          install_date?: string | null
+          installer_license?: string | null
+          installer_name?: string | null
+          installer_phone?: string | null
+          is_registered?: boolean
+          is_transferable?: boolean
+          model_number?: string | null
+          notes?: string | null
+          product_name?: string | null
+          property_id: string
+          provider?: string | null
+          provider_email?: string | null
+          provider_phone?: string | null
+          provider_website?: string | null
+          purchase_date?: string | null
+          required_documents?: string[] | null
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["warranty_status"]
+          transfer_deadline_days?: number | null
+          transfer_fee?: number | null
+          transfer_instructions?: string | null
+          updated_at?: string
+          warranty_start_date?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["warranty_category"]
+          claim_instructions?: string | null
+          claim_phone?: string | null
+          claim_website?: string | null
+          created_at?: string
+          created_by?: string | null
+          expiration_date?: string | null
+          id?: string
+          install_date?: string | null
+          installer_license?: string | null
+          installer_name?: string | null
+          installer_phone?: string | null
+          is_registered?: boolean
+          is_transferable?: boolean
+          model_number?: string | null
+          notes?: string | null
+          product_name?: string | null
+          property_id?: string
+          provider?: string | null
+          provider_email?: string | null
+          provider_phone?: string | null
+          provider_website?: string | null
+          purchase_date?: string | null
+          required_documents?: string[] | null
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["warranty_status"]
+          transfer_deadline_days?: number | null
+          transfer_fee?: number | null
+          transfer_instructions?: string | null
+          updated_at?: string
+          warranty_start_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranties_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_claims: {
+        Row: {
+          attachment_urls: string[] | null
+          claim_number: string | null
+          created_at: string
+          filed_at: string
+          filed_by: string | null
+          id: string
+          issue_description: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          status: string
+          updated_at: string
+          warranty_id: string
+        }
+        Insert: {
+          attachment_urls?: string[] | null
+          claim_number?: string | null
+          created_at?: string
+          filed_at?: string
+          filed_by?: string | null
+          id?: string
+          issue_description?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          status?: string
+          updated_at?: string
+          warranty_id: string
+        }
+        Update: {
+          attachment_urls?: string[] | null
+          claim_number?: string | null
+          created_at?: string
+          filed_at?: string
+          filed_by?: string | null
+          id?: string
+          issue_description?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          status?: string
+          updated_at?: string
+          warranty_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_claims_warranty_id_fkey"
+            columns: ["warranty_id"]
+            isOneToOne: false
+            referencedRelation: "warranties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_documents: {
+        Row: {
+          created_at: string
+          file_name: string
+          file_size: number | null
+          file_url: string
+          id: string
+          kind: Database["public"]["Enums"]["warranty_document_kind"]
+          mime_type: string | null
+          notes: string | null
+          uploaded_by: string | null
+          warranty_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_name: string
+          file_size?: number | null
+          file_url: string
+          id?: string
+          kind: Database["public"]["Enums"]["warranty_document_kind"]
+          mime_type?: string | null
+          notes?: string | null
+          uploaded_by?: string | null
+          warranty_id: string
+        }
+        Update: {
+          created_at?: string
+          file_name?: string
+          file_size?: number | null
+          file_url?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["warranty_document_kind"]
+          mime_type?: string | null
+          notes?: string | null
+          uploaded_by?: string | null
+          warranty_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_documents_warranty_id_fkey"
+            columns: ["warranty_id"]
+            isOneToOne: false
+            referencedRelation: "warranties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_registrations: {
+        Row: {
+          confirmation_file_url: string | null
+          confirmation_number: string | null
+          confirmed_at: string | null
+          created_at: string
+          id: string
+          initiated_by: string | null
+          notes: string | null
+          owner_email: string | null
+          owner_name: string | null
+          owner_phone: string | null
+          status: Database["public"]["Enums"]["warranty_registration_status"]
+          submitted_at: string | null
+          updated_at: string
+          warranty_id: string
+        }
+        Insert: {
+          confirmation_file_url?: string | null
+          confirmation_number?: string | null
+          confirmed_at?: string | null
+          created_at?: string
+          id?: string
+          initiated_by?: string | null
+          notes?: string | null
+          owner_email?: string | null
+          owner_name?: string | null
+          owner_phone?: string | null
+          status?: Database["public"]["Enums"]["warranty_registration_status"]
+          submitted_at?: string | null
+          updated_at?: string
+          warranty_id: string
+        }
+        Update: {
+          confirmation_file_url?: string | null
+          confirmation_number?: string | null
+          confirmed_at?: string | null
+          created_at?: string
+          id?: string
+          initiated_by?: string | null
+          notes?: string | null
+          owner_email?: string | null
+          owner_name?: string | null
+          owner_phone?: string | null
+          status?: Database["public"]["Enums"]["warranty_registration_status"]
+          submitted_at?: string | null
+          updated_at?: string
+          warranty_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_registrations_warranty_id_fkey"
+            columns: ["warranty_id"]
+            isOneToOne: false
+            referencedRelation: "warranties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_reminders: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          message: string | null
+          remind_at: string
+          reminder_type: string
+          sent_at: string | null
+          user_id: string | null
+          warranty_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          remind_at: string
+          reminder_type: string
+          sent_at?: string | null
+          user_id?: string | null
+          warranty_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          remind_at?: string
+          reminder_type?: string
+          sent_at?: string | null
+          user_id?: string | null
+          warranty_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_reminders_warranty_id_fkey"
+            columns: ["warranty_id"]
+            isOneToOne: false
+            referencedRelation: "warranties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      warranty_transfers: {
+        Row: {
+          buyer_email: string | null
+          buyer_name: string | null
+          checklist: Json
+          closing_date: string | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          initiated_by: string | null
+          notes: string | null
+          package_url: string | null
+          property_address: string | null
+          property_id: string
+          seller_email: string | null
+          seller_name: string | null
+          status: Database["public"]["Enums"]["warranty_transfer_status"]
+          updated_at: string
+          warranty_ids: string[]
+        }
+        Insert: {
+          buyer_email?: string | null
+          buyer_name?: string | null
+          checklist?: Json
+          closing_date?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          initiated_by?: string | null
+          notes?: string | null
+          package_url?: string | null
+          property_address?: string | null
+          property_id: string
+          seller_email?: string | null
+          seller_name?: string | null
+          status?: Database["public"]["Enums"]["warranty_transfer_status"]
+          updated_at?: string
+          warranty_ids?: string[]
+        }
+        Update: {
+          buyer_email?: string | null
+          buyer_name?: string | null
+          checklist?: Json
+          closing_date?: string | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          initiated_by?: string | null
+          notes?: string | null
+          package_url?: string | null
+          property_address?: string | null
+          property_id?: string
+          seller_email?: string | null
+          seller_name?: string | null
+          status?: Database["public"]["Enums"]["warranty_transfer_status"]
+          updated_at?: string
+          warranty_ids?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "warranty_transfers_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       weather_environmental_events: {
         Row: {
           created_at: string
@@ -7069,6 +7450,55 @@ export type Database = {
         | "manufacturer"
         | "other"
       risk_level: "low" | "medium" | "high"
+      warranty_category:
+        | "roof"
+        | "hvac"
+        | "appliance"
+        | "windows"
+        | "doors"
+        | "flooring"
+        | "foundation"
+        | "water_heater"
+        | "electrical"
+        | "plumbing"
+        | "solar"
+        | "smart_home"
+        | "garage_door"
+        | "septic"
+        | "pool"
+        | "builder"
+        | "home_warranty"
+        | "extended_service"
+        | "other"
+      warranty_document_kind:
+        | "warranty"
+        | "invoice"
+        | "photo"
+        | "permit"
+        | "maintenance"
+        | "manual"
+        | "registration_confirmation"
+        | "transfer_confirmation"
+        | "other"
+      warranty_registration_status:
+        | "unregistered"
+        | "in_progress"
+        | "submitted"
+        | "registered"
+        | "rejected"
+      warranty_status:
+        | "active"
+        | "expiring_soon"
+        | "needs_registration"
+        | "transfer_required"
+        | "expired"
+      warranty_transfer_status:
+        | "draft"
+        | "in_progress"
+        | "submitted"
+        | "confirmed"
+        | "completed"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -7223,6 +7653,60 @@ export const Constants = {
         "other",
       ],
       risk_level: ["low", "medium", "high"],
+      warranty_category: [
+        "roof",
+        "hvac",
+        "appliance",
+        "windows",
+        "doors",
+        "flooring",
+        "foundation",
+        "water_heater",
+        "electrical",
+        "plumbing",
+        "solar",
+        "smart_home",
+        "garage_door",
+        "septic",
+        "pool",
+        "builder",
+        "home_warranty",
+        "extended_service",
+        "other",
+      ],
+      warranty_document_kind: [
+        "warranty",
+        "invoice",
+        "photo",
+        "permit",
+        "maintenance",
+        "manual",
+        "registration_confirmation",
+        "transfer_confirmation",
+        "other",
+      ],
+      warranty_registration_status: [
+        "unregistered",
+        "in_progress",
+        "submitted",
+        "registered",
+        "rejected",
+      ],
+      warranty_status: [
+        "active",
+        "expiring_soon",
+        "needs_registration",
+        "transfer_required",
+        "expired",
+      ],
+      warranty_transfer_status: [
+        "draft",
+        "in_progress",
+        "submitted",
+        "confirmed",
+        "completed",
+        "cancelled",
+      ],
     },
   },
 } as const
