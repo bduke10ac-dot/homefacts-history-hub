@@ -12,6 +12,7 @@ import {
   Camera, CheckCircle2, ClipboardList, FileText, Filter, Hammer, Home, Image as ImageIcon,
   LayoutGrid, Plus, Receipt, Send, ShieldCheck, Sparkles, Upload, Users, Wrench, Zap,
 } from "lucide-react";
+import { networkPros } from "@/lib/professionalsNetwork";
 
 const POSITIONING = "Home apps store your documents. Orivaz protects, verifies, transfers, and grows the full history of your property.";
 
@@ -175,7 +176,7 @@ export default function PropertyCommandCenter() {
         {/* Tabs */}
         <Tabs defaultValue="overview" className="mt-8">
           <TabsList className="flex w-full flex-wrap justify-start gap-1 bg-muted/50">
-            {["overview", "inventory", "documents", "warranties", "contacts", "timeline", "transfer", "reports"].map((t) => (
+            {["overview", "inventory", "documents", "warranties", "contacts", "network", "timeline", "transfer", "reports"].map((t) => (
               <TabsTrigger key={t} value={t} className="capitalize">{t}</TabsTrigger>
             ))}
           </TabsList>
@@ -435,6 +436,46 @@ export default function PropertyCommandCenter() {
                   </div>
                 ))}
                 <Button variant="outline" className="w-full"><Plus className="mr-2 h-4 w-4" />Invite Access</Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* NETWORK */}
+          <TabsContent value="network" className="mt-6 space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <CardTitle className="flex items-center gap-2"><Users className="h-5 w-5 text-primary" />Professional Network</CardTitle>
+                    <CardDescription>Verified pros attached to this property's record.</CardDescription>
+                  </div>
+                  <Button variant="outline" asChild><Link to="/network"><Sparkles className="mr-2 h-4 w-4" />Browse full network</Link></Button>
+                </div>
+              </CardHeader>
+              <CardContent className="grid gap-3 md:grid-cols-2">
+                {networkPros.filter((p) => p.attachedTo && p.attachedTo.length > 0).map((p) => (
+                  <div key={p.id} className="lift rounded-xl border bg-card p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{p.trade}</div>
+                        <p className="truncate font-semibold">{p.name}</p>
+                        <p className="truncate text-xs text-muted-foreground">{p.company} · {p.city}, {p.state}</p>
+                      </div>
+                      <Badge variant="outline" className="border-emerald-500/40 text-emerald-700">
+                        <BadgeCheck className="mr-1 h-3 w-3" />Verified
+                      </Badge>
+                    </div>
+                    <div className="mt-3 flex flex-wrap gap-1">
+                      {p.attachedTo!.map((a) => (
+                        <Badge key={a} variant="secondary" className="text-[10px]">{a}</Badge>
+                      ))}
+                    </div>
+                    <div className="mt-3 flex gap-2">
+                      <Button size="sm" variant="outline" className="flex-1">Contact</Button>
+                      <Button size="sm" variant="ghost">View record</Button>
+                    </div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </TabsContent>

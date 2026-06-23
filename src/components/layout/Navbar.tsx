@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Home, LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid } from "lucide-react";
+import { Home, LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -46,6 +46,9 @@ export function Navbar() {
           </Button>
           <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
             <Link to="/warranty-hub"><ShieldCheck className="mr-1.5 h-4 w-4" />Warranty Hub</Link>
+          </Button>
+          <Button variant="ghost" size="sm" asChild className="hidden md:inline-flex">
+            <Link to="/network"><Users className="mr-1.5 h-4 w-4" />Network</Link>
           </Button>
           <Button asChild variant="ghost" size="sm">
             <Link to="/estate-planning"><Shield className="mr-1.5 h-4 w-4" />Estate Planning</Link>
