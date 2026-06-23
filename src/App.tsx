@@ -31,6 +31,7 @@ import BuilderClones from "./pages/BuilderClones";
 import BuilderCloneDetail from "./pages/BuilderCloneDetail";
 import BeginnerGuide from "./pages/BeginnerGuide";
 import BuilderProfile from "./pages/BuilderProfile";
+import BuilderImportWizard from "./pages/BuilderImportWizard";
 import BuilderMarketing from "./pages/BuilderMarketing";
 import PropertyBoundary from "./pages/PropertyBoundary";
 import HomeEngagement from "./pages/HomeEngagement";
