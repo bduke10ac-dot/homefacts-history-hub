@@ -81,7 +81,7 @@ export default function BuilderPortal() {
     if (existing?.id) return existing.id;
     const { data, error } = await supabase
       .from("nb_templates")
-      .insert([{ company_id: cid, name: "Default Template" }])
+      .insert([{ company_id: cid, name: "Default Template", kind: "custom" as const }])
       .select("id")
       .maybeSingle();
     if (error) { toast.error(error.message); return null; }
