@@ -302,6 +302,38 @@ export type Database = {
           },
         ]
       }
+      builder_events: {
+        Row: {
+          company_id: string | null
+          context: string | null
+          created_at: string
+          event_type: string
+          id: string
+        }
+        Insert: {
+          company_id?: string | null
+          context?: string | null
+          created_at?: string
+          event_type: string
+          id?: string
+        }
+        Update: {
+          company_id?: string | null
+          context?: string | null
+          created_at?: string
+          event_type?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "builder_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "builder_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       builder_qr_scans: {
         Row: {
           clone_id: string | null
@@ -352,6 +384,7 @@ export type Database = {
           notes: string | null
           referred_builder_name: string
           referring_company_id: string | null
+          region: string | null
           status: string
           updated_at: string
           website: string | null
@@ -366,6 +399,7 @@ export type Database = {
           notes?: string | null
           referred_builder_name: string
           referring_company_id?: string | null
+          region?: string | null
           status?: string
           updated_at?: string
           website?: string | null
@@ -380,6 +414,7 @@ export type Database = {
           notes?: string | null
           referred_builder_name?: string
           referring_company_id?: string | null
+          region?: string | null
           status?: string
           updated_at?: string
           website?: string | null
