@@ -71,11 +71,30 @@ export default function BuilderPortal() {
     });
   }, [rows, q, status]);
 
+  async function ensureTemplate(cid: string): Promise<string | null> {
+    const { data: existing } = await supabase
+      .from("nb_templates")
+      .select("id")
+      .eq("company_id", cid)
+      .limit(1)
+      .maybeSingle();
+    if (existing?.id) return existing.id;
+    const { data, error } = await supabase
+      .from("nb_templates")
+      .insert({ company_id: cid, name: "Default Template" })
+      .select("id")
+      .maybeSingle();
+    if (error) { toast.error(error.message); return null; }
+    return data?.id ?? null;
+  }
+
   async function addProperty() {
     if (!companyId) return toast.error("No builder company found");
+    const tid = await ensureTemplate(companyId);
+    if (!tid) return;
     const { data, error } = await supabase
       .from("nb_property_clones")
-      .insert({ company_id: companyId, status: "draft", address_line: "New property" })
+      .insert({ company_id: companyId, template_id: tid, status: "draft" as const, address_line: "New property" })
       .select("id")
       .maybeSingle();
     if (error) return toast.error(error.message);
@@ -86,7 +105,7 @@ export default function BuilderPortal() {
     const { id, created_at, updated_at, handoff_token, handed_off_at, handoff_packet_url, ...rest } = row;
     const { data, error } = await supabase
       .from("nb_property_clones")
-      .insert({ ...rest, status: "draft", address_line: `${row.address_line} (copy)` })
+      .insert({ ...rest, status: "draft" as const, address_line: `${row.address_line} (copy)` })
       .select("id")
       .maybeSingle();
     if (error) return toast.error(error.message);
@@ -95,12 +114,13 @@ export default function BuilderPortal() {
   }
 
   async function archive(row: any) {
+    // Mark transferred (closest enum to archived) and set notes flag
     const { error } = await supabase
       .from("nb_property_clones")
-      .update({ status: "archived" })
+      .update({ status: "transferred" as const, notes: `${row.notes ?? ""}\n[archived ${new Date().toISOString()}]` })
       .eq("id", row.id);
     if (error) return toast.error(error.message);
-    setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, status: "archived" } : r)));
+    setRows((rs) => rs.map((r) => (r.id === row.id ? { ...r, status: "transferred" } : r)));
     toast.success("Archived");
   }
 
