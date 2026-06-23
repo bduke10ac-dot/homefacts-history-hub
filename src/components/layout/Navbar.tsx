@@ -31,6 +31,9 @@ export function Navbar() {
           <Button variant="ghost" size="sm" asChild>
             <Link to="/search"><Search className="mr-1.5 h-4 w-4" />Search</Link>
           </Button>
+          <Button variant="ghost" size="sm" asChild className="hidden sm:inline-flex">
+            <Link to="/builders">Builders</Link>
+          </Button>
           {user ? (
             <>
               <Button variant="ghost" size="sm" asChild>

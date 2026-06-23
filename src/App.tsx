@@ -69,6 +69,10 @@ import Certification from "./pages/Certification";
 import PropertyIntelMap from "./pages/PropertyIntelMap";
 import ImprovementROI from "./pages/ImprovementROI";
 import AnnualReport from "./pages/AnnualReport";
+import BuilderProgram from "./pages/BuilderProgram";
+import AdminBuilders from "./pages/AdminBuilders";
+import ConstructionTimeline from "./pages/ConstructionTimeline";
+import HomeownerHandoff from "./pages/HomeownerHandoff";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
@@ -159,6 +163,10 @@ const App = () => (
             <Route path="/builder/clones/:id" element={<ProtectedRoute requireRole="builder"><BuilderCloneDetail /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute requireRole="admin"><AdminDashboard /></ProtectedRoute>} />
             <Route path="/admin/fraud" element={<ProtectedRoute requireRole="admin"><AdminFraudReview /></ProtectedRoute>} />
+            <Route path="/admin/builders" element={<ProtectedRoute requireRole="admin"><AdminBuilders /></ProtectedRoute>} />
+            <Route path="/builders" element={<BuilderProgram />} />
+            <Route path="/builder/clones/:id/timeline" element={<ProtectedRoute requireRole="builder"><ConstructionTimeline /></ProtectedRoute>} />
+            <Route path="/builder/clones/:id/handoff" element={<ProtectedRoute requireRole="builder"><HomeownerHandoff /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
