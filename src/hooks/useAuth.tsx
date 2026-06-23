@@ -4,6 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type AppRole = "homeowner" | "realtor" | "contractor" | "builder" | "admin";
 
+// Deterministic priority — highest privilege wins.
+const ROLE_PRIORITY: AppRole[] = ["admin", "builder", "contractor", "realtor", "homeowner"];
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
@@ -12,6 +15,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   hasRole: (role: AppRole) => boolean;
   primaryRole: AppRole | null;
+  emailVerified: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,7 +31,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(newSession);
       setUser(newSession?.user ?? null);
       if (newSession?.user) {
-        // defer to avoid deadlocks
         setTimeout(() => fetchRoles(newSession.user.id), 0);
       } else {
         setRoles([]);
@@ -46,15 +49,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const fetchRoles = async (userId: string) => {
     const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-    setRoles((data ?? []).map((r) => r.role as AppRole));
+    const validRoles: AppRole[] = (data ?? [])
+      .map((r) => r.role as AppRole)
+      .filter((r): r is AppRole => ROLE_PRIORITY.includes(r));
+    setRoles(validRoles);
   };
 
   const signOut = async () => { await supabase.auth.signOut(); };
   const hasRole = (role: AppRole) => roles.includes(role);
-  const primaryRole = roles[0] ?? null;
+  const primaryRole: AppRole | null =
+    ROLE_PRIORITY.find((r) => roles.includes(r)) ?? null;
+  const emailVerified = Boolean(user?.email_confirmed_at);
 
   return (
-    <AuthContext.Provider value={{ user, session, roles, loading, signOut, hasRole, primaryRole }}>
+    <AuthContext.Provider value={{ user, session, roles, loading, signOut, hasRole, primaryRole, emailVerified }}>
       {children}
     </AuthContext.Provider>
   );
