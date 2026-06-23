@@ -1,0 +1,22 @@
+REVOKE SELECT ON
+  public.ai_assistant_queries,
+  public.buyer_decision_reports,
+  public.disaster_vault_documents,
+  public.emergency_events,
+  public.estate_contacts,
+  public.estate_documents,
+  public.estate_incapacity_plans,
+  public.estate_probate_tasks,
+  public.estate_checklist_items,
+  public.estate_reviews,
+  public.insurance_claims,
+  public.insurance_reviews,
+  public.mortgage_lien_records,
+  public.nb_property_clones,
+  public.nb_clone_subcontractors,
+  public.nb_clone_warranties,
+  public.negotiation_reports,
+  public.warranty_claims,
+  public.warranty_registrations,
+  public.warranty_transfers
+FROM anon;
