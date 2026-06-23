@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { WarrantyCenter } from "@/components/newbuild/WarrantyCenter";
 import { HomeAssistantChat } from "@/components/newbuild/HomeAssistantChat";
 import { Home, ShieldCheck, BookOpen, FileText, AlertOctagon, Sparkles, Clock } from "lucide-react";
+import { BuiltBy } from "@/components/builder/BuiltBy";
 import { format } from "date-fns";
 
 export default function BeginnerGuide() {
@@ -28,7 +29,17 @@ export default function BeginnerGuide() {
         .maybeSingle();
       if (!c) { setLoading(false); return; }
       setClone(c);
-      setCompany((c as any).builder_companies);
+      const co: any = (c as any).builder_companies;
+      setCompany(co);
+      // Log QR scan (best-effort, fire-and-forget)
+      if (co?.id) {
+        (supabase as any).from("builder_qr_scans").insert({
+          company_id: co.id, clone_id: c.id, user_agent: navigator.userAgent.slice(0, 200),
+        });
+        // Refetch full builder branding for BuiltBy
+        const { data: full } = await supabase.from("builder_companies").select("*").eq("id", co.id).maybeSingle();
+        if (full) setCompany(full);
+      }
       const [{ data: g }, { data: d }, { data: t }] = await Promise.all([
         supabase.from("nb_template_guide_items").select("*").eq("template_id", c.template_id).order("section").order("sort_order"),
         supabase.from("nb_clone_documents").select("*").eq("clone_id", c.id).order("created_at", { ascending: false }),
@@ -72,7 +83,9 @@ export default function BeginnerGuide() {
         </div>
       </div>
 
-      <div className="container py-8">
+      <div className="container py-8 space-y-6">
+        {company && <BuiltBy company={company} />}
+
         <Tabs defaultValue="guide">
           <TabsList className="flex-wrap">
             <TabsTrigger value="guide"><BookOpen className="mr-1.5 h-4 w-4" />Move-in & systems</TabsTrigger>

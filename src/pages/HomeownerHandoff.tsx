@@ -113,6 +113,10 @@ export default function HomeownerHandoff() {
           <Badge variant="secondary" className="capitalize">{(clone.status ?? "").replace(/_/g, " ")}</Badge>
         </div>
 
+        {builder && <div className="mt-6"><BuiltBy company={builder} /></div>}
+
+
+
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           <PacketCard title="HomeFacts digital home profile" desc="Verified record of this home for the next owner." count={1} />
           <PacketCard title="Welcome packet" desc="Cover sheet + property profile." count={1} />
