@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, ChevronRight, Home as HomeIcon } from "lucide-react";
 
-type Prop = { id: string; address: string | null; city: string | null; state: string | null };
+type Prop = { id: string; address_line: string | null; city: string | null; state: string | null };
 
 export default function WarrantyHub() {
   const { user } = useAuth();
@@ -19,10 +19,10 @@ export default function WarrantyHub() {
     (async () => {
       const { data } = await supabase
         .from("properties")
-        .select("id, address, city, state")
+        .select("id, address_line, city, state")
         .or(`claimed_by.eq.${user.id},created_by.eq.${user.id}`)
         .order("created_at", { ascending: false });
-      setProperties((data ?? []) as Prop[]);
+      setProperties((data ?? []) as unknown as Prop[]);
       setLoading(false);
     })();
   }, [user]);
@@ -71,7 +71,7 @@ export default function WarrantyHub() {
                         <HomeIcon className="h-5 w-5 text-muted-foreground" />
                       </div>
                       <div>
-                        <p className="font-medium">{p.address ?? "Untitled property"}</p>
+                        <p className="font-medium">{p.address_line ?? "Untitled property"}</p>
                         <p className="text-sm text-muted-foreground">
                           {[p.city, p.state].filter(Boolean).join(", ") || "—"}
                         </p>
