@@ -83,6 +83,7 @@ import WarrantyHub from "./pages/WarrantyHub";
 import PropertyWarranties from "./pages/PropertyWarranties";
 import WarrantyPassport from "./pages/WarrantyPassport";
 import EstatePlanningHub from "./pages/EstatePlanningHub";
+import PropertyCommandCenter from "./pages/PropertyCommandCenter";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 
 const queryClient = new QueryClient();
