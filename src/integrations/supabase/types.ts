@@ -233,6 +233,124 @@ export type Database = {
           },
         ]
       }
+      buyer_decision_reports: {
+        Row: {
+          ai_recommendation: string | null
+          contractor_history: string | null
+          created_at: string
+          created_by: string | null
+          estimated_annual_cost_cents: number | null
+          expected_maintenance: Json | null
+          hidden_risks: Json | null
+          id: string
+          insurance_outlook: string | null
+          long_term_outlook: string | null
+          negotiation_items: Json | null
+          neighborhood_overview: string | null
+          permit_concerns: Json | null
+          property_id: string
+          safety_concerns: Json | null
+          updated_at: string
+          upgrade_opportunities: Json | null
+          warranty_status: string | null
+          weather_risks: Json | null
+        }
+        Insert: {
+          ai_recommendation?: string | null
+          contractor_history?: string | null
+          created_at?: string
+          created_by?: string | null
+          estimated_annual_cost_cents?: number | null
+          expected_maintenance?: Json | null
+          hidden_risks?: Json | null
+          id?: string
+          insurance_outlook?: string | null
+          long_term_outlook?: string | null
+          negotiation_items?: Json | null
+          neighborhood_overview?: string | null
+          permit_concerns?: Json | null
+          property_id: string
+          safety_concerns?: Json | null
+          updated_at?: string
+          upgrade_opportunities?: Json | null
+          warranty_status?: string | null
+          weather_risks?: Json | null
+        }
+        Update: {
+          ai_recommendation?: string | null
+          contractor_history?: string | null
+          created_at?: string
+          created_by?: string | null
+          estimated_annual_cost_cents?: number | null
+          expected_maintenance?: Json | null
+          hidden_risks?: Json | null
+          id?: string
+          insurance_outlook?: string | null
+          long_term_outlook?: string | null
+          negotiation_items?: Json | null
+          neighborhood_overview?: string | null
+          permit_concerns?: Json | null
+          property_id?: string
+          safety_concerns?: Json | null
+          updated_at?: string
+          upgrade_opportunities?: Json | null
+          warranty_status?: string | null
+          weather_risks?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buyer_decision_reports_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      certification_status: {
+        Row: {
+          created_at: string
+          criteria_met: Json | null
+          expires_at: string | null
+          id: string
+          issued_at: string | null
+          notes: string | null
+          property_id: string
+          tier: Database["public"]["Enums"]["certification_tier"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          criteria_met?: Json | null
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          notes?: string | null
+          property_id: string
+          tier?: Database["public"]["Enums"]["certification_tier"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          criteria_met?: Json | null
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          notes?: string | null
+          property_id?: string
+          tier?: Database["public"]["Enums"]["certification_tier"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certification_status_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       civic_officials: {
         Row: {
           contact_phone: string | null
@@ -507,6 +625,50 @@ export type Database = {
           source_url?: string | null
         }
         Relationships: []
+      }
+      crime_timeline: {
+        Row: {
+          ai_summary: string | null
+          category: string
+          count: number
+          created_at: string
+          id: string
+          period: string
+          property_id: string
+          trend: string | null
+          updated_at: string
+        }
+        Insert: {
+          ai_summary?: string | null
+          category: string
+          count?: number
+          created_at?: string
+          id?: string
+          period: string
+          property_id: string
+          trend?: string | null
+          updated_at?: string
+        }
+        Update: {
+          ai_summary?: string | null
+          category?: string
+          count?: number
+          created_at?: string
+          id?: string
+          period?: string
+          property_id?: string
+          trend?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crime_timeline_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       crime_trend_summary: {
         Row: {
@@ -1267,6 +1429,62 @@ export type Database = {
           },
         ]
       }
+      future_cost_forecasts: {
+        Row: {
+          category: string | null
+          created_at: string
+          high_cost_cents: number | null
+          horizon_years: number
+          id: string
+          item: string
+          low_cost_cents: number | null
+          notes: string | null
+          property_id: string
+          recommended_timing: string | null
+          reminder_id: string | null
+          updated_at: string
+          urgency: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          high_cost_cents?: number | null
+          horizon_years: number
+          id?: string
+          item: string
+          low_cost_cents?: number | null
+          notes?: string | null
+          property_id: string
+          recommended_timing?: string | null
+          reminder_id?: string | null
+          updated_at?: string
+          urgency?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          high_cost_cents?: number | null
+          horizon_years?: number
+          id?: string
+          item?: string
+          low_cost_cents?: number | null
+          notes?: string | null
+          property_id?: string
+          recommended_timing?: string | null
+          reminder_id?: string | null
+          updated_at?: string
+          urgency?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "future_cost_forecasts_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       government_reviews: {
         Row: {
           ai_checklist: Json
@@ -1316,6 +1534,68 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "government_reviews_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hazard_intelligence: {
+        Row: {
+          created_at: string
+          distance_m: number | null
+          hazard_type: string
+          historical_events: Json | null
+          homeowner_explanation: string | null
+          id: string
+          insurance_impact: string | null
+          label: string
+          latitude: number | null
+          longitude: number | null
+          property_id: string
+          recommended_action: string | null
+          risk_level: Database["public"]["Enums"]["risk_level"]
+          source: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          distance_m?: number | null
+          hazard_type: string
+          historical_events?: Json | null
+          homeowner_explanation?: string | null
+          id?: string
+          insurance_impact?: string | null
+          label: string
+          latitude?: number | null
+          longitude?: number | null
+          property_id: string
+          recommended_action?: string | null
+          risk_level?: Database["public"]["Enums"]["risk_level"]
+          source?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          distance_m?: number | null
+          hazard_type?: string
+          historical_events?: Json | null
+          homeowner_explanation?: string | null
+          id?: string
+          insurance_impact?: string | null
+          label?: string
+          latitude?: number | null
+          longitude?: number | null
+          property_id?: string
+          recommended_action?: string | null
+          risk_level?: Database["public"]["Enums"]["risk_level"]
+          source?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hazard_intelligence_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
@@ -1429,6 +1709,77 @@ export type Database = {
           },
         ]
       }
+      home_value_protection_scores: {
+        Row: {
+          computed_at: string
+          created_at: string
+          documented_repairs: number | null
+          energy_improvements: number | null
+          id: string
+          insurance_readiness: number | null
+          maintenance_consistency: number | null
+          market_comparison: number | null
+          neighborhood_trends: number | null
+          overall_score: number
+          permitted_work: number | null
+          property_id: string
+          resale_documentation: number | null
+          safety_upgrades: number | null
+          summary: string | null
+          updated_at: string
+          verified_contractors: number | null
+          warranty_tracking: number | null
+        }
+        Insert: {
+          computed_at?: string
+          created_at?: string
+          documented_repairs?: number | null
+          energy_improvements?: number | null
+          id?: string
+          insurance_readiness?: number | null
+          maintenance_consistency?: number | null
+          market_comparison?: number | null
+          neighborhood_trends?: number | null
+          overall_score?: number
+          permitted_work?: number | null
+          property_id: string
+          resale_documentation?: number | null
+          safety_upgrades?: number | null
+          summary?: string | null
+          updated_at?: string
+          verified_contractors?: number | null
+          warranty_tracking?: number | null
+        }
+        Update: {
+          computed_at?: string
+          created_at?: string
+          documented_repairs?: number | null
+          energy_improvements?: number | null
+          id?: string
+          insurance_readiness?: number | null
+          maintenance_consistency?: number | null
+          market_comparison?: number | null
+          neighborhood_trends?: number | null
+          overall_score?: number
+          permitted_work?: number | null
+          property_id?: string
+          resale_documentation?: number | null
+          safety_upgrades?: number | null
+          summary?: string | null
+          updated_at?: string
+          verified_contractors?: number | null
+          warranty_tracking?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "home_value_protection_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insurance_claims: {
         Row: {
           claim_date: string | null
@@ -1463,6 +1814,59 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "insurance_claims_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insurance_readiness_scores: {
+        Row: {
+          claim_readiness_checklist: Json | null
+          computed_at: string
+          created_at: string
+          documentation_checklist: Json | null
+          factors: Json
+          id: string
+          overall_score: number
+          premium_savings_estimate_cents: number | null
+          property_id: string
+          recommended_coverage_questions: Json | null
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          claim_readiness_checklist?: Json | null
+          computed_at?: string
+          created_at?: string
+          documentation_checklist?: Json | null
+          factors?: Json
+          id?: string
+          overall_score?: number
+          premium_savings_estimate_cents?: number | null
+          property_id: string
+          recommended_coverage_questions?: Json | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          claim_readiness_checklist?: Json | null
+          computed_at?: string
+          created_at?: string
+          documentation_checklist?: Json | null
+          factors?: Json
+          id?: string
+          overall_score?: number
+          premium_savings_estimate_cents?: number | null
+          property_id?: string
+          recommended_coverage_questions?: Json | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insurance_readiness_scores_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
@@ -1620,6 +2024,65 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "living_outlook_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maintenance_reminders: {
+        Row: {
+          cadence: string | null
+          category: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_done: boolean
+          last_completed_at: string | null
+          next_due: string | null
+          notes: string | null
+          property_id: string
+          recurrence_rule: string | null
+          region_specific: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          cadence?: string | null
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_done?: boolean
+          last_completed_at?: string | null
+          next_due?: string | null
+          notes?: string | null
+          property_id: string
+          recurrence_rule?: string | null
+          region_specific?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          cadence?: string | null
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_done?: boolean
+          last_completed_at?: string | null
+          next_due?: string | null
+          notes?: string | null
+          property_id?: string
+          recurrence_rule?: string | null
+          region_specific?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_reminders_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
@@ -4170,6 +4633,131 @@ export type Database = {
           },
         ]
       }
+      property_risk_scores: {
+        Row: {
+          appreciation_action: string | null
+          appreciation_ai: string | null
+          appreciation_level: Database["public"]["Enums"]["risk_level"] | null
+          appreciation_score: number | null
+          computed_at: string
+          created_at: string
+          environmental_action: string | null
+          environmental_ai: string | null
+          environmental_level: Database["public"]["Enums"]["risk_level"] | null
+          environmental_score: number | null
+          id: string
+          insurance_action: string | null
+          insurance_ai: string | null
+          insurance_level: Database["public"]["Enums"]["risk_level"] | null
+          insurance_score: number | null
+          maintenance_action: string | null
+          maintenance_ai: string | null
+          maintenance_level: Database["public"]["Enums"]["risk_level"] | null
+          maintenance_score: number | null
+          neighborhood_action: string | null
+          neighborhood_ai: string | null
+          neighborhood_level: Database["public"]["Enums"]["risk_level"] | null
+          neighborhood_score: number | null
+          overall_score: number
+          overall_summary: string | null
+          property_id: string
+          structural_action: string | null
+          structural_ai: string | null
+          structural_level: Database["public"]["Enums"]["risk_level"] | null
+          structural_score: number | null
+          supporting_docs: Json | null
+          updated_at: string
+          weather_action: string | null
+          weather_ai: string | null
+          weather_level: Database["public"]["Enums"]["risk_level"] | null
+          weather_score: number | null
+        }
+        Insert: {
+          appreciation_action?: string | null
+          appreciation_ai?: string | null
+          appreciation_level?: Database["public"]["Enums"]["risk_level"] | null
+          appreciation_score?: number | null
+          computed_at?: string
+          created_at?: string
+          environmental_action?: string | null
+          environmental_ai?: string | null
+          environmental_level?: Database["public"]["Enums"]["risk_level"] | null
+          environmental_score?: number | null
+          id?: string
+          insurance_action?: string | null
+          insurance_ai?: string | null
+          insurance_level?: Database["public"]["Enums"]["risk_level"] | null
+          insurance_score?: number | null
+          maintenance_action?: string | null
+          maintenance_ai?: string | null
+          maintenance_level?: Database["public"]["Enums"]["risk_level"] | null
+          maintenance_score?: number | null
+          neighborhood_action?: string | null
+          neighborhood_ai?: string | null
+          neighborhood_level?: Database["public"]["Enums"]["risk_level"] | null
+          neighborhood_score?: number | null
+          overall_score?: number
+          overall_summary?: string | null
+          property_id: string
+          structural_action?: string | null
+          structural_ai?: string | null
+          structural_level?: Database["public"]["Enums"]["risk_level"] | null
+          structural_score?: number | null
+          supporting_docs?: Json | null
+          updated_at?: string
+          weather_action?: string | null
+          weather_ai?: string | null
+          weather_level?: Database["public"]["Enums"]["risk_level"] | null
+          weather_score?: number | null
+        }
+        Update: {
+          appreciation_action?: string | null
+          appreciation_ai?: string | null
+          appreciation_level?: Database["public"]["Enums"]["risk_level"] | null
+          appreciation_score?: number | null
+          computed_at?: string
+          created_at?: string
+          environmental_action?: string | null
+          environmental_ai?: string | null
+          environmental_level?: Database["public"]["Enums"]["risk_level"] | null
+          environmental_score?: number | null
+          id?: string
+          insurance_action?: string | null
+          insurance_ai?: string | null
+          insurance_level?: Database["public"]["Enums"]["risk_level"] | null
+          insurance_score?: number | null
+          maintenance_action?: string | null
+          maintenance_ai?: string | null
+          maintenance_level?: Database["public"]["Enums"]["risk_level"] | null
+          maintenance_score?: number | null
+          neighborhood_action?: string | null
+          neighborhood_ai?: string | null
+          neighborhood_level?: Database["public"]["Enums"]["risk_level"] | null
+          neighborhood_score?: number | null
+          overall_score?: number
+          overall_summary?: string | null
+          property_id?: string
+          structural_action?: string | null
+          structural_ai?: string | null
+          structural_level?: Database["public"]["Enums"]["risk_level"] | null
+          structural_score?: number | null
+          supporting_docs?: Json | null
+          updated_at?: string
+          weather_action?: string | null
+          weather_ai?: string | null
+          weather_level?: Database["public"]["Enums"]["risk_level"] | null
+          weather_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_risk_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_satellite_snapshots: {
         Row: {
           captured_on: string
@@ -4360,6 +4948,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      regional_education_topics: {
+        Row: {
+          created_at: string
+          education_md: string | null
+          id: string
+          insurance_note: string | null
+          recommended_inspection: string | null
+          region: string
+          topic: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          education_md?: string | null
+          id?: string
+          insurance_note?: string | null
+          recommended_inspection?: string | null
+          region: string
+          topic: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          education_md?: string | null
+          id?: string
+          insurance_note?: string | null
+          recommended_inspection?: string | null
+          region?: string
+          topic?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       regional_home_coach_query_log: {
         Row: {
@@ -5610,6 +6231,59 @@ export type Database = {
           },
         ]
       }
+      weather_environmental_events: {
+        Row: {
+          created_at: string
+          distance_m: number | null
+          event_date: string
+          event_type: string
+          id: string
+          insurance_impact: string | null
+          property_id: string
+          property_impact: string | null
+          recommended_action: string | null
+          severity: string | null
+          source: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          distance_m?: number | null
+          event_date: string
+          event_type: string
+          id?: string
+          insurance_impact?: string | null
+          property_id: string
+          property_impact?: string | null
+          recommended_action?: string | null
+          severity?: string | null
+          source?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          distance_m?: number | null
+          event_date?: string
+          event_type?: string
+          id?: string
+          insurance_impact?: string | null
+          property_id?: string
+          property_impact?: string | null
+          recommended_action?: string | null
+          severity?: string | null
+          source?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weather_environmental_events_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       weather_events: {
         Row: {
           event_date: string | null
@@ -6099,6 +6773,7 @@ export type Database = {
       app_role: "homeowner" | "realtor" | "contractor" | "admin" | "builder"
       builder_cert_level: "certified" | "plus" | "elite"
       builder_member_role: "owner" | "admin" | "staff"
+      certification_tier: "none" | "bronze" | "silver" | "gold" | "platinum"
       nb_clone_status:
         | "draft"
         | "under_construction"
@@ -6119,6 +6794,7 @@ export type Database = {
         | "siding_exterior"
         | "manufacturer"
         | "other"
+      risk_level: "low" | "medium" | "high"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -6249,6 +6925,7 @@ export const Constants = {
       app_role: ["homeowner", "realtor", "contractor", "admin", "builder"],
       builder_cert_level: ["certified", "plus", "elite"],
       builder_member_role: ["owner", "admin", "staff"],
+      certification_tier: ["none", "bronze", "silver", "gold", "platinum"],
       nb_clone_status: [
         "draft",
         "under_construction",
@@ -6271,6 +6948,7 @@ export const Constants = {
         "manufacturer",
         "other",
       ],
+      risk_level: ["low", "medium", "high"],
     },
   },
 } as const
