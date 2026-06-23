@@ -24,30 +24,44 @@ const Index = () => {
         <img src={heroImage} alt="Modern home exterior" className="absolute inset-0 h-full w-full object-cover mix-blend-overlay opacity-40" />
         <div className="container relative py-24 md:py-32">
           <div className="max-w-3xl animate-fade-in">
-            <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-3 py-1 text-xs font-medium text-primary-foreground backdrop-blur">
-              <CheckCircle2 className="h-3.5 w-3.5" /> The digital operating system for every home
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary-foreground/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-foreground backdrop-blur">
+              <CheckCircle2 className="h-3.5 w-3.5" /> From Foundation to Future
             </span>
-            <h1 className="mt-6 text-4xl font-bold leading-tight text-primary-foreground md:text-6xl">
-              The lifelong digital identity for every property.
+            <h1 className="mt-6 text-4xl font-bold leading-[1.05] text-primary-foreground md:text-6xl">
+              Every Property Has an Origin.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-primary-foreground/85 md:text-xl">
-              Orivaz brings ownership, maintenance, insurance, contractors, inspections, warranties, public records, and AI guidance into one trusted platform that follows the home from construction through every owner.
+              Orivaz creates a trusted digital identity for every property — from the first foundation pour to every owner, repair, warranty, insurance claim, renovation, and future sale.
             </p>
             <div className="mt-8 max-w-2xl rounded-2xl bg-background/95 p-3 shadow-elevated backdrop-blur">
               <AddressSearch />
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
+              <Button size="sm" asChild>
+                <Link to="/auth?mode=signup">Create Orivaz ID<ArrowRight className="ml-2 h-4 w-4" /></Link>
+              </Button>
+              <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+                <Link to="/demo"><FileText className="mr-2 h-4 w-4" />View Sample Property Report</Link>
+              </Button>
               <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
                 <Link to="/why">Why Orivaz? →</Link>
               </Button>
-              <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link to="/demo"><FileText className="mr-2 h-4 w-4" />See a sample report</Link>
-              </Button>
-              <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link to="/properties/22222222-2222-2222-2222-222222222222/home-history">See contractor fraud demo →</Link>
-              </Button>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* What is Orivaz */}
+      <section className="container py-16 md:py-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-primary">The Digital Life of Every Property</span>
+          <h2 className="mt-3 text-3xl font-bold md:text-4xl">What is Orivaz?</h2>
+          <p className="mt-5 text-lg text-muted-foreground">
+            Orivaz is the trusted digital property identity platform built to preserve the complete life story of every property. Builders start the record. Homeowners protect it. Contractors update it. Insurance providers verify it. Future buyers inherit it.
+          </p>
+          <p className="mt-6 text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            One Property. One Identity. Built Once. Trusted Forever.
+          </p>
         </div>
       </section>
 
