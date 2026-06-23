@@ -534,7 +534,6 @@ export default function BuilderPropertyEditor() {
               <HomeownerInviteCard cloneRow={row} />
             </div>
           </TabsContent>
-          </TabsContent>
         </Tabs>
       </div>
     </div>
