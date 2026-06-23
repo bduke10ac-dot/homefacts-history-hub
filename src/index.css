@@ -182,6 +182,20 @@
   50% { box-shadow: 0 0 70px hsl(200 90% 60% / 0.65); }
 }
 
+.logo-pulse { animation: logo-pulse 3.2s ease-in-out infinite; }
+@keyframes logo-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.25); opacity: 0.9; }
+}
+
+.logo-word { background: linear-gradient(90deg, hsl(var(--foreground)) 0%, hsl(var(--primary-glow)) 50%, hsl(var(--foreground)) 100%); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent; animation: text-shine 5s linear infinite; }
+
+.logo-letter { animation: letter-bob 3.6s ease-in-out infinite; }
+@keyframes letter-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
 @media print {
   .no-print { display: none !important; }
   body { background: white; }
