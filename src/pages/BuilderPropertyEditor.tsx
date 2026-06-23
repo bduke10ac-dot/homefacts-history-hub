@@ -83,7 +83,7 @@ export default function BuilderPropertyEditor() {
     if (upErr) return toast.error(upErr.message);
     const { data: pub } = supabase.storage.from("property-files").getPublicUrl(path);
     const { error } = await supabase.from("nb_clone_documents").insert([{
-      clone_id: id, file_name: file.name, file_url: pub.publicUrl, category: category as any, mime_type: file.type,
+      clone_id: id, title: file.name, file_url: pub.publicUrl, storage_path: path, category, file_type: file.type,
     }]);
     if (error) return toast.error(error.message);
     toast.success(`${file.name} uploaded`);
