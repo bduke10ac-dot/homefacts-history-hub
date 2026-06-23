@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Search, Copy, Archive, QrCode, Upload, FileText, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
-const STATUSES = ["draft", "available", "under_contract", "under_construction", "sold", "closed", "handed_off", "archived"];
+const STATUSES = ["draft", "under_construction", "ready_for_handoff", "handed_off", "transferred"];
 
 export default function BuilderPortal() {
   const navigate = useNavigate();
