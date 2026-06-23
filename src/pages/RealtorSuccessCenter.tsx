@@ -71,7 +71,7 @@ const ONBOARDING_STEPS = [
   { step: 7,  label: "Upload invoices",             hint: "Improvement & repair invoices." },
   { step: 8,  label: "Upload manuals",              hint: "Appliance, HVAC, smart-home manuals." },
   { step: 9,  label: "Upload property photos",      hint: "Interior, exterior, drone." },
-  { step: 10, label: "Complete HomeFacts Profile",  hint: "Final review & publish." },
+  { step: 10, label: "Complete Orivaz Profile",  hint: "Final review & publish." },
 ];
 
 const PARTNER_LEVELS = [
@@ -250,12 +250,12 @@ function DashboardView({ shares, loading }: { shares: any[]; loading: boolean })
   const progress = next ? Math.min(100, ((points - level.min) / (next.min - level.min)) * 100) : 100;
 
   const kpis = [
-    { label: "Active Listings",            value: shares.length,           icon: Home,         accent: "primary" as const, sub: "Shared via HomeFacts" },
+    { label: "Active Listings",            value: shares.length,           icon: Home,         accent: "primary" as const, sub: "Shared via Orivaz" },
     { label: "Pending Listings",           value: 3,                       icon: Calendar,     accent: "warning" as const },
     { label: "Closed Listings",            value: 12,                      icon: BadgeCheck,   accent: "accent"  as const },
     { label: "Certified Listings",         value: Math.max(1, Math.floor(shares.length * 0.6)), icon: ShieldCheck, accent: "accent" as const },
     { label: "Homeowners Invited",         value: 28,                      icon: UserPlus,     accent: "primary" as const },
-    { label: "HomeFacts Accounts Created", value: 19,                      icon: Users,        accent: "primary" as const },
+    { label: "Orivaz Accounts Created", value: 19,                      icon: Users,        accent: "primary" as const },
     { label: "Buyer Report Views",         value: 412,                     icon: FileText,     accent: "primary" as const },
     { label: "QR Code Scans",              value: 1284,                    icon: QrCode,       accent: "accent"  as const },
     { label: "Reports Generated",          value: shares.length + 7,       icon: FileCheck,    accent: "primary" as const },
@@ -268,7 +268,7 @@ function DashboardView({ shares, loading }: { shares: any[]; loading: boolean })
     <>
       <SectionHeader
         title="Welcome back"
-        description="Your HomeFacts business at a glance — listings, engagement, and rewards."
+        description="Your Orivaz business at a glance — listings, engagement, and rewards."
         action={
           <div className="flex gap-2">
             <Button variant="outline" asChild><Link to="/search"><Search className="mr-2 h-4 w-4" />Find property</Link></Button>
@@ -413,7 +413,7 @@ function ListingsView({ shares }: { shares: any[] }) {
         <EmptyState
           icon={Home}
           title="No listings yet"
-          hint="Find a property and share a HomeFacts report to start a new listing workspace."
+          hint="Find a property and share a Orivaz report to start a new listing workspace."
           cta={<Button asChild><Link to="/search">Find property</Link></Button>}
         />
       ) : (
@@ -474,7 +474,7 @@ function ListingWorkspace({ listing, onBack }: { listing: any; onBack: () => voi
         </TabsList>
 
         <TabsContent value="overview" className="mt-4 grid gap-4 md:grid-cols-3">
-          <Card><CardHeader><CardTitle className="text-base">HomeFacts Score</CardTitle></CardHeader>
+          <Card><CardHeader><CardTitle className="text-base">Orivaz Score</CardTitle></CardHeader>
             <CardContent>
               <div className="text-4xl font-bold text-primary">82</div>
               <Progress value={82} className="mt-3" />
@@ -587,7 +587,7 @@ function CertifiedView({ shares }: { shares: any[] }) {
   return (
     <>
       <SectionHeader
-        title="HomeFacts Certified Listings"
+        title="Orivaz Verified Listings"
         description="Earn the Certified Listing badge by completing the full property record."
       />
 
@@ -618,7 +618,7 @@ function CertifiedView({ shares }: { shares: any[] }) {
           <CardContent>
             <div className="rounded-xl border-2 border-accent/30 bg-gradient-to-br from-accent/10 to-primary/5 p-6 text-center">
               <ShieldCheck className="mx-auto h-12 w-12 text-accent" />
-              <p className="mt-3 text-lg font-bold">HomeFacts Certified</p>
+              <p className="mt-3 text-lg font-bold">Orivaz Verified</p>
               <p className="text-xs text-muted-foreground">Verified property record</p>
             </div>
             <Button className="mt-4 w-full" disabled={pct < 100}>
@@ -684,7 +684,7 @@ function OnboardingView() {
           <Sparkles className="mt-0.5 h-5 w-5 text-primary" />
           <div>
             <p className="font-medium">AI recommends next</p>
-            <p className="text-sm text-muted-foreground">Ask the seller for their most recent HVAC service receipt — completing this raises the HomeFacts Score by an estimated +8.</p>
+            <p className="text-sm text-muted-foreground">Ask the seller for their most recent HVAC service receipt — completing this raises the Orivaz Score by an estimated +8.</p>
           </div>
         </CardContent>
       </Card>
@@ -701,7 +701,7 @@ function BuyerReportsView({ shares }: { shares: any[] }) {
     "Property Overview","Property Timeline","Improvement History","Roof Information","HVAC","Electrical",
     "Plumbing","Foundation","Storm History","Insurance Information","Warranty Information","Permit History",
     "Property Photos","Drone Photos","Neighborhood Information","Schools","Crime Statistics","Utilities",
-    "Property Taxes","Flood Information","Future Maintenance Recommendations","HomeFacts Score",
+    "Property Taxes","Flood Information","Future Maintenance Recommendations","Orivaz Score",
   ];
 
   return (
@@ -863,7 +863,7 @@ function RewardsView({ count }: { count: number }) {
     <>
       <SectionHeader
         title="Rewards & Incentives"
-        description="Earn points for growing the HomeFacts ecosystem — level up for premium perks."
+        description="Earn points for growing the Orivaz ecosystem — level up for premium perks."
       />
 
       <Card className="mb-6">
@@ -948,7 +948,7 @@ function AnalyticsView({ shares }: { shares: any[] }) {
 
   return (
     <>
-      <SectionHeader title="Business Analytics" description="Listings, engagement, and how HomeFacts impacts your numbers." />
+      <SectionHeader title="Business Analytics" description="Listings, engagement, and how Orivaz impacts your numbers." />
 
       <div className="grid gap-4 md:grid-cols-2">
         {bars.map((b) => (
@@ -965,7 +965,7 @@ function AnalyticsView({ shares }: { shares: any[] }) {
       </div>
 
       <Card className="mt-6">
-        <CardHeader><CardTitle className="text-base">HomeFacts vs standard listings</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base">Orivaz vs standard listings</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div><p className="text-2xl font-bold text-accent">+38%</p><p className="text-xs text-muted-foreground">Buyer engagement</p></div>
@@ -1031,20 +1031,20 @@ function CrmView() {
 
 function EducationView() {
   const courses = [
-    { t: "Winning Listings with HomeFacts", d: "8 lessons · 45 min", i: PlayCircle },
+    { t: "Winning Listings with Orivaz", d: "8 lessons · 45 min", i: PlayCircle },
     { t: "Mastering Buyer Confidence",      d: "5 lessons · 30 min", i: BookOpen },
     { t: "AI for Real Estate Agents",       d: "6 lessons · 40 min", i: Bot },
     { t: "Closing Faster with Documentation", d: "4 lessons · 25 min", i: FileCheck },
   ];
   const certs = [
-    { t: "HomeFacts Certified Realtor", earned: true },
+    { t: "Orivaz Verified Realtor", earned: true },
     { t: "Certified Listing Expert",    earned: true },
     { t: "Elite Partner",                earned: false },
   ];
 
   return (
     <>
-      <SectionHeader title="HomeFacts Academy" description="Video courses, scripts, and tutorials — earn certifications visible on your profile." />
+      <SectionHeader title="Orivaz Academy" description="Video courses, scripts, and tutorials — earn certifications visible on your profile." />
 
       <div className="grid gap-4 md:grid-cols-2">
         {courses.map((c) => (
@@ -1114,7 +1114,7 @@ function PartnersView() {
           <Avatar className="h-14 w-14"><AvatarFallback>SR</AvatarFallback></Avatar>
           <div>
             <div className="flex items-center gap-2"><p className="font-semibold">Summit Roofing Co.</p><Badge className="gap-1 bg-accent text-accent-foreground"><ShieldCheck className="h-3 w-3" />Verified</Badge></div>
-            <p className="text-sm text-muted-foreground">Licensed · Insured · 247 HomeFacts projects · 12 yrs in business</p>
+            <p className="text-sm text-muted-foreground">Licensed · Insured · 247 Orivaz projects · 12 yrs in business</p>
             <div className="mt-1 flex items-center gap-1 text-warning">{"★".repeat(5)}<span className="ml-1 text-xs text-muted-foreground">4.9 · 312 reviews</span></div>
           </div>
           <Button variant="outline">View profile</Button>
@@ -1142,7 +1142,7 @@ function AiAssistantView() {
     setTimeout(() => {
       setMessages((m) => [...m, {
         role: "ai",
-        text: "Here's a draft you can edit — I've highlighted the verified HomeFacts data so buyers see exactly what's documented.",
+        text: "Here's a draft you can edit — I've highlighted the verified Orivaz data so buyers see exactly what's documented.",
       }]);
     }, 600);
   };

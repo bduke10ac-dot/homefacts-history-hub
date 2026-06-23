@@ -66,7 +66,7 @@ export default function BuilderAnalytics() {
       <div className="container py-6">
         <Link to="/builder" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="mr-1 h-4 w-4" />Back to dashboard</Link>
         <h1 className="mt-3 flex items-center gap-2 text-2xl font-bold"><Activity className="h-6 w-6 text-primary" />Builder Analytics</h1>
-        <p className="text-sm text-muted-foreground">How your homes and homeowners are using HomeFacts.</p>
+        <p className="text-sm text-muted-foreground">How your homes and homeowners are using Orivaz.</p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Stat label="Homes documented" value={m.homes} icon={Home} />

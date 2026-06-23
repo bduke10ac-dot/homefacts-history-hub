@@ -73,7 +73,7 @@ export default function BuilderCommunity() {
           <div className="mt-2 flex items-center gap-2 text-xs uppercase tracking-wider opacity-85"><Building2 className="h-4 w-4" />Community</div>
           <h1 className="mt-2 text-3xl font-bold md:text-4xl">{community.name}</h1>
           <p className="mt-2 opacity-90 max-w-2xl">{community.description}</p>
-          <p className="mt-3 inline-flex items-center gap-1 text-xs"><ShieldCheck className="h-3.5 w-3.5" />Built by HomeFacts Certified Builder · {builder.name}</p>
+          <p className="mt-3 inline-flex items-center gap-1 text-xs"><ShieldCheck className="h-3.5 w-3.5" />Built by Orivaz Verified Builder · {builder.name}</p>
         </div>
       </div>
 

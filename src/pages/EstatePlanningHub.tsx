@@ -53,7 +53,7 @@ export default function EstatePlanningHub() {
           </div>
         )}
         <p className="text-xs text-muted-foreground">
-          HomeFacts provides educational information only and does not provide legal, tax, or financial advice.
+          Orivaz provides educational information only and does not provide legal, tax, or financial advice.
           Please consult a licensed professional.
         </p>
       </div>

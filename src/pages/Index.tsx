@@ -31,14 +31,14 @@ const Index = () => {
               The lifelong digital identity for every property.
             </h1>
             <p className="mt-5 max-w-2xl text-lg text-primary-foreground/85 md:text-xl">
-              HomeFacts brings ownership, maintenance, insurance, contractors, inspections, warranties, public records, and AI guidance into one trusted platform that follows the home from construction through every owner.
+              Orivaz brings ownership, maintenance, insurance, contractors, inspections, warranties, public records, and AI guidance into one trusted platform that follows the home from construction through every owner.
             </p>
             <div className="mt-8 max-w-2xl rounded-2xl bg-background/95 p-3 shadow-elevated backdrop-blur">
               <AddressSearch />
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
               <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-                <Link to="/why">Why HomeFacts? →</Link>
+                <Link to="/why">Why Orivaz? →</Link>
               </Button>
               <Button size="sm" variant="outline" className="border-primary-foreground/30 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
                 <Link to="/demo"><FileText className="mr-2 h-4 w-4" />See a sample report</Link>
@@ -100,7 +100,7 @@ const Index = () => {
                 <HardHat className="h-3.5 w-3.5" /> For Home Builders & Developers
               </span>
               <h2 className="mt-5 text-3xl font-bold leading-tight md:text-5xl">
-                Become a HomeFacts Certified Builder.
+                Become a Orivaz Verified Builder.
               </h2>
               <p className="mt-4 text-lg text-primary-foreground/85">
                 Hand every buyer a digital birth certificate for their new home — a permanent, transferable record that travels with the property forever.
@@ -161,7 +161,7 @@ const Index = () => {
                   ))}
                 </div>
                 <div className="mt-4 rounded-lg bg-gradient-subtle p-3 text-center text-[11px] text-muted-foreground">
-                  Built by <span className="font-semibold text-foreground">Lone Star Homes</span> · HomeFacts Elite Builder
+                  Built by <span className="font-semibold text-foreground">Lone Star Homes</span> · Orivaz Elite Builder
                 </div>
               </div>
               <div className="absolute -bottom-4 -right-2 rotate-6 rounded-xl bg-amber-500 px-3 py-2 text-xs font-bold text-amber-950 shadow-elevated">
@@ -217,7 +217,7 @@ const Index = () => {
               { icon: Sparkles, t: "AI Listing Assistant", d: "Generate listing descriptions, social posts, and property history summaries in seconds." },
               { icon: TrendingUp, t: "Earn Rewards & Status", d: "Climb from Bronze to Elite Partner. Earn points on every certified listing and closing." },
               { icon: Users, t: "Lifetime Client CRM", d: "Automated check-ins for warranties, anniversaries, and maintenance keep you top-of-mind." },
-              { icon: BadgeCheck, t: "HomeFacts Certified Badge", d: "Stand out on MLS with the trust badge buyers recognize and lenders respect." },
+              { icon: BadgeCheck, t: "Orivaz Verified Badge", d: "Stand out on MLS with the trust badge buyers recognize and lenders respect." },
               { icon: Zap, t: "Marketing Center", d: "On-brand flyers, social graphics, and QR codes — generated for every property, instantly." },
             ].map((f) => (
               <div key={f.t} className="group relative overflow-hidden rounded-2xl border bg-card p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-elevated">
@@ -268,7 +268,7 @@ const Index = () => {
       </section>
 
       <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} HomeFacts Report. Built on trust.
+        © {new Date().getFullYear()} Orivaz Property Report. Built on trust.
       </footer>
     </div>
   );

@@ -51,7 +51,7 @@ export default function BuilderImportWizard() {
     social_instagram: "",
     brand_primary_color: "#1f4e2e",
     brand_secondary_color: "#c9a96a",
-    certifications: "HomeFacts Certified Builder",
+    certifications: "Orivaz Verified Builder",
     is_founding_builder: true,
     founding_builder_number: 1,
     is_certified_builder: true,
@@ -163,7 +163,7 @@ export default function BuilderImportWizard() {
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Builder Import Wizard</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Set up a HomeFacts Builder Program partner. Creekside Homes is preloaded as Founding Builder #001.
+            Set up a Orivaz Builder Program partner. Creekside Homes is preloaded as Founding Builder #001.
           </p>
         </div>
 

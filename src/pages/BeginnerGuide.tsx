@@ -76,7 +76,7 @@ export default function BeginnerGuide() {
             ) : (
               <span className="font-semibold">{company?.name}</span>
             )}
-            {company?.certification_level && <Badge variant="outline" className="ml-2 border-white/30 bg-white/10 text-primary-foreground capitalize">HomeFacts {company.certification_level}</Badge>}
+            {company?.certification_level && <Badge variant="outline" className="ml-2 border-white/30 bg-white/10 text-primary-foreground capitalize">Orivaz {company.certification_level}</Badge>}
             {" · "}{clone.nb_templates?.name}
             {clone.co_date ? ` · CO ${format(new Date(clone.co_date), "MMM d, yyyy")}` : ""}
           </p>

@@ -24,7 +24,7 @@ export function Navbar() {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-hero shadow-glow">
             <Home className="h-5 w-5 text-primary-foreground" />
           </div>
-          <span className="text-lg tracking-tight">HomeFacts</span>
+          <span className="text-lg tracking-tight">Orivaz</span>
           <span className="hidden text-xs text-muted-foreground sm:inline">Report</span>
         </Link>
         <nav className="flex items-center gap-2">

@@ -80,7 +80,7 @@ export default function Pricing() {
           {/* Pro */}
           <div className="rounded-2xl border-2 border-primary bg-card p-6 shadow-sm">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold">HomeFacts Pro</h3>
+              <h3 className="text-lg font-semibold">Orivaz Pro</h3>
               <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">Most popular</span>
             </div>
             <p className="mt-1 text-sm text-muted-foreground">Everything you need to evaluate a home.</p>

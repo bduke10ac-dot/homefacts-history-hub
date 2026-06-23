@@ -66,7 +66,7 @@ export default function AskPropertyAI() {
           <ArrowLeft className="mr-1 h-4 w-4" /> Back to property
         </Link>
         <div>
-          <h1 className="flex items-center gap-2 text-3xl font-bold"><Sparkles className="h-6 w-6 text-primary" />Ask HomeFacts AI</h1>
+          <h1 className="flex items-center gap-2 text-3xl font-bold"><Sparkles className="h-6 w-6 text-primary" />Ask Orivaz AI</h1>
           <p className="text-muted-foreground">Answers grounded only in this property's verified records and public data.</p>
         </div>
 

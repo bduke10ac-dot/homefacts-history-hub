@@ -127,7 +127,7 @@ export function BuiltBy({ company: companyProp, slug, variant = "full", classNam
             )}
             <p className="mt-1 flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400">
               <ShieldCheck className="h-3.5 w-3.5" />
-              HomeFacts Certified Builder
+              Orivaz Verified Builder
             </p>
           </div>
         </div>

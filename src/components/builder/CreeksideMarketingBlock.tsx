@@ -18,10 +18,10 @@ export function CreeksideMarketingBlock({
   return (
     <div className="rounded-2xl border bg-card p-6 shadow-card">
       <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-primary">
-        <ShieldCheck className="h-4 w-4" />HomeFacts Certified Digital Home Record
+        <ShieldCheck className="h-4 w-4" />Orivaz Verified Digital Home Record
       </div>
       <p className="mt-3 text-base leading-relaxed">
-        This {builderName} home includes a certified HomeFacts Digital Home Record —
+        This {builderName} home includes a certified Orivaz Digital Home Record —
         giving homeowners organized access to warranties, builder documents, construction
         history, maintenance reminders, and important property information from day one.
       </p>

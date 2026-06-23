@@ -97,7 +97,7 @@ const AI_PROMPTS = [
 ];
 
 const DISCLAIMER =
-  "HomeFacts provides educational information only and does not provide legal, tax, or financial advice. Please consult a licensed professional.";
+  "Orivaz provides educational information only and does not provide legal, tax, or financial advice. Please consult a licensed professional.";
 
 /* ---------------- Types ---------------- */
 
@@ -370,7 +370,7 @@ export default function EstatePlanning() {
           <CardContent className="py-5 text-sm text-muted-foreground flex items-start gap-3">
             <Building2 className="h-5 w-5 text-primary mt-0.5" />
             <p>
-              This HomeFacts Certified Home includes an Estate &amp; Legacy Planning starter section to help
+              This Orivaz Verified Home includes an Estate &amp; Legacy Planning starter section to help
               protect the property's history, ownership records, warranties, documents, and transfer
               instructions for future generations.
             </p>

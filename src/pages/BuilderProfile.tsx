@@ -65,7 +65,7 @@ export default function BuilderProfile() {
       <div className="bg-gradient-hero px-6 py-12 text-primary-foreground">
         <div className="container">
           <div className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wider opacity-85">
-            <ShieldCheck className="h-4 w-4" />HomeFacts Certified Builder
+            <ShieldCheck className="h-4 w-4" />Orivaz Verified Builder
             {company.is_founding_builder && (
               <span className="ml-2 inline-flex items-center gap-1 rounded-full bg-primary-foreground/15 px-2 py-0.5 text-[10px]">
                 <Star className="h-3 w-3" />Founding Builder #{company.founding_builder_number ?? "001"}
@@ -83,7 +83,7 @@ export default function BuilderProfile() {
               {company.tagline && <p className="mt-1 opacity-90">{company.tagline}</p>}
             </div>
             <Badge variant="outline" className={`${LEVEL_CLS[company.certification_level] ?? ""} border-0 text-sm capitalize`}>
-              <Award className="mr-1.5 h-3.5 w-3.5" />HomeFacts {company.certification_level}
+              <Award className="mr-1.5 h-3.5 w-3.5" />Orivaz {company.certification_level}
             </Badge>
           </div>
           <div className="mt-5"><BuilderBadgeRow badges={company.badges} /></div>
@@ -111,7 +111,7 @@ export default function BuilderProfile() {
               <div className="grid gap-1 text-muted-foreground">
                 {company.license_number && <p><strong className="text-foreground">License:</strong> {company.license_number}</p>}
                 {company.insurance_carrier && <p><strong className="text-foreground">Insurance:</strong> {company.insurance_carrier}</p>}
-                {company.certified_since && <p><strong className="text-foreground">HomeFacts Certified since:</strong> {format(new Date(company.certified_since), "MMM yyyy")}</p>}
+                {company.certified_since && <p><strong className="text-foreground">Orivaz Verified since:</strong> {format(new Date(company.certified_since), "MMM yyyy")}</p>}
                 {company.service_areas?.length > 0 && <p><strong className="text-foreground">Service areas:</strong> {company.service_areas.join(", ")}</p>}
               </div>
             </Section>
@@ -172,7 +172,7 @@ export default function BuilderProfile() {
             </Section>
 
             <Section title="HOA documents" icon={FileText}>
-              <p className="text-muted-foreground">Available in each home's HomeFacts record after closing.</p>
+              <p className="text-muted-foreground">Available in each home's Orivaz record after closing.</p>
             </Section>
 
             <Section title="Lot maps & school zones" icon={GraduationCap}>

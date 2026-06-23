@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 
 const DEFAULT_BADGES = [
   "Founding Builder #001",
-  "HomeFacts Certified Builder",
+  "Orivaz Verified Builder",
   "Digital Home Record Included",
   "Warranty Packet Included",
   "Construction Timeline Included",

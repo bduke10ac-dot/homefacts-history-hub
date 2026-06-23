@@ -58,7 +58,7 @@ const PRE_DEPARTURE = [
   "Check weather forecast",
   "Photograph exterior property condition",
   "Photograph roof, siding, windows, doors, yard",
-  "Upload photos to HomeFacts",
+  "Upload photos to Orivaz",
   "Notify trusted contact",
   "Confirm security system is active",
 ];
@@ -156,7 +156,7 @@ export default function VacationMode() {
   const generateReport = () => {
     if (!property) return;
     const lines: string[] = [];
-    lines.push(`HomeFacts — Vacation Mode Property Condition Report`);
+    lines.push(`Orivaz — Vacation Mode Property Condition Report`);
     lines.push(`Property: ${property.address_line}, ${property.city}, ${property.state} ${property.zip}`);
     lines.push(`Departure: ${state.departure || "—"}    Return: ${state.returnDate || "—"}`);
     lines.push(`Emergency contact: ${state.emergencyContact || "—"}`);
@@ -348,7 +348,7 @@ export default function VacationMode() {
                 <p className="text-sm text-muted-foreground">
                   Generates a report covering checklists, uploaded photos (added via the Vault),
                   weather alerts, damage notes, and any contractor inspection requests.
-                  Add the downloaded file to the property Vault to make it part of the permanent HomeFacts history.
+                  Add the downloaded file to the property Vault to make it part of the permanent Orivaz history.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   <Button onClick={generateReport}><FileText className="mr-2 h-4 w-4" />Generate report</Button>

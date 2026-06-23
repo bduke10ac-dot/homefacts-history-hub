@@ -40,17 +40,17 @@ export default function BuilderMarketing() {
       <div className="container py-8 space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Marketing Toolkit</h1>
-          <p className="text-sm text-muted-foreground">Showcase your HomeFacts Certified Builder status across your sales channels.</p>
+          <p className="text-sm text-muted-foreground">Showcase your Orivaz Verified Builder status across your sales channels.</p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           {/* Certification badge */}
           <Card><CardContent className="space-y-3 p-6 text-center">
-            <Badge variant="outline" className="bg-amber-500/15 text-amber-700 border-0"><Award className="mr-1.5 h-3.5 w-3.5" />HomeFacts {company.certification_level}</Badge>
+            <Badge variant="outline" className="bg-amber-500/15 text-amber-700 border-0"><Award className="mr-1.5 h-3.5 w-3.5" />Orivaz {company.certification_level}</Badge>
             <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full border-4 border-primary bg-card">
               <div className="text-center">
                 <ShieldCheck className="mx-auto h-8 w-8 text-primary" />
-                <p className="mt-1 text-[10px] font-bold uppercase tracking-wider">HomeFacts</p>
+                <p className="mt-1 text-[10px] font-bold uppercase tracking-wider">Orivaz</p>
                 <p className="text-[9px] uppercase">Certified</p>
               </div>
             </div>
@@ -83,9 +83,9 @@ export default function BuilderMarketing() {
                 <div className="rounded-xl border bg-white p-3"><QRCodeCanvas value={sampleUrl} size={160} /></div>
                 <div className="space-y-1 text-sm">
                   <p className="font-medium">Window decal text</p>
-                  <p className="rounded bg-muted px-3 py-2 text-xs italic">"This Home Includes a HomeFacts Digital Home Passport"</p>
+                  <p className="rounded bg-muted px-3 py-2 text-xs italic">"This Home Includes a Orivaz Digital Home Passport"</p>
                   <p className="mt-3 font-medium">Yard sign rider</p>
-                  <p className="rounded bg-muted px-3 py-2 text-xs italic">"HomeFacts Certified — Lifetime Property History Included"</p>
+                  <p className="rounded bg-muted px-3 py-2 text-xs italic">"Orivaz Verified — Lifetime Property History Included"</p>
                   <Button asChild size="sm" variant="outline" className="mt-2"><a href={sampleUrl} target="_blank" rel="noreferrer"><ExternalLink className="mr-2 h-4 w-4" />Preview sample passport</a></Button>
                 </div>
               </div>
@@ -96,11 +96,11 @@ export default function BuilderMarketing() {
           <Card className="md:col-span-2"><CardContent className="space-y-2 p-6 text-sm">
             <h3 className="font-semibold">Closing Day Welcome Script</h3>
             <ol className="list-decimal space-y-1 pl-5 text-muted-foreground">
-              <li>Hand the buyer their printed HomeFacts QR card.</li>
+              <li>Hand the buyer their printed Orivaz QR card.</li>
               <li>Walk them through scanning it — passport loads instantly, no login required.</li>
               <li>Show the Warranty Center color-coded dashboard.</li>
               <li>Demo the AI Home Assistant: "When do I change my HVAC filter?"</li>
-              <li>Invite them to claim the home in their HomeFacts account to receive maintenance reminders.</li>
+              <li>Invite them to claim the home in their Orivaz account to receive maintenance reminders.</li>
             </ol>
           </CardContent></Card>
         </div>

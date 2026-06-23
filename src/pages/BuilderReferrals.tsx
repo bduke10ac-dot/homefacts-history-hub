@@ -53,7 +53,7 @@ export default function BuilderReferrals() {
       <div className="container py-6">
         <Link to="/builder" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="mr-1 h-4 w-4" />Back to dashboard</Link>
         <h1 className="mt-3 flex items-center gap-2 text-2xl font-bold"><Users className="h-6 w-6 text-primary" />Builder Referrals</h1>
-        <p className="text-sm text-muted-foreground">Refer another builder into the HomeFacts Builder Program. Founding builders help us grow the network.</p>
+        <p className="text-sm text-muted-foreground">Refer another builder into the Orivaz Builder Program. Founding builders help us grow the network.</p>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_1fr]">
           <Card><CardContent className="space-y-3 p-5">
