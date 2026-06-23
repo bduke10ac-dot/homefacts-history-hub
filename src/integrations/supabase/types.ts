@@ -123,6 +123,45 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_user_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          ip_address: string | null
+          metadata: Json
+          property_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor_user_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          property_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          property_id?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
       builder_companies: {
         Row: {
           address_line: string | null
@@ -5386,6 +5425,47 @@ export type Database = {
           },
         ]
       }
+      property_owners: {
+        Row: {
+          created_at: string
+          id: string
+          invited_by: string | null
+          ownership_role: Database["public"]["Enums"]["ownership_role"]
+          property_id: string
+          status: Database["public"]["Enums"]["ownership_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invited_by?: string | null
+          ownership_role?: Database["public"]["Enums"]["ownership_role"]
+          property_id: string
+          status?: Database["public"]["Enums"]["ownership_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invited_by?: string | null
+          ownership_role?: Database["public"]["Enums"]["ownership_role"]
+          property_id?: string
+          status?: Database["public"]["Enums"]["ownership_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_owners_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_plat_maps: {
         Row: {
           created_at: string
@@ -8048,6 +8128,10 @@ export type Database = {
         Args: { _clone_id: string; _user_id: string }
         Returns: boolean
       }
+      is_property_member: {
+        Args: { _property_id: string; _user_id: string }
+        Returns: boolean
+      }
       is_property_owner: {
         Args: { _property_id: string; _user_id: string }
         Returns: boolean
@@ -8098,6 +8182,13 @@ export type Database = {
         | "w9"
         | "identity"
         | "other"
+      ownership_role:
+        | "primary_owner"
+        | "co_owner"
+        | "spouse"
+        | "trustee"
+        | "property_manager"
+      ownership_status: "pending" | "active" | "removed"
       risk_level: "low" | "medium" | "high"
       warranty_category:
         | "roof"
@@ -8319,6 +8410,14 @@ export const Constants = {
         "identity",
         "other",
       ],
+      ownership_role: [
+        "primary_owner",
+        "co_owner",
+        "spouse",
+        "trustee",
+        "property_manager",
+      ],
+      ownership_status: ["pending", "active", "removed"],
       risk_level: ["low", "medium", "high"],
       warranty_category: [
         "roof",
