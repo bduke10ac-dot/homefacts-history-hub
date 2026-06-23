@@ -42,7 +42,7 @@ export default function WarrantyPassport() {
         supabase.from("warranty_transfers").select("*").eq("property_id", id).order("created_at", { ascending: false }),
       ]);
       setProperty(prop);
-      const list = (ws ?? []) as Warranty[];
+      const list = (ws ?? []) as unknown as Warranty[];
       setWarranties(list);
       setTransfers(tx ?? []);
       if (list.length) {
