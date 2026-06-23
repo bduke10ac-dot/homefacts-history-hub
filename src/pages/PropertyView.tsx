@@ -120,7 +120,7 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
       {!shared && <Navbar />}
       <div className="container py-8">
         {/* Action bar */}
-        <div className="no-print mb-6 flex flex-wrap items-center justify-between gap-3">
+        <div className="no-print mb-4 flex flex-wrap items-center justify-between gap-3">
           <Link to="/search" className="text-sm text-muted-foreground hover:text-foreground">← Back to search</Link>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" onClick={() => window.print()}><Printer className="mr-2 h-4 w-4" />Print</Button>
@@ -131,6 +131,37 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
             {canEdit && <AddRecordDialog propertyId={property.id} onAdded={load} />}
           </div>
         </div>
+
+        {/* Unified property tabs (spec: 10-tab nav) */}
+        {!shared && (
+          <div className="no-print mb-6 -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+            <div className="flex min-w-max gap-1 rounded-xl border bg-card p-1 shadow-sm">
+              {[
+                ["Overview", `/property/${property.id}`],
+                ["Timeline", `/property/${property.id}/timeline`],
+                ["Documents", `/property/${property.id}/vault`],
+                ["Systems", `/property/${property.id}/systems`],
+                ["Warranties", `/property/${property.id}/warranties`],
+                ["Maintenance", `/property/${property.id}/maintenance`],
+                ["Insurance", `/property/${property.id}/insurance`],
+                ["Contractors", `/property/${property.id}/contractors`],
+                ["Report", `/property/${property.id}/buyer-report`],
+                ["AI Assistant", `/property/${property.id}/ask`],
+              ].map(([label, href], i) => (
+                <Link
+                  key={href}
+                  to={href}
+                  className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition-colors ${
+                    i === 0 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
 
         {/* Printable report */}
         <div id="report-printable" className="space-y-6 bg-background">
@@ -218,6 +249,7 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
                   ["Health", `/property/${property.id}/health`],
                   ["Confidence", `/property/${property.id}/confidence`],
                   ["Timeline", `/property/${property.id}/timeline`],
+                  ["Systems", `/property/${property.id}/systems`],
                 ]},
                 { group: "AI & Reports", items: [
                   ["AI Advisor", `/property/${property.id}/ask`],
