@@ -2779,75 +2779,144 @@ export type Database = {
       nb_property_clones: {
         Row: {
           address_line: string | null
+          bathrooms: number | null
+          bedrooms: number | null
+          block: string | null
+          build_info: Json
           build_start_date: string | null
           city: string | null
+          closed_date: string | null
           co_date: string | null
+          community_info: Json
           company_id: string
           completion_date: string | null
           construction_stage: string | null
           construction_stages: Json
+          county: string | null
           created_at: string
           created_by: string | null
+          elevation: string | null
+          finish_selections: Json
+          floor_plan_name: string | null
+          garage: string | null
+          gps_lat: number | null
+          gps_lng: number | null
           handed_off_at: string | null
           handoff_packet_url: string | null
           handoff_token: string
+          homeowner_email: string | null
+          homeowner_name: string | null
+          homeowner_phone: string | null
           id: string
+          lot_info: Json
           lot_number: string | null
+          neighbor_info: Json
           notes: string | null
           parcel_id: string | null
+          phase: string | null
           property_id: string | null
+          section: string | null
+          sold_date: string | null
+          square_feet: number | null
           state: string | null
           status: Database["public"]["Enums"]["nb_clone_status"]
+          street: string | null
           template_id: string
           updated_at: string
           zip: string | null
         }
         Insert: {
           address_line?: string | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          block?: string | null
+          build_info?: Json
           build_start_date?: string | null
           city?: string | null
+          closed_date?: string | null
           co_date?: string | null
+          community_info?: Json
           company_id: string
           completion_date?: string | null
           construction_stage?: string | null
           construction_stages?: Json
+          county?: string | null
           created_at?: string
           created_by?: string | null
+          elevation?: string | null
+          finish_selections?: Json
+          floor_plan_name?: string | null
+          garage?: string | null
+          gps_lat?: number | null
+          gps_lng?: number | null
           handed_off_at?: string | null
           handoff_packet_url?: string | null
           handoff_token?: string
+          homeowner_email?: string | null
+          homeowner_name?: string | null
+          homeowner_phone?: string | null
           id?: string
+          lot_info?: Json
           lot_number?: string | null
+          neighbor_info?: Json
           notes?: string | null
           parcel_id?: string | null
+          phase?: string | null
           property_id?: string | null
+          section?: string | null
+          sold_date?: string | null
+          square_feet?: number | null
           state?: string | null
           status?: Database["public"]["Enums"]["nb_clone_status"]
+          street?: string | null
           template_id: string
           updated_at?: string
           zip?: string | null
         }
         Update: {
           address_line?: string | null
+          bathrooms?: number | null
+          bedrooms?: number | null
+          block?: string | null
+          build_info?: Json
           build_start_date?: string | null
           city?: string | null
+          closed_date?: string | null
           co_date?: string | null
+          community_info?: Json
           company_id?: string
           completion_date?: string | null
           construction_stage?: string | null
           construction_stages?: Json
+          county?: string | null
           created_at?: string
           created_by?: string | null
+          elevation?: string | null
+          finish_selections?: Json
+          floor_plan_name?: string | null
+          garage?: string | null
+          gps_lat?: number | null
+          gps_lng?: number | null
           handed_off_at?: string | null
           handoff_packet_url?: string | null
           handoff_token?: string
+          homeowner_email?: string | null
+          homeowner_name?: string | null
+          homeowner_phone?: string | null
           id?: string
+          lot_info?: Json
           lot_number?: string | null
+          neighbor_info?: Json
           notes?: string | null
           parcel_id?: string | null
+          phase?: string | null
           property_id?: string | null
+          section?: string | null
+          sold_date?: string | null
+          square_feet?: number | null
           state?: string | null
           status?: Database["public"]["Enums"]["nb_clone_status"]
+          street?: string | null
           template_id?: string
           updated_at?: string
           zip?: string | null
