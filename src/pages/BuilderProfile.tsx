@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { BuilderBadgeRow } from "@/components/builder/BuilderBadgeRow";
 import { BuilderLogoUpload } from "@/components/builder/BuilderLogoUpload";
-import { CreeksideMarketingBlock } from "@/components/builder/CreeksideMarketingBlock";
+import { BuiltBy } from "@/components/builder/BuiltBy";
 import { ShieldCheck, MapPin, Phone, Mail, Globe, Award, Home, Star, FileText, GraduationCap, Camera, ClipboardCheck, Building2 } from "lucide-react";
 import { format } from "date-fns";
 
@@ -171,7 +171,7 @@ export default function BuilderProfile() {
               </CardContent></Card>
             )}
 
-            <CreeksideMarketingBlock builderSlug={company.slug} builderName={company.name} />
+            <BuiltBy company={company} />
           </div>
         </div>
       </div>

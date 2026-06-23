@@ -126,10 +126,17 @@ export type Database = {
       builder_companies: {
         Row: {
           address_line: string | null
+          available_homes_url: string | null
+          awards: string[] | null
           badges: string[]
+          banner_url: string | null
+          brand_primary_color: string | null
+          brand_secondary_color: string | null
           certification_level: Database["public"]["Enums"]["builder_cert_level"]
+          certifications: string[] | null
           certified_since: string | null
           city: string | null
+          contact_url: string | null
           created_at: string
           created_by: string | null
           description: string | null
@@ -143,22 +150,41 @@ export type Database = {
           logo_url: string | null
           name: string
           phone: string | null
+          preferred_lenders: Json | null
+          promo_banner_text: string | null
+          promo_banner_url: string | null
           public_profile_enabled: boolean
+          schedule_tour_url: string | null
           service_areas: string[] | null
           slug: string | null
+          social_facebook: string | null
+          social_instagram: string | null
+          social_linkedin: string | null
+          social_tiktok: string | null
+          social_youtube: string | null
           state: string | null
+          story: string | null
           tagline: string | null
           updated_at: string
+          video_url: string | null
+          warranty_portal_url: string | null
           website: string | null
           years_in_business: number | null
           zip: string | null
         }
         Insert: {
           address_line?: string | null
+          available_homes_url?: string | null
+          awards?: string[] | null
           badges?: string[]
+          banner_url?: string | null
+          brand_primary_color?: string | null
+          brand_secondary_color?: string | null
           certification_level?: Database["public"]["Enums"]["builder_cert_level"]
+          certifications?: string[] | null
           certified_since?: string | null
           city?: string | null
+          contact_url?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -172,22 +198,41 @@ export type Database = {
           logo_url?: string | null
           name: string
           phone?: string | null
+          preferred_lenders?: Json | null
+          promo_banner_text?: string | null
+          promo_banner_url?: string | null
           public_profile_enabled?: boolean
+          schedule_tour_url?: string | null
           service_areas?: string[] | null
           slug?: string | null
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_linkedin?: string | null
+          social_tiktok?: string | null
+          social_youtube?: string | null
           state?: string | null
+          story?: string | null
           tagline?: string | null
           updated_at?: string
+          video_url?: string | null
+          warranty_portal_url?: string | null
           website?: string | null
           years_in_business?: number | null
           zip?: string | null
         }
         Update: {
           address_line?: string | null
+          available_homes_url?: string | null
+          awards?: string[] | null
           badges?: string[]
+          banner_url?: string | null
+          brand_primary_color?: string | null
+          brand_secondary_color?: string | null
           certification_level?: Database["public"]["Enums"]["builder_cert_level"]
+          certifications?: string[] | null
           certified_since?: string | null
           city?: string | null
+          contact_url?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -201,12 +246,24 @@ export type Database = {
           logo_url?: string | null
           name?: string
           phone?: string | null
+          preferred_lenders?: Json | null
+          promo_banner_text?: string | null
+          promo_banner_url?: string | null
           public_profile_enabled?: boolean
+          schedule_tour_url?: string | null
           service_areas?: string[] | null
           slug?: string | null
+          social_facebook?: string | null
+          social_instagram?: string | null
+          social_linkedin?: string | null
+          social_tiktok?: string | null
+          social_youtube?: string | null
           state?: string | null
+          story?: string | null
           tagline?: string | null
           updated_at?: string
+          video_url?: string | null
+          warranty_portal_url?: string | null
           website?: string | null
           years_in_business?: number | null
           zip?: string | null
@@ -239,6 +296,98 @@ export type Database = {
           {
             foreignKeyName: "builder_company_members_company_id_fkey"
             columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "builder_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      builder_qr_scans: {
+        Row: {
+          clone_id: string | null
+          company_id: string | null
+          id: string
+          scanned_at: string
+          user_agent: string | null
+        }
+        Insert: {
+          clone_id?: string | null
+          company_id?: string | null
+          id?: string
+          scanned_at?: string
+          user_agent?: string | null
+        }
+        Update: {
+          clone_id?: string | null
+          company_id?: string | null
+          id?: string
+          scanned_at?: string
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "builder_qr_scans_clone_id_fkey"
+            columns: ["clone_id"]
+            isOneToOne: false
+            referencedRelation: "nb_property_clones"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "builder_qr_scans_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "builder_companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      builder_referrals: {
+        Row: {
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          notes: string | null
+          referred_builder_name: string
+          referring_company_id: string | null
+          status: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          referred_builder_name: string
+          referring_company_id?: string | null
+          status?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          referred_builder_name?: string
+          referring_company_id?: string | null
+          status?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "builder_referrals_referring_company_id_fkey"
+            columns: ["referring_company_id"]
             isOneToOne: false
             referencedRelation: "builder_companies"
             referencedColumns: ["id"]

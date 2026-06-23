@@ -115,6 +115,27 @@ export default function AdminBuilders() {
                 <Field label="Description" className="mt-3">
                   <Textarea rows={4} value={selected.description ?? ""} onChange={(e) => update({ description: e.target.value })} />
                 </Field>
+                <Field label="Story" className="mt-3">
+                  <Textarea rows={3} value={selected.story ?? ""} onChange={(e) => update({ story: e.target.value })} />
+                </Field>
+              </div>
+
+              <div className="rounded-2xl border bg-card p-5 shadow-card">
+                <h2 className="text-base font-semibold">Branding & links</h2>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <Field label="Primary color"><Input type="color" value={selected.brand_primary_color ?? "#1f4e2e"} onChange={(e) => update({ brand_primary_color: e.target.value })} /></Field>
+                  <Field label="Secondary color"><Input type="color" value={selected.brand_secondary_color ?? "#c9a55a"} onChange={(e) => update({ brand_secondary_color: e.target.value })} /></Field>
+                  <Field label="Schedule a tour URL"><Input value={selected.schedule_tour_url ?? ""} onChange={(e) => update({ schedule_tour_url: e.target.value })} /></Field>
+                  <Field label="Available homes URL"><Input value={selected.available_homes_url ?? ""} onChange={(e) => update({ available_homes_url: e.target.value })} /></Field>
+                  <Field label="Contact URL"><Input value={selected.contact_url ?? ""} onChange={(e) => update({ contact_url: e.target.value })} /></Field>
+                  <Field label="Warranty portal URL"><Input value={selected.warranty_portal_url ?? ""} onChange={(e) => update({ warranty_portal_url: e.target.value })} /></Field>
+                  <Field label="Facebook"><Input value={selected.social_facebook ?? ""} onChange={(e) => update({ social_facebook: e.target.value })} /></Field>
+                  <Field label="Instagram"><Input value={selected.social_instagram ?? ""} onChange={(e) => update({ social_instagram: e.target.value })} /></Field>
+                  <Field label="YouTube"><Input value={selected.social_youtube ?? ""} onChange={(e) => update({ social_youtube: e.target.value })} /></Field>
+                  <Field label="LinkedIn"><Input value={selected.social_linkedin ?? ""} onChange={(e) => update({ social_linkedin: e.target.value })} /></Field>
+                  <Field label="Promo banner text"><Input value={selected.promo_banner_text ?? ""} onChange={(e) => update({ promo_banner_text: e.target.value })} /></Field>
+                  <Field label="Promo banner URL"><Input value={selected.promo_banner_url ?? ""} onChange={(e) => update({ promo_banner_url: e.target.value })} /></Field>
+                </div>
               </div>
 
               <div className="rounded-2xl border bg-card p-5 shadow-card">
