@@ -136,6 +136,7 @@ export default function AdminBuilders() {
                   <Field label="Promo banner text"><Input value={selected.promo_banner_text ?? ""} onChange={(e) => update({ promo_banner_text: e.target.value })} /></Field>
                   <Field label="Promo banner URL"><Input value={selected.promo_banner_url ?? ""} onChange={(e) => update({ promo_banner_url: e.target.value })} /></Field>
                 </div>
+              </div>
 
               <div className="rounded-2xl border bg-card p-5 shadow-card">
                 <h2 className="text-base font-semibold">Program status</h2>
