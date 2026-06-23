@@ -126,15 +126,19 @@ export type Database = {
       builder_companies: {
         Row: {
           address_line: string | null
+          badges: string[]
           certification_level: Database["public"]["Enums"]["builder_cert_level"]
           certified_since: string | null
           city: string | null
           created_at: string
           created_by: string | null
+          description: string | null
           email: string | null
+          founding_builder_number: number | null
           id: string
           insurance_carrier: string | null
           insurance_policy: string | null
+          is_founding_builder: boolean
           license_number: string | null
           logo_url: string | null
           name: string
@@ -151,15 +155,19 @@ export type Database = {
         }
         Insert: {
           address_line?: string | null
+          badges?: string[]
           certification_level?: Database["public"]["Enums"]["builder_cert_level"]
           certified_since?: string | null
           city?: string | null
           created_at?: string
           created_by?: string | null
+          description?: string | null
           email?: string | null
+          founding_builder_number?: number | null
           id?: string
           insurance_carrier?: string | null
           insurance_policy?: string | null
+          is_founding_builder?: boolean
           license_number?: string | null
           logo_url?: string | null
           name: string
@@ -176,15 +184,19 @@ export type Database = {
         }
         Update: {
           address_line?: string | null
+          badges?: string[]
           certification_level?: Database["public"]["Enums"]["builder_cert_level"]
           certified_since?: string | null
           city?: string | null
           created_at?: string
           created_by?: string | null
+          description?: string | null
           email?: string | null
+          founding_builder_number?: number | null
           id?: string
           insurance_carrier?: string | null
           insurance_policy?: string | null
+          is_founding_builder?: boolean
           license_number?: string | null
           logo_url?: string | null
           name?: string
@@ -2588,9 +2600,12 @@ export type Database = {
           co_date: string | null
           company_id: string
           completion_date: string | null
+          construction_stage: string | null
+          construction_stages: Json
           created_at: string
           created_by: string | null
           handed_off_at: string | null
+          handoff_packet_url: string | null
           handoff_token: string
           id: string
           lot_number: string | null
@@ -2610,9 +2625,12 @@ export type Database = {
           co_date?: string | null
           company_id: string
           completion_date?: string | null
+          construction_stage?: string | null
+          construction_stages?: Json
           created_at?: string
           created_by?: string | null
           handed_off_at?: string | null
+          handoff_packet_url?: string | null
           handoff_token?: string
           id?: string
           lot_number?: string | null
@@ -2632,9 +2650,12 @@ export type Database = {
           co_date?: string | null
           company_id?: string
           completion_date?: string | null
+          construction_stage?: string | null
+          construction_stages?: Json
           created_at?: string
           created_by?: string | null
           handed_off_at?: string | null
+          handoff_packet_url?: string | null
           handoff_token?: string
           id?: string
           lot_number?: string | null
