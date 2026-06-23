@@ -174,6 +174,7 @@ const App = () => (
             <Route path="/builder/clones/:id/handoff" element={<ProtectedRoute requireRole="builder"><HomeownerHandoff /></ProtectedRoute>} />
             <Route path="/builder/referrals" element={<ProtectedRoute requireRole="builder"><BuilderReferrals /></ProtectedRoute>} />
             <Route path="/builder/analytics" element={<ProtectedRoute requireRole="builder"><BuilderAnalytics /></ProtectedRoute>} />
+            <Route path="/builder/import" element={<ProtectedRoute requireRole="admin"><BuilderImportWizard /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
