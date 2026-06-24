@@ -566,6 +566,42 @@ export type Database = {
           },
         ]
       }
+      certification_records: {
+        Row: {
+          certification_level: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          requirements_met: Json
+          requirements_missing: Json
+          score: number
+          updated_at: string
+        }
+        Insert: {
+          certification_level: string
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          requirements_met?: Json
+          requirements_missing?: Json
+          score?: number
+          updated_at?: string
+        }
+        Update: {
+          certification_level?: string
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          requirements_met?: Json
+          requirements_missing?: Json
+          score?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       certification_status: {
         Row: {
           created_at: string
@@ -6431,6 +6467,50 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "property_tax_records_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_trust_scores: {
+        Row: {
+          completed_items: Json
+          created_at: string
+          grade: string
+          id: string
+          missing_items: Json
+          property_id: string
+          recommendations: Json
+          score: number
+          updated_at: string
+        }
+        Insert: {
+          completed_items?: Json
+          created_at?: string
+          grade?: string
+          id?: string
+          missing_items?: Json
+          property_id: string
+          recommendations?: Json
+          score?: number
+          updated_at?: string
+        }
+        Update: {
+          completed_items?: Json
+          created_at?: string
+          grade?: string
+          id?: string
+          missing_items?: Json
+          property_id?: string
+          recommendations?: Json
+          score?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_trust_scores_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"

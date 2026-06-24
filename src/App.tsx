@@ -107,6 +107,7 @@ const PrivacyControls = lazy(() => import("./pages/PrivacyControls"));
 const MyHomeOpportunities = lazy(() => import("./pages/MyHomeOpportunities"));
 const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
 const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
+const PropertyPassport = lazy(() => import("./pages/PropertyPassport"));
 const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
@@ -238,6 +239,7 @@ const App = () => (
                 <Route path="/privacy-controls" element={<ProtectedRoute><PrivacyControls /></ProtectedRoute>} />
                 <Route path="/property/:id/opportunities" element={<ProtectedRoute><MyHomeOpportunities /></ProtectedRoute>} />
                 <Route path="/property/:id/health-score" element={<ProtectedRoute><PropertyHealthScore /></ProtectedRoute>} />
+                <Route path="/property/:id/passport" element={<ProtectedRoute><PropertyPassport /></ProtectedRoute>} />
                 <Route path="/dashboard/revenue-intelligence" element={<ProtectedRoute requireRole="admin"><RevenueIntelligence /></ProtectedRoute>} />
                 <Route path="/admin/partners" element={<ProtectedRoute requireRole="admin"><AdminPartners /></ProtectedRoute>} />
                 <Route path="/partner" element={<ProtectedRoute requireRole="partner"><PartnerDashboard /></ProtectedRoute>} />
