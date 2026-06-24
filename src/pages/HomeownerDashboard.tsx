@@ -161,31 +161,40 @@ function Section({ title, empty, items, counts, accentBadge, onDelete }: {
                     <span className="flex items-center gap-1 text-accent"><ShieldCheck className="h-3.5 w-3.5" />{c.verified} verified</span>
                   </div>
                 </Link>
-                {onDelete && (
-                  <div className="absolute right-3 top-3">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-muted-foreground opacity-60 hover:opacity-100"
-                          aria-label="Property actions"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          className="text-destructive focus:text-destructive"
-                          onClick={(e) => { e.stopPropagation(); onDelete(p); }}
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />Remove property
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                )}
+                <div className="absolute right-3 top-3">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-muted-foreground opacity-60 hover:opacity-100"
+                        aria-label="Property actions"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link to={`/property/${p.id}/health-score`}><Activity className="mr-2 h-4 w-4" />Health score</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to={`/property/${p.id}/opportunities`}><Wrench className="mr-2 h-4 w-4" />Opportunities</Link>
+                      </DropdownMenuItem>
+                      {onDelete && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            className="text-destructive focus:text-destructive"
+                            onClick={(e) => { e.stopPropagation(); onDelete(p); }}
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />Remove property
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             );
           })}
