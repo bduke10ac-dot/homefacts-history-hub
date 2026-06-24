@@ -13,6 +13,9 @@ export const PILOT_ROUTE_ALLOWLIST = new Set<string>([
   "/claim",
   "/privacy-controls",
   "/dashboard/revenue-intelligence",
+  "/admin/partners",
+  "/partner", "/partner/offers/new",
+  "/offers",
   // Legal + account recovery — always accessible
   "/privacy", "/terms", "/disclaimer",
   "/forgot-password", "/reset-password", "/unauthorized",
@@ -28,6 +31,8 @@ export const isPilotAllowedRoute = (pathname: string): boolean => {
   }
   if (pathname.startsWith("/builder/portal")) return true;
   if (pathname.startsWith("/admin")) return true;
+  if (pathname.startsWith("/partner")) return true;
+  if (pathname.startsWith("/partners/claim")) return true;
   if (pathname.startsWith("/claim/")) return true;
   return false;
 };

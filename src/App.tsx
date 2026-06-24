@@ -107,6 +107,11 @@ const PrivacyControls = lazy(() => import("./pages/PrivacyControls"));
 const MyHomeOpportunities = lazy(() => import("./pages/MyHomeOpportunities"));
 const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
 const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
+const AdminPartners = lazy(() => import("./pages/AdminPartners"));
+const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
+const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
+const PartnerClaimInvite = lazy(() => import("./pages/PartnerClaimInvite"));
+const HomeownerOffers = lazy(() => import("./pages/HomeownerOffers"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
 import { useLocation } from "react-router-dom";
@@ -138,6 +143,7 @@ const DashboardRouter = () => {
   switch (primaryRole) {
     case "admin": return <Navigate to="/admin" replace />;
     case "builder": return <Navigate to="/builder" replace />;
+    case "partner": return <Navigate to="/partner" replace />;
     case "contractor": return <Navigate to="/contractor" replace />;
     case "realtor": return <Navigate to="/realtor" replace />;
     default: return <HomeownerDashboard />;
@@ -232,6 +238,11 @@ const App = () => (
                 <Route path="/property/:id/opportunities" element={<ProtectedRoute><MyHomeOpportunities /></ProtectedRoute>} />
                 <Route path="/property/:id/health-score" element={<ProtectedRoute><PropertyHealthScore /></ProtectedRoute>} />
                 <Route path="/dashboard/revenue-intelligence" element={<ProtectedRoute requireRole="admin"><RevenueIntelligence /></ProtectedRoute>} />
+                <Route path="/admin/partners" element={<ProtectedRoute requireRole="admin"><AdminPartners /></ProtectedRoute>} />
+                <Route path="/partner" element={<ProtectedRoute requireRole="partner"><PartnerDashboard /></ProtectedRoute>} />
+                <Route path="/partner/offers/new" element={<ProtectedRoute requireRole="partner"><PartnerOfferNew /></ProtectedRoute>} />
+                <Route path="/partners/claim/:token" element={<ProtectedRoute><PartnerClaimInvite /></ProtectedRoute>} />
+                <Route path="/offers" element={<ProtectedRoute><HomeownerOffers /></ProtectedRoute>} />
 
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
                 <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
