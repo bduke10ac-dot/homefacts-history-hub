@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
 
     const gateway = createLovableAiGatewayProvider(key);
     const result = streamText({
-      model: gateway("google/gemini-3-flash-preview"),
+      model: gateway("google/gemini-2.5-flash"),
       system: `You are the HomeFacts Warranty Assistant. Answer questions about this home's warranties using ONLY the provided data. Be concise, friendly, and actionable. Help with: is a warranty active, transferable, expiring; what documents are missing; what voids the warranty; who installed something; how to file a claim; what warranties need attention before selling; what transfers to the new buyer. If info is missing, say so plainly.
 
 CONTEXT:

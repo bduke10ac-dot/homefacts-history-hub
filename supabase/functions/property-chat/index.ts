@@ -73,7 +73,7 @@ Guidelines:
 
     const gateway = createLovableAiGatewayProvider(apiKey);
     const result = streamText({
-      model: gateway("google/gemini-3-flash-preview"),
+      model: gateway("google/gemini-2.5-flash"),
       system: systemPrompt,
       messages: await convertToModelMessages(messages),
       onFinish: async ({ text }) => {

@@ -91,9 +91,9 @@ Return a single JSON object that matches this exact top-level shape (no wrapper 
 }`;
 
     const gateway = createLovableAiGatewayProvider(apiKey);
-    const { output } = await generateText({
-      model: gateway("google/gemini-3-flash-preview"),
-      output: Output.object({ schema: ReportSchema }),
+    const { experimental_output: output } = await generateText({
+      model: gateway("google/gemini-2.5-flash"),
+      experimental_output: Output.object({ schema: ReportSchema }),
       prompt,
     });
 

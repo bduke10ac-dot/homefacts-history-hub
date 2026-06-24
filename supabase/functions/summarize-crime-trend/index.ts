@@ -13,9 +13,9 @@ Deno.serve(async (req) => {
     const key = Deno.env.get("LOVABLE_API_KEY");
     if (!key) return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
     const gateway = createLovableAiGatewayProvider(key);
-    const { output } = await generateText({
-      model: gateway("google/gemini-3-flash-preview"),
-      output: Output.object({ schema: Schema }),
+    const { experimental_output: output } = await generateText({
+      model: gateway("google/gemini-2.5-flash"),
+      experimental_output: Output.object({ schema: Schema }),
       prompt: `Crime data by category and period: ${JSON.stringify(categories).slice(0, 4000)}.
 Return one-sentence interpretations tailored to four audiences: buyer, homeowner, landlord, insurer.`,
     });

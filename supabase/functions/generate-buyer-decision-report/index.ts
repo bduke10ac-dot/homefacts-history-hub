@@ -38,9 +38,9 @@ Deno.serve(async (req) => {
     ]);
 
     const gateway = createLovableAiGatewayProvider(key);
-    const { output } = await generateText({
-      model: gateway("google/gemini-3-flash-preview"),
-      output: Output.object({ schema: Schema }),
+    const { experimental_output: output } = await generateText({
+      model: gateway("google/gemini-2.5-flash"),
+      experimental_output: Output.object({ schema: Schema }),
       prompt: `Generate a buyer decision report for the following property.
 
 PROPERTY: ${prop?.address_line1}, ${prop?.city}, ${prop?.state}. Built ${prop?.year_built}, ${prop?.living_area_sqft ?? "?"} sqft.

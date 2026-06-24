@@ -19,7 +19,7 @@ Write 4 short sections (markdown, ~250 words total):
 2. **Watch-outs** – missed tasks and risks
 3. **Recommended next steps** – 3 concrete actions
 4. **Resale outlook** – what a buyer will notice`;
-    const { text } = await generateText({ model: gateway("google/gemini-3-flash-preview"), prompt });
+    const { text } = await generateText({ model: gateway("google/gemini-2.5-flash"), prompt });
     return new Response(JSON.stringify({ summary: text }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
     return new Response(JSON.stringify({ error: (e as Error).message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });

@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
     const { inspection_summary = "", seller_disclosures = "", repair_estimates = "", appraisal_summary = "", insurance_quote = "", list_price = 0 } = body;
 
     const gateway = createLovableAiGatewayProvider(key);
-    const model = gateway("google/gemini-3-flash-preview");
+    const model = gateway("google/gemini-2.5-flash");
 
     const prompt = `You are a real-estate buyer's negotiation analyst. Produce a structured report.
 
@@ -51,9 +51,9 @@ ${insurance_quote || "(none provided)"}
 
 Return concise bullet items (max 8 per list) and a recommended concession range in USD. If price is unknown, leave concession fields null.`;
 
-    const { output } = await generateText({
+    const { experimental_output: output } = await generateText({
       model,
-      output: Output.object({ schema: Schema }),
+      experimental_output: Output.object({ schema: Schema }),
       prompt,
     });
 

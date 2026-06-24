@@ -30,9 +30,9 @@ Deno.serve(async (req) => {
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
     const gateway = createLovableAiGatewayProvider(key);
 
-    const { output } = await generateText({
-      model: gateway("google/gemini-3-flash-preview"),
-      output: Output.object({
+    const { experimental_output: output } = await generateText({
+      model: gateway("google/gemini-2.5-flash"),
+      experimental_output: Output.object({
         schema: z.object({
           answer: z.string(),
           confidence: z.enum(["High", "Medium", "Low"]),

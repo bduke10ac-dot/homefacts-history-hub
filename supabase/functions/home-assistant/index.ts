@@ -39,7 +39,7 @@ Deno.serve(async (req) => {
 
     const gateway = createLovableAiGatewayProvider(key);
     const result = streamText({
-      model: gateway("google/gemini-3-flash-preview"),
+      model: gateway("google/gemini-2.5-flash"),
       system: `You are the HomeFacts AI Home Assistant for a specific home. Answer the homeowner's questions using ONLY this home's data. Be concise, friendly, and actionable. If unsure or info is missing, say so and suggest the builder contact. Always note responsibility (homeowner vs. builder warranty) when relevant.
 
 HOME CONTEXT:
