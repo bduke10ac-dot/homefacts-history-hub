@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
         method: "POST",
         headers: { "Content-Type": "application/json", "Lovable-API-Key": lovableKey, "X-Lovable-AIG-SDK": "edge-fetch" },
         body: JSON.stringify({
-          model: "google/gemini-3-flash-preview",
+          model: "google/gemini-2.5-flash",
           messages: [
             { role: "system", content: `You are HomeFacts Home Coach. Give practical home-ownership guidance. Always end with: "${DISCLAIMER}"` },
             { role: "user", content: prompt },
@@ -62,7 +62,7 @@ Deno.serve(async (req) => {
     await supabase.from("regional_home_coach_query_log").insert({
       property_id: property_id ?? null,
       user_id: userId,
-      model: "google/gemini-3-flash-preview",
+      model: "google/gemini-2.5-flash",
       prompt,
       response_text: answer,
       disclaimer: DISCLAIMER,
