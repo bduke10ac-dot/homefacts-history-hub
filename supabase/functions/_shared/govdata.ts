@@ -175,6 +175,89 @@ export async function fetchWeatherEvents(
   return events;
 }
 
+// ============ FEMA MSC / NFHL — FIRM flood zone at point ============
+// Free ArcGIS REST endpoint, no key. Layer 28 = Flood Hazard Zones.
+// https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28
+export interface FloodZoneRecord {
+  flood_zone: string | null;          // e.g. "X", "AE", "VE"
+  zone_subtype: string | null;        // e.g. "FLOODWAY", "0.2 PCT ANNUAL CHANCE FLOOD HAZARD"
+  sfha_tf: string | null;             // "T" if Special Flood Hazard Area, else "F"
+  static_bfe: number | null;          // Base Flood Elevation
+  firm_panel: string | null;
+  effective_date: string | null;
+  description: string;
+  fema_msc_url: string;
+}
+
+const FLOOD_ZONE_DESCRIPTIONS: Record<string, string> = {
+  A: "High-risk Special Flood Hazard Area (1% annual chance flood, no BFE determined). Flood insurance required for federally-backed mortgages.",
+  AE: "High-risk Special Flood Hazard Area with Base Flood Elevations determined. Flood insurance required for federally-backed mortgages.",
+  AH: "High-risk shallow flooding (1-3 ft). Flood insurance required.",
+  AO: "High-risk sheet-flow flooding. Flood insurance required.",
+  AR: "High-risk area with temporarily decertified flood-control system.",
+  "A99": "High-risk area with federal flood-control system under construction.",
+  V: "High-risk coastal area subject to wave action. Flood insurance required.",
+  VE: "High-risk coastal area with BFEs determined. Flood insurance required.",
+  X: "Moderate to minimal flood risk (outside the SFHA). Flood insurance optional but recommended.",
+  "X (shaded)": "Moderate flood risk — 0.2% annual chance (500-year) floodplain.",
+  D: "Undetermined flood risk — no analysis has been conducted.",
+};
+
+export async function fetchFloodZoneAtPoint(
+  admin: Admin,
+  lat: number,
+  lng: number,
+): Promise<FloodZoneRecord | null> {
+  const key = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+  const cached = await cacheGet(admin, "fema_nfhl_point", key);
+  if (cached) return cached as FloodZoneRecord;
+
+  const url = new URL("https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28/query");
+  url.searchParams.set("geometry", JSON.stringify({ x: lng, y: lat, spatialReference: { wkid: 4326 } }));
+  url.searchParams.set("geometryType", "esriGeometryPoint");
+  url.searchParams.set("inSR", "4326");
+  url.searchParams.set("spatialRel", "esriSpatialRelIntersects");
+  url.searchParams.set("outFields", "FLD_ZONE,ZONE_SUBTY,SFHA_TF,STATIC_BFE,DFIRM_ID");
+  url.searchParams.set("returnGeometry", "false");
+  url.searchParams.set("f", "json");
+
+  const json = await fetchJson(url.toString(), undefined, 10000);
+  const attrs = json?.features?.[0]?.attributes;
+  if (!attrs) {
+    // No NFHL coverage at this point — record as undetermined and short-cache.
+    const undet: FloodZoneRecord = {
+      flood_zone: null, zone_subtype: null, sfha_tf: null, static_bfe: null,
+      firm_panel: null, effective_date: null,
+      description: "No FEMA NFHL data available at this point — area may be unmapped.",
+      fema_msc_url: `https://msc.fema.gov/portal/search?AddressQuery=${encodeURIComponent(`${lat},${lng}`)}`,
+    };
+    await cacheSet(admin, "fema_nfhl_point", key, undet, 7 * DAY);
+    return undet;
+  }
+
+  const zone: string = attrs.FLD_ZONE ?? null;
+  const subtype: string = attrs.ZONE_SUBTY ?? null;
+  const sfha = attrs.SFHA_TF ?? null;
+  const bfe = attrs.STATIC_BFE != null && attrs.STATIC_BFE > -9000 ? Number(attrs.STATIC_BFE) : null;
+
+  // X shaded vs unshaded
+  const descKey = zone === "X" && /0\.2 PCT/i.test(subtype ?? "") ? "X (shaded)" : zone;
+  const description = FLOOD_ZONE_DESCRIPTIONS[descKey] ?? `Flood zone ${zone}.`;
+
+  const result: FloodZoneRecord = {
+    flood_zone: zone,
+    zone_subtype: subtype,
+    sfha_tf: sfha,
+    static_bfe: bfe,
+    firm_panel: attrs.DFIRM_ID ?? null,
+    effective_date: null,
+    description,
+    fema_msc_url: `https://msc.fema.gov/portal/search?AddressQuery=${encodeURIComponent(`${lat},${lng}`)}`,
+  };
+  await cacheSet(admin, "fema_nfhl_point", key, result, 30 * DAY);
+  return result;
+}
+
 // ============ 4. FEMA National Risk Index — tract-level hazard ratings ============
 // Free ArcGIS REST endpoint. No key required.
 // https://hazards.fema.gov/gis/nri/REST/services/public/NRI/MapServer/5  (tract layer)

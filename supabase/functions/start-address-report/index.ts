@@ -5,7 +5,7 @@ import { createLovableAiGatewayProvider, corsHeaders } from "../_shared/ai-gatew
 import {
   geocodeAddress, fetchSchoolsByCounty, fetchWeatherEvents,
   fetchNriForTract, fetchCountyCrime, fetchAcsForTract,
-  nriRatingToRiskLevel,
+  fetchFloodZoneAtPoint, nriRatingToRiskLevel,
 } from "../_shared/govdata.ts";
 
 const SECTION_KEYS = ["overview", "taxes", "schools", "risk", "amenities", "utilities", "civic", "voting", "scorecard"] as const;
@@ -253,13 +253,14 @@ Deno.serve(async (req) => {
         // Geocode first — everything else joins on FIPS.
         const geo = await geocodeAddress(admin, addressNormalized);
 
-        const [realSchools, realAcs, realNri, realCrime, realWeather] = geo ? await Promise.all([
+        const [realSchools, realAcs, realNri, realCrime, realWeather, realFlood] = geo ? await Promise.all([
           fetchSchoolsByCounty(admin, geo.county_fips_full).catch(() => null),
           fetchAcsForTract(admin, geo.state_fips, geo.county_fips, geo.tract_fips, censusKey).catch(() => null),
           fetchNriForTract(admin, geo.tract_fips_full).catch(() => null),
           fetchCountyCrime(admin, geo.state_abbr ?? "", geo.county_fips_full, fbiKey).catch(() => null),
           fetchWeatherEvents(admin, geo.lat, geo.lng).catch(() => null),
-        ]) : [null, null, null, null, null];
+          fetchFloodZoneAtPoint(admin, geo.lat, geo.lng).catch(() => null),
+        ]) : [null, null, null, null, null, null];
 
         // 1) Insert the normalized report_properties row + children
         const { data: rp } = await admin.from("report_properties").insert({
@@ -299,18 +300,26 @@ Deno.serve(async (req) => {
         // === Risk: prefer FEMA NRI tract-level ratings + NOAA alerts ===
         let riskPayload: any = stubs.risk;
         let riskSource = "modeled:stub";
-        if (realNri || realWeather) {
+        if (realNri || realWeather || realFlood) {
+          const providers: string[] = [];
+          if (realNri) providers.push("fema_nri");
+          if (realFlood) providers.push("fema_msc_nfhl");
+          if (realWeather) providers.push("noaa");
           riskPayload = {
-            flood_zone: stubs.risk.flood_zone, // FEMA FIRM zone requires separate MSC lookup; left modeled
-            flood_zone_description: stubs.risk.flood_zone_description,
-            fema_panel_url: "https://msc.fema.gov/portal/home",
+            flood_zone: realFlood?.flood_zone ?? stubs.risk.flood_zone,
+            flood_zone_description: realFlood?.description ?? stubs.risk.flood_zone_description,
+            fema_panel_url: realFlood?.fema_msc_url ?? "https://msc.fema.gov/portal/home",
+            firm_panel: realFlood?.firm_panel ?? null,
+            base_flood_elevation_ft: realFlood?.static_bfe ?? null,
+            sfha: realFlood?.sfha_tf === "T",
             storm_events: realWeather ?? stubs.risk.storm_events,
             wildfire_risk_tier: realNri?.hazards.wildfire?.rating ?? stubs.risk.wildfire_risk_tier,
             environmental_notes: stubs.risk.environmental_notes,
             nri: realNri ?? null,
-            source_note: "Hazard ratings from FEMA National Risk Index (tract). Storm events from NOAA active alerts. FEMA flood zone still modeled — requires FEMA MSC integration.",
+            flood_source: realFlood ? "verified:fema_msc_nfhl" : "modeled:stub",
+            source_note: `Hazard ratings from ${providers.join(" + ")}.`,
           };
-          riskSource = realNri && realWeather ? "verified:fema_nri+noaa" : realNri ? "verified:fema_nri" : "verified:noaa";
+          riskSource = `verified:${providers.join("+")}`;
         }
         await admin.from("risk_indicators").insert({
           report_id: report.id,
@@ -334,7 +343,7 @@ Deno.serve(async (req) => {
         const reportRowId = report.id;
         const dsRows: any[] = [
           { table_name: "schools", record_id: reportRowId, source_name: schoolsSource, source_url: realSchools ? "https://educationdata.urban.org/" : null, data_license_status: realSchools ? "verified" : "modeled" },
-          { table_name: "risk_indicators", record_id: reportRowId, source_name: riskSource, source_url: realNri ? "https://hazards.fema.gov/nri/" : null, data_license_status: (realNri || realWeather) ? "verified" : "modeled" },
+          { table_name: "risk_indicators", record_id: reportRowId, source_name: riskSource, source_url: realFlood ? "https://msc.fema.gov/" : realNri ? "https://hazards.fema.gov/nri/" : null, data_license_status: (realNri || realWeather || realFlood) ? "verified" : "modeled" },
           { table_name: "report_properties", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
           { table_name: "tax_history", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
           { table_name: "amenities", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
