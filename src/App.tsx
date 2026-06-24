@@ -107,6 +107,7 @@ const PrivacyControls = lazy(() => import("./pages/PrivacyControls"));
 const MyHomeOpportunities = lazy(() => import("./pages/MyHomeOpportunities"));
 const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
 const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
+const PropertyPassport = lazy(() => import("./pages/PropertyPassport"));
 const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
