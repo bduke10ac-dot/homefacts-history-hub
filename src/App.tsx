@@ -111,6 +111,7 @@ const PropertyPassport = lazy(() => import("./pages/PropertyPassport"));
 const PropertyValueProtection = lazy(() => import("./pages/PropertyValueProtection"));
 const WarrantyTransferCenter = lazy(() => import("./pages/WarrantyTransferCenter"));
 const EstateVault = lazy(() => import("./pages/EstateVault"));
+const BuilderCertification = lazy(() => import("./pages/BuilderCertification"));
 const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
@@ -272,6 +273,7 @@ const App = () => (
                 <Route path="/builder/clones/:id/timeline" element={<ProtectedRoute requireRole="builder"><ConstructionTimeline /></ProtectedRoute>} />
                 <Route path="/builder/clones/:id/handoff" element={<ProtectedRoute requireRole="builder"><HomeownerHandoff /></ProtectedRoute>} />
                 <Route path="/builder/referrals" element={<ProtectedRoute requireRole="builder"><BuilderReferrals /></ProtectedRoute>} />
+                <Route path="/builder/certification" element={<BuilderCertification />} />
                 <Route path="/builder/analytics" element={<ProtectedRoute requireRole="builder"><BuilderAnalytics /></ProtectedRoute>} />
                 <Route path="/builder/import" element={<ProtectedRoute requireRole="admin"><BuilderImportWizard /></ProtectedRoute>} />
                 <Route path="/builder/portal" element={<ProtectedRoute requireRole="builder"><BuilderPortal /></ProtectedRoute>} />
