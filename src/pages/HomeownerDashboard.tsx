@@ -5,11 +5,12 @@ import { useAuth } from "@/hooks/useAuth";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Home, MapPin, Plus, ShieldCheck, MoreVertical, Trash2, Loader2 } from "lucide-react";
+import { Home, MapPin, Plus, ShieldCheck, MoreVertical, Trash2, Loader2, Activity, Wrench } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
