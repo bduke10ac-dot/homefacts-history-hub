@@ -59,6 +59,139 @@ async function markCanceled(subscription: any, env: StripeEnv) {
     .eq("environment", env);
 }
 
+async function recordPaymentEvent(opts: {
+  eventId: string;
+  eventType: string;
+  userId: string | null;
+  objectId: string | null;
+  amountCents: number | null;
+  currency: string | null;
+  status: string | null;
+  env: StripeEnv;
+  metadata: Record<string, unknown>;
+}) {
+  await getSupabase().from("payment_events").upsert(
+    {
+      stripe_event_id: opts.eventId,
+      event_type: opts.eventType,
+      user_id: opts.userId,
+      stripe_object_id: opts.objectId,
+      amount_cents: opts.amountCents,
+      currency: opts.currency,
+      status: opts.status,
+      environment: opts.env,
+      metadata: opts.metadata,
+    },
+    { onConflict: "stripe_event_id" },
+  );
+}
+
+async function handleCheckoutCompleted(session: any, env: StripeEnv, eventId: string) {
+  // Pull userId from session.metadata first (set by create-checkout for one-time
+  // purchases). Subscriptions are handled by customer.subscription.* events.
+  const userId = session.metadata?.userId ?? session.client_reference_id ?? null;
+  const mode = session.mode as string | undefined;
+
+  await recordPaymentEvent({
+    eventId,
+    eventType: "checkout.session.completed",
+    userId,
+    objectId: session.id,
+    amountCents: session.amount_total ?? null,
+    currency: session.currency ?? null,
+    status: session.payment_status ?? null,
+    env,
+    metadata: {
+      mode,
+      customer: session.customer,
+      payment_intent: session.payment_intent,
+      sku: session.metadata?.sku ?? null,
+      report_id: session.metadata?.report_id ?? null,
+    },
+  });
+
+  // One-time purchase fulfillment hook: if the checkout carried a report_id,
+  // mark that report as paid so the UI unlocks the gated sections.
+  if (mode === "payment" && session.metadata?.report_id) {
+    await getSupabase()
+      .from("reports")
+      .update({
+        status: "paid",
+        last_refreshed_at: new Date().toISOString(),
+      })
+      .eq("id", session.metadata.report_id);
+  }
+}
+
+async function handleInvoicePaid(invoice: any, env: StripeEnv, eventId: string) {
+  const userId = invoice.subscription_details?.metadata?.userId
+    ?? invoice.metadata?.userId
+    ?? null;
+
+  await recordPaymentEvent({
+    eventId,
+    eventType: "invoice.payment_succeeded",
+    userId,
+    objectId: invoice.id,
+    amountCents: invoice.amount_paid ?? null,
+    currency: invoice.currency ?? null,
+    status: "paid",
+    env,
+    metadata: {
+      subscription: invoice.subscription,
+      customer: invoice.customer,
+      hosted_invoice_url: invoice.hosted_invoice_url,
+    },
+  });
+
+  // Renewals: push period end forward on the subscription row.
+  if (invoice.subscription && invoice.lines?.data?.[0]?.period?.end) {
+    const periodEnd = new Date(invoice.lines.data[0].period.end * 1000).toISOString();
+    await getSupabase()
+      .from("subscriptions")
+      .update({
+        status: "active",
+        current_period_end: periodEnd,
+        renews_at: periodEnd,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("stripe_subscription_id", invoice.subscription)
+      .eq("environment", env);
+  }
+}
+
+async function handleInvoiceFailed(invoice: any, env: StripeEnv, eventId: string) {
+  const userId = invoice.subscription_details?.metadata?.userId
+    ?? invoice.metadata?.userId
+    ?? null;
+
+  await recordPaymentEvent({
+    eventId,
+    eventType: "invoice.payment_failed",
+    userId,
+    objectId: invoice.id,
+    amountCents: invoice.amount_due ?? null,
+    currency: invoice.currency ?? null,
+    status: "failed",
+    env,
+    metadata: {
+      subscription: invoice.subscription,
+      attempt_count: invoice.attempt_count,
+      next_payment_attempt: invoice.next_payment_attempt,
+      hosted_invoice_url: invoice.hosted_invoice_url,
+    },
+  });
+
+  // Reflect dunning state on the subscription so the UI can show a banner.
+  if (invoice.subscription) {
+    await getSupabase()
+      .from("subscriptions")
+      .update({ status: "past_due", updated_at: new Date().toISOString() })
+      .eq("stripe_subscription_id", invoice.subscription)
+      .eq("environment", env);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
 
@@ -72,7 +205,8 @@ Deno.serve(async (req) => {
   const env: StripeEnv = rawEnv;
 
   try {
-    const event = await verifyWebhook(req, env);
+    const event = await verifyWebhook(req, env) as any;
+    const eventId = event.id ?? crypto.randomUUID();
     switch (event.type) {
       case "customer.subscription.created":
       case "customer.subscription.updated":
@@ -80,6 +214,16 @@ Deno.serve(async (req) => {
         break;
       case "customer.subscription.deleted":
         await markCanceled(event.data.object, env);
+        break;
+      case "checkout.session.completed":
+        await handleCheckoutCompleted(event.data.object, env, eventId);
+        break;
+      case "invoice.payment_succeeded":
+      case "invoice.paid":
+        await handleInvoicePaid(event.data.object, env, eventId);
+        break;
+      case "invoice.payment_failed":
+        await handleInvoiceFailed(event.data.object, env, eventId);
         break;
       default:
         console.log("Unhandled event:", event.type);
