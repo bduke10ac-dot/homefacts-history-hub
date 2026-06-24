@@ -55,6 +55,30 @@ export type Database = {
           },
         ]
       }
+      ai_usage_quota: {
+        Row: {
+          count: number
+          day: string
+          function_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          count?: number
+          day: string
+          function_name?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          count?: number
+          day?: string
+          function_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       amenities: {
         Row: {
           address: string | null
@@ -4107,6 +4131,48 @@ export type Database = {
           },
         ]
       }
+      payment_events: {
+        Row: {
+          amount_cents: number | null
+          created_at: string
+          currency: string | null
+          environment: string
+          event_type: string
+          id: string
+          metadata: Json
+          status: string | null
+          stripe_event_id: string | null
+          stripe_object_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_cents?: number | null
+          created_at?: string
+          currency?: string | null
+          environment: string
+          event_type: string
+          id?: string
+          metadata?: Json
+          status?: string | null
+          stripe_event_id?: string | null
+          stripe_object_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_cents?: number | null
+          created_at?: string
+          currency?: string | null
+          environment?: string
+          event_type?: string
+          id?: string
+          metadata?: Json
+          status?: string | null
+          stripe_event_id?: string | null
+          stripe_object_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       permit_contractors: {
         Row: {
           contractor_id: string
@@ -8112,6 +8178,14 @@ export type Database = {
       }
     }
     Functions: {
+      claim_ai_credit: {
+        Args: { _function_name: string; _limit?: number; _user_id: string }
+        Returns: {
+          allowed: boolean
+          remaining: number
+          used: number
+        }[]
+      }
       claim_free_report: {
         Args: { _ip_hash: string; _limit?: number }
         Returns: {
