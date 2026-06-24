@@ -107,6 +107,11 @@ const PrivacyControls = lazy(() => import("./pages/PrivacyControls"));
 const MyHomeOpportunities = lazy(() => import("./pages/MyHomeOpportunities"));
 const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
 const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
+const AdminPartners = lazy(() => import("./pages/AdminPartners"));
+const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
+const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
+const PartnerClaimInvite = lazy(() => import("./pages/PartnerClaimInvite"));
+const HomeownerOffers = lazy(() => import("./pages/HomeownerOffers"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
 import { useLocation } from "react-router-dom";
