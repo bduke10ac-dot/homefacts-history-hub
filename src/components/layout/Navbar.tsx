@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users, Award, Sparkles, ChevronDown } from "lucide-react";
+import { LogOut, LayoutDashboard, Search, Shield, FileText, ShieldCheck, LayoutGrid, Users, Award, Sparkles, ChevronDown, UserCog, Lock, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 
 export function Navbar() {
-  const { user, signOut, primaryRole } = useAuth();
+  const { user, signOut, primaryRole, hasRole } = useAuth();
   const navigate = useNavigate();
 
   const dashboardPath = () => {
@@ -70,9 +70,26 @@ export function Navbar() {
                   Dashboard
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" onClick={async () => { await signOut(); navigate("/"); }}>
-                <LogOut className="mr-1.5 h-4 w-4" />Sign out
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" aria-label="Account">
+                    <UserCog className="mr-1.5 h-4 w-4" />Account
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuItem asChild>
+                    <Link to="/privacy-controls"><Lock className="mr-2 h-4 w-4" />Privacy & data controls</Link>
+                  </DropdownMenuItem>
+                  {hasRole("admin") && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/dashboard/revenue-intelligence"><BarChart3 className="mr-2 h-4 w-4" />Revenue intelligence</Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem onClick={async () => { await signOut(); navigate("/"); }}>
+                    <LogOut className="mr-2 h-4 w-4" />Sign out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>
