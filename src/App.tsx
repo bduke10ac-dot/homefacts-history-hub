@@ -242,6 +242,7 @@ const App = () => (
                 <Route path="/admin/partners" element={<ProtectedRoute requireRole="admin"><AdminPartners /></ProtectedRoute>} />
                 <Route path="/partner" element={<ProtectedRoute requireRole="partner"><PartnerDashboard /></ProtectedRoute>} />
                 <Route path="/partner/offers/new" element={<ProtectedRoute requireRole="partner"><PartnerOfferNew /></ProtectedRoute>} />
+                <Route path="/partner/billing" element={<ProtectedRoute requireRole="partner"><PartnerBilling /></ProtectedRoute>} />
                 <Route path="/partners/claim/:token" element={<ProtectedRoute><PartnerClaimInvite /></ProtectedRoute>} />
                 <Route path="/offers" element={<ProtectedRoute><HomeownerOffers /></ProtectedRoute>} />
 
