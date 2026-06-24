@@ -19,14 +19,70 @@ function planFromPriceId(priceId: string | null): string | null {
   return priceId;
 }
 
+function isPartnerPlan(priceId: string | null) {
+  return priceId === "partner_starter_monthly" || priceId === "partner_growth_monthly";
+}
+
+function partnerPlanName(priceId: string | null) {
+  if (priceId === "partner_starter_monthly") return "starter";
+  if (priceId === "partner_growth_monthly") return "growth";
+  return null;
+}
+
+async function upsertPartnerSubscription(subscription: any, priceId: string | null) {
+  const partnerUserId = subscription.metadata?.partnerUserId ?? subscription.metadata?.userId;
+  if (!partnerUserId) {
+    console.error("No partnerUserId in partner subscription metadata", subscription.id);
+    return;
+  }
+  const item = subscription.items?.data?.[0];
+  const periodStart = item?.current_period_start ?? subscription.current_period_start;
+  const periodEnd = item?.current_period_end ?? subscription.current_period_end;
+
+  // Find existing row by external id first, then by partner_user_id (to upgrade trial → active)
+  const sb = getSupabase();
+  const { data: existing } = await sb
+    .from("partner_subscriptions")
+    .select("id")
+    .or(`external_subscription_id.eq.${subscription.id},partner_user_id.eq.${partnerUserId}`)
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const row = {
+    partner_user_id: partnerUserId,
+    external_subscription_id: subscription.id,
+    stripe_customer_id: subscription.customer,
+    price_id: priceId,
+    plan: partnerPlanName(priceId) ?? "custom",
+    status: subscription.status,
+    current_period_start: periodStart ? new Date(periodStart * 1000).toISOString() : null,
+    current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
+    cancel_at_period_end: subscription.cancel_at_period_end ?? false,
+    updated_at: new Date().toISOString(),
+  };
+  if (existing?.id) {
+    await sb.from("partner_subscriptions").update(row).eq("id", existing.id);
+  } else {
+    await sb.from("partner_subscriptions").insert(row);
+  }
+}
+
 async function upsertSubscription(subscription: any, env: StripeEnv) {
+  const item = subscription.items?.data?.[0];
+  const priceId = resolvePriceId(item);
+
+  // Partner subscriptions live in their own table.
+  if (isPartnerPlan(priceId) || subscription.metadata?.partnerUserId) {
+    await upsertPartnerSubscription(subscription, priceId);
+    return;
+  }
+
   const userId = subscription.metadata?.userId;
   if (!userId) {
     console.error("No userId in subscription metadata", subscription.id);
     return;
   }
-  const item = subscription.items?.data?.[0];
-  const priceId = resolvePriceId(item);
   const productId = item?.price?.product;
   const periodStart = item?.current_period_start ?? subscription.current_period_start;
   const periodEnd = item?.current_period_end ?? subscription.current_period_end;
@@ -52,12 +108,26 @@ async function upsertSubscription(subscription: any, env: StripeEnv) {
 }
 
 async function markCanceled(subscription: any, env: StripeEnv) {
+  // Try partner table first
+  const { data: partnerRow } = await getSupabase()
+    .from("partner_subscriptions")
+    .select("id")
+    .eq("external_subscription_id", subscription.id)
+    .maybeSingle();
+  if (partnerRow?.id) {
+    await getSupabase()
+      .from("partner_subscriptions")
+      .update({ status: "canceled", updated_at: new Date().toISOString() })
+      .eq("id", partnerRow.id);
+    return;
+  }
   await getSupabase()
     .from("subscriptions")
     .update({ status: "canceled", updated_at: new Date().toISOString() })
     .eq("stripe_subscription_id", subscription.id)
     .eq("environment", env);
 }
+
 
 async function recordPaymentEvent(opts: {
   eventId: string;
