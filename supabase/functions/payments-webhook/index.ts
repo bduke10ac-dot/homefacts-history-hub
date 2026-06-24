@@ -227,8 +227,13 @@ async function handleInvoicePaid(invoice: any, env: StripeEnv, eventId: string) 
       })
       .eq("stripe_subscription_id", invoice.subscription)
       .eq("environment", env);
+    await getSupabase()
+      .from("partner_subscriptions")
+      .update({ status: "active", current_period_end: periodEnd, updated_at: new Date().toISOString() })
+      .eq("external_subscription_id", invoice.subscription);
   }
 }
+
 
 async function handleInvoiceFailed(invoice: any, env: StripeEnv, eventId: string) {
   const userId = invoice.subscription_details?.metadata?.userId
