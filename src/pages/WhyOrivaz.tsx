@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   Check, X, Minus, ArrowRight, ShieldCheck, FileText, Wrench, Building2, HardHat,
   ClipboardCheck, Umbrella, Landmark, Zap, Home, Users, Banknote, Cloud, Sparkles,
@@ -109,6 +110,14 @@ const CellIcon = ({ v }: { v: "full" | "partial" | "none" }) => {
 const WhyOrivaz = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Why Orivaz — The Property Intelligence Platform</title>
+        <meta name="description" content="See how Orivaz compares to other property-tech products: verified history, builder handoff, warranties, AI, and lifetime records." />
+        <link rel="canonical" href="https://homefacts-history-hub.lovable.app/why" />
+        <meta property="og:title" content="Why Orivaz — The Property Intelligence Platform" />
+        <meta property="og:description" content="See how Orivaz compares to other property-tech products: verified history, builder handoff, warranties, AI, and lifetime records." />
+        <meta property="og:url" content="https://homefacts-history-hub.lovable.app/why" />
+      </Helmet>
       <Navbar />
 
       {/* Headline / Hero */}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Check, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -32,6 +33,14 @@ export default function Pricing() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Pricing — Orivaz</title>
+        <meta name="description" content="Simple plans for homeowners, builders, contractors, and realtors. Start free; upgrade for unlimited reports and intelligence." />
+        <link rel="canonical" href="https://homefacts-history-hub.lovable.app/pricing" />
+        <meta property="og:title" content="Pricing — Orivaz" />
+        <meta property="og:description" content="Simple plans for homeowners, builders, contractors, and realtors. Start free; upgrade for unlimited reports and intelligence." />
+        <meta property="og:url" content="https://homefacts-history-hub.lovable.app/pricing" />
+      </Helmet>
       <PaymentTestModeBanner />
       <div className="mx-auto max-w-5xl px-4 py-12">
         <div className="text-center">
