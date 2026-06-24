@@ -23,7 +23,7 @@ export const isPilotAllowedRoute = (pathname: string): boolean => {
   if (PILOT_ROUTE_ALLOWLIST.has(pathname)) return true;
   // allow /property/:id, /property/:id/vault, /property/:id/warranties, /property/:id/reminders
   if (pathname.startsWith("/property/")) {
-    const allowedSuffixes = ["", "/vault", "/warranties", "/reminders", "/maintenance"];
+    const allowedSuffixes = ["", "/vault", "/warranties", "/reminders", "/maintenance", "/health-score", "/opportunities"];
     return allowedSuffixes.some((s) => pathname.match(new RegExp(`^/property/[^/]+${s.replace(/\//g, "\\/")}/?$`)));
   }
   if (pathname.startsWith("/builder/portal")) return true;
