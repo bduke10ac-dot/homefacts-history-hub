@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
+import { EstimateDisclaimer } from "@/components/legal/EstimateDisclaimer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,6 +46,7 @@ export default function WeatherTimeline() {
     <div className="min-h-screen bg-background">
       <Navbar />
       <div className="container space-y-6 py-10">
+        <EstimateDisclaimer />
         <Link to={`/property/${id}`} className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"><ArrowLeft className="mr-1 h-4 w-4" />Back</Link>
         <div className="flex items-end justify-between">
           <div>
