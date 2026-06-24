@@ -84,8 +84,18 @@ export function Navbar() {
                     <Link to="/privacy-controls"><Lock className="mr-2 h-4 w-4" />Privacy & data controls</Link>
                   </DropdownMenuItem>
                   {hasRole("admin") && (
+                    <>
+                      <DropdownMenuItem asChild>
+                        <Link to="/dashboard/revenue-intelligence"><BarChart3 className="mr-2 h-4 w-4" />Revenue intelligence</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin/partners"><Store className="mr-2 h-4 w-4" />Partners</Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  {hasRole("partner") && (
                     <DropdownMenuItem asChild>
-                      <Link to="/dashboard/revenue-intelligence"><BarChart3 className="mr-2 h-4 w-4" />Revenue intelligence</Link>
+                      <Link to="/partner"><Store className="mr-2 h-4 w-4" />Partner dashboard</Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem onClick={async () => { await signOut(); navigate("/"); }}>
