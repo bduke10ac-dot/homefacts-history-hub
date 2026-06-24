@@ -103,6 +103,10 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Disclaimer = lazy(() => import("./pages/Disclaimer"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const PrivacyControls = lazy(() => import("./pages/PrivacyControls"));
+const MyHomeOpportunities = lazy(() => import("./pages/MyHomeOpportunities"));
+const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
+const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
 import { useLocation } from "react-router-dom";
