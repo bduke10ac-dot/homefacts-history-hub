@@ -88,7 +88,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { priceId, customerEmail, userId, returnUrl, environment } = body ?? {};
+    const { priceId, customerEmail, userId, returnUrl, environment, partnerUserId } = body ?? {};
     if (!priceId || !returnUrl || !environment) {
       return new Response(JSON.stringify({ error: "Missing priceId, returnUrl, or environment" }), {
         status: 400,
@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const clientSecret = await createCheckoutSession({ priceId, customerEmail, userId, returnUrl, environment });
+    const clientSecret = await createCheckoutSession({ priceId, customerEmail, userId, returnUrl, environment, partnerUserId });
     return new Response(JSON.stringify({ clientSecret }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
