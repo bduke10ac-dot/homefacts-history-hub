@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Search, ShieldCheck, FileText, Wrench, Award, ArrowRight, CheckCircle2, HardHat, QrCode, Sparkles, BadgeCheck, Home, TrendingUp, Users, Zap, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/Navbar";
@@ -16,6 +17,14 @@ const features = [
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Orivaz — Every Property Has an Origin</title>
+        <meta name="description" content="The digital operating system for every property. Verified history, warranties, and maintenance — owned by homeowners, trusted by builders." />
+        <link rel="canonical" href="https://homefacts-history-hub.lovable.app/" />
+        <meta property="og:title" content="Orivaz — Every Property Has an Origin" />
+        <meta property="og:description" content="The digital operating system for every property. Verified history, warranties, and maintenance — owned by homeowners, trusted by builders." />
+        <meta property="og:url" content="https://homefacts-history-hub.lovable.app/" />
+      </Helmet>
       <Navbar />
 
       {/* Hero */}

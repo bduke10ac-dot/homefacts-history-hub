@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +38,14 @@ const Demo = () => {
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
+      <Helmet>
+        <title>Sample Property Report — Orivaz</title>
+        <meta name="description" content="Preview a sample Orivaz property report: history, warranties, systems, risk, and neighborhood intelligence." />
+        <link rel="canonical" href="https://homefacts-history-hub.lovable.app/demo" />
+        <meta property="og:title" content="Sample Property Report — Orivaz" />
+        <meta property="og:description" content="Preview a sample Orivaz property report: history, warranties, systems, risk, and neighborhood intelligence." />
+        <meta property="og:url" content="https://homefacts-history-hub.lovable.app/demo" />
+      </Helmet>
       <Navbar />
 
       {/* Demo banner */}

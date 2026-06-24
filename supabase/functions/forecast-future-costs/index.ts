@@ -1,3 +1,4 @@
+import { enforceAiQuota } from "../_shared/ai-quota.ts";
 import { corsHeaders } from "../_shared/ai-gateway.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 
@@ -22,6 +23,8 @@ const CATALOG: Item[] = [
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __quota = await enforceAiQuota(req, "forecast-future-costs", corsHeaders as Record<string,string>);
+  if (__quota) return __quota;
   try {
     const { property_id } = await req.json();
     if (!property_id) return new Response(JSON.stringify({ error: "property_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });

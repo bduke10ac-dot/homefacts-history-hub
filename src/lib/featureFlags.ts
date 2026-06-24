@@ -7,9 +7,12 @@ export const PILOT_MODE = (import.meta.env.VITE_PILOT_MODE ?? "true") !== "false
 /** Pages that ship in the pilot. Everything else is hidden when PILOT_MODE is on. */
 export const PILOT_ROUTE_ALLOWLIST = new Set<string>([
   "/", "/auth", "/dashboard",
-  "/builder", "/builder/portal", "/admin",
+  "/builder", "/builder/portal", "/admin", "/builders",
   "/property", // generic property pages — handled by path prefix below
   "/claim",
+  // Legal + account recovery — always accessible
+  "/privacy", "/terms", "/disclaimer",
+  "/forgot-password", "/reset-password", "/unauthorized",
 ]);
 
 export const isPilotAllowedRoute = (pathname: string): boolean => {

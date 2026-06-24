@@ -1,9 +1,12 @@
+import { enforceAiQuota } from "../_shared/ai-quota.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { convertToModelMessages, streamText, type UIMessage } from "npm:ai";
 import { createLovableAiGatewayProvider, corsHeaders } from "../_shared/ai-gateway.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const __quota = await enforceAiQuota(req, "property-chat", corsHeaders as Record<string,string>);
+  if (__quota) return __quota;
 
   try {
     const apiKey = Deno.env.get("LOVABLE_API_KEY");

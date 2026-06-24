@@ -1,3 +1,4 @@
+import { enforceAiQuota } from "../_shared/ai-quota.ts";
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { generateText, Output } from "npm:ai";
 import { z } from "npm:zod";
@@ -5,6 +6,8 @@ import { createLovableAiGatewayProvider, corsHeaders } from "../_shared/ai-gatew
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __quota = await enforceAiQuota(req, "ask-property-ai", corsHeaders as Record<string,string>);
+  if (__quota) return __quota;
 
   try {
     const { property_id, question } = await req.json();

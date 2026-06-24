@@ -1,3 +1,4 @@
+import { enforceAiQuota } from "../_shared/ai-quota.ts";
 // AI Home Coach edge function (stub). Wraps Lovable AI Gateway and logs each
 // query with the mandatory disclaimer. Will be fleshed out when the full
 // Module D master prompt arrives.
@@ -12,6 +13,8 @@ const DISCLAIMER = "AI-generated guidance is advisory only and is not a substitu
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const __quota = await enforceAiQuota(req, "home-coach", corsHeaders as Record<string,string>);
+  if (__quota) return __quota;
 
   try {
     const authHeader = req.headers.get("Authorization");

@@ -1,3 +1,4 @@
+import { enforceAiQuota } from "../_shared/ai-quota.ts";
 import { corsHeaders, createLovableAiGatewayProvider } from "../_shared/ai-gateway.ts";
 import { generateText, Output } from "npm:ai";
 import { z } from "npm:zod";
@@ -18,6 +19,8 @@ const Schema = z.object({
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  const __quota = await enforceAiQuota(req, "negotiation-assistant", corsHeaders as Record<string,string>);
+  if (__quota) return __quota;
   try {
     const key = Deno.env.get("LOVABLE_API_KEY");
     if (!key) return new Response(JSON.stringify({ error: "Missing LOVABLE_API_KEY" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
@@ -24,6 +25,14 @@ export default function BuilderProgram() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>Builder Program — Orivaz</title>
+        <meta name="description" content="Join the Orivaz Builder Program: branded property pages, verified handoff, QR codes, and lifetime homeowner relationship." />
+        <link rel="canonical" href="https://homefacts-history-hub.lovable.app/builders" />
+        <meta property="og:title" content="Builder Program — Orivaz" />
+        <meta property="og:description" content="Join the Orivaz Builder Program: branded property pages, verified handoff, QR codes, and lifetime homeowner relationship." />
+        <meta property="og:url" content="https://homefacts-history-hub.lovable.app/builders" />
+      </Helmet>
       <Navbar />
 
       {/* Hero */}

@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { ProtectedRoute } from "@/components/layout/ProtectedRoute";
 import { ErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { CookieBanner } from "@/components/legal/CookieBanner";
 
 // Eager: landing + auth + 404 (needed on first paint or shell)
 import Index from "./pages/Index";
@@ -97,6 +98,11 @@ const PropertySystems = lazy(() => import("./pages/PropertySystems"));
 const PropertyIntelligence = lazy(() => import("./pages/PropertyIntelligence"));
 const ClaimProperty = lazy(() => import("./pages/ClaimProperty"));
 const Unauthorized = lazy(() => import("./pages/Unauthorized"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
+const Disclaimer = lazy(() => import("./pages/Disclaimer"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
 import { useLocation } from "react-router-dom";
@@ -149,6 +155,11 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/why" element={<WhyOrivaz />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/disclaimer" element={<Disclaimer />} />
                 <Route path="/unauthorized" element={<Unauthorized />} />
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/checkout/return" element={<CheckoutReturn />} />
@@ -241,6 +252,7 @@ const App = () => (
               </PilotGuard>
             </Suspense>
           </ErrorBoundary>
+          <CookieBanner />
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
