@@ -8551,7 +8551,13 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "homeowner" | "realtor" | "contractor" | "admin" | "builder"
+      app_role:
+        | "homeowner"
+        | "realtor"
+        | "contractor"
+        | "admin"
+        | "builder"
+        | "partner"
       builder_cert_level: "certified" | "plus" | "elite"
       builder_member_role: "owner" | "admin" | "staff"
       certification_tier: "none" | "bronze" | "silver" | "gold" | "platinum"
@@ -8775,7 +8781,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["homeowner", "realtor", "contractor", "admin", "builder"],
+      app_role: [
+        "homeowner",
+        "realtor",
+        "contractor",
+        "admin",
+        "builder",
+        "partner",
+      ],
       builder_cert_level: ["certified", "plus", "elite"],
       builder_member_role: ["owner", "admin", "staff"],
       certification_tier: ["none", "bronze", "silver", "gold", "platinum"],
