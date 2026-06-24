@@ -38,7 +38,20 @@ Deno.serve(async (req) => {
     const insurance = Math.max(20, Math.min(100, 90 - claimCount * 12 - hazHigh * 8));
     const environmental = Math.max(20, Math.min(100, 95 - hazHigh * 10));
     const maintenance = Math.max(20, Math.min(100, 50 + recCount * 4));
-    const neighborhood = 75; // placeholder until neighborhood feed wired
+    // Neighborhood: pull FEMA NRI tract risk if we can geocode the address.
+    let neighborhood = 75; // fallback when NRI unavailable
+    let neighborhoodSource = "modeled:default";
+    try {
+      const addressStr = [prop?.address_line1, prop?.city, prop?.state, prop?.zip].filter(Boolean).join(", ");
+      if (addressStr) {
+        const geo = await geocodeAddress(supa, addressStr);
+        if (geo) {
+          const nri = await fetchNriForTract(supa, geo.tract_fips_full);
+          const s = nriRatingToHealthScore(nri?.risk_rating ?? null);
+          if (s != null) { neighborhood = s; neighborhoodSource = "verified:fema_nri"; }
+        }
+      }
+    } catch (e) { console.warn("nri lookup failed", e); }
     const appreciation = Math.max(20, Math.min(100, 70 + recCount));
     const overall = Math.round((structural + weather + insurance + environmental + maintenance + neighborhood + appreciation) / 7);
 
