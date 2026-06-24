@@ -1,0 +1,1 @@
+ALTER TABLE public.partner_accounts DISABLE TRIGGER trg_partner_accounts_protect_status;
