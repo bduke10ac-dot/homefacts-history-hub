@@ -1,3 +1,4 @@
+import { enforceAiQuota } from "../_shared/ai-quota.ts";
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
 const SYSTEM = `You are HomeFacts' Estate & Legacy educational assistant. You help homeowners understand
@@ -8,6 +9,8 @@ users to involve a licensed estate attorney for state-specific guidance.`;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  const __quota = await enforceAiQuota(req, "estate-assistant", corsHeaders as Record<string,string>);
+  if (__quota) return __quota;
   try {
     const { messages = [] } = await req.json();
     const key = Deno.env.get("LOVABLE_API_KEY");
