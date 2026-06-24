@@ -228,6 +228,10 @@ const App = () => (
                 <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
                 <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
                 <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
+                <Route path="/privacy-controls" element={<ProtectedRoute><PrivacyControls /></ProtectedRoute>} />
+                <Route path="/property/:id/opportunities" element={<ProtectedRoute><MyHomeOpportunities /></ProtectedRoute>} />
+                <Route path="/property/:id/health-score" element={<ProtectedRoute><PropertyHealthScore /></ProtectedRoute>} />
+                <Route path="/dashboard/revenue-intelligence" element={<ProtectedRoute requireRole="admin"><RevenueIntelligence /></ProtectedRoute>} />
 
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
                 <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
