@@ -31,6 +31,8 @@ export const isPilotAllowedRoute = (pathname: string): boolean => {
   }
   if (pathname.startsWith("/builder/portal")) return true;
   if (pathname.startsWith("/admin")) return true;
+  if (pathname.startsWith("/partner")) return true;
+  if (pathname.startsWith("/partners/claim")) return true;
   if (pathname.startsWith("/claim/")) return true;
   return false;
 };
