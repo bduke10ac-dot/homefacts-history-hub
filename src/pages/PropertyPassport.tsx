@@ -38,8 +38,11 @@ export default function PropertyPassport() {
       setProperty(prop);
 
       // Pull category-evidence counts in parallel.
+      const builderClone = await supabase.from("nb_property_clones").select("id", { count: "exact", head: true }).eq("property_id", id);
+      const builderLink = builderClone.count ?? 0;
+
       const [
-        warranties, maintenance, permits, inspections, photos, claims, ownership, estate, emergency, contractors, builderLink,
+        warranties, maintenance, permits, inspections, photos, claims, ownership, estate, emergency, contractors,
       ] = await Promise.all([
         tableCount("warranties", id),
         tableCount("maintenance_reminders", id),
@@ -51,8 +54,6 @@ export default function PropertyPassport() {
         tableCount("estate_documents", id),
         tableCount("emergency_events", id),
         tableCount("contractor_scores", id),
-        // builder verified — properties.builder_company_id presence is enough for Phase 1
-        Promise.resolve(prop?.builder_company_id ? 1 : 0),
       ]);
 
       const c: Record<string, number> = {
