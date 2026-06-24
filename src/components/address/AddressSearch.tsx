@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
-import { getAnonToken, hasUsedAnonReport, markAnonReportUsed } from "@/lib/anonReport";
+import { getAnonToken, hasUsedAnonReport, markAnonReportUsed, anonReportsRemaining, FREE_DAILY_LIMIT } from "@/lib/anonReport";
 
 interface Prediction { description: string; place_id: string; }
 
@@ -44,11 +44,17 @@ export function AddressSearch({ size = "lg" }: { size?: "default" | "lg" }) {
     return () => { if (debounceRef.current) window.clearTimeout(debounceRef.current); };
   }, [q]);
 
+  function showSignupCta(msg?: string) {
+    toast.error(msg ?? `You've used your ${FREE_DAILY_LIMIT} free reports for today.`, {
+      action: { label: "Sign up — free", onClick: () => navigate("/auth?mode=signup") },
+      duration: 8000,
+    });
+  }
+
   async function submit(opts?: { placeId?: string; description?: string }) {
     if (submitting) return;
     if (!user && hasUsedAnonReport()) {
-      toast.error("Your free preview is used up. Sign in to run more reports.");
-      navigate("/auth?mode=signup");
+      showSignupCta();
       return;
     }
     setSubmitting(true);
@@ -73,7 +79,19 @@ export function AddressSearch({ size = "lg" }: { size?: "default" | "lg" }) {
           anon_token: user ? null : getAnonToken(),
         },
       });
-      if (error) throw error;
+      if (error) {
+        // supabase.functions.invoke surfaces non-2xx as an error. Try to read body.
+        const ctx: any = (error as any).context;
+        let payload: any = null;
+        try { payload = ctx?.json ? await ctx.json() : (ctx?.body ? JSON.parse(ctx.body) : null); } catch {}
+        if (payload?.error === "free_limit_reached" || ctx?.status === 429) {
+          // Sync local counter to the wall so we stop hitting the backend
+          while (!hasUsedAnonReport()) markAnonReportUsed();
+          showSignupCta(payload?.message);
+          return;
+        }
+        throw error;
+      }
       if (!user) markAnonReportUsed();
       navigate(`/report/${data.id}`);
     } catch (e: any) {
@@ -121,7 +139,9 @@ export function AddressSearch({ size = "lg" }: { size?: "default" | "lg" }) {
         <p className="mt-2 text-xs text-muted-foreground">Autocomplete is off — type a full address and hit enter.</p>
       )}
       {!user && !hasUsedAnonReport() && (
-        <p className="mt-2 text-xs text-muted-foreground">1 free preview report — no sign-up required.</p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          {anonReportsRemaining()} of {FREE_DAILY_LIMIT} free previews left today — no sign-up required.
+        </p>
       )}
     </div>
   );
