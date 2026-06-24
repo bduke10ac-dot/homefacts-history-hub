@@ -2069,6 +2069,39 @@ export type Database = {
           },
         ]
       }
+      gov_data_cache: {
+        Row: {
+          created_at: string
+          expires_at: string
+          fetched_at: string
+          id: string
+          key: string
+          payload: Json
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          fetched_at?: string
+          id?: string
+          key: string
+          payload: Json
+          source: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          fetched_at?: string
+          id?: string
+          key?: string
+          payload?: Json
+          source?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       government_reviews: {
         Row: {
           ai_checklist: Json
