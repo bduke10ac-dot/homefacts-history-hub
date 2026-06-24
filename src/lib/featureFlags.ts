@@ -11,6 +11,8 @@ export const PILOT_ROUTE_ALLOWLIST = new Set<string>([
   "/builder", "/builder/portal", "/admin", "/builders",
   "/property", // generic property pages — handled by path prefix below
   "/claim",
+  "/privacy-controls",
+  "/dashboard/revenue-intelligence",
   // Legal + account recovery — always accessible
   "/privacy", "/terms", "/disclaimer",
   "/forgot-password", "/reset-password", "/unauthorized",
