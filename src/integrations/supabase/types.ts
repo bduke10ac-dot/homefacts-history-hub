@@ -4164,6 +4164,152 @@ export type Database = {
           },
         ]
       }
+      partner_accounts: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          categories: string[]
+          company_name: string
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          invite_id: string | null
+          rejection_reason: string | null
+          service_zips: string[]
+          status: string
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          categories?: string[]
+          company_name: string
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          invite_id?: string | null
+          rejection_reason?: string | null
+          service_zips?: string[]
+          status?: string
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          categories?: string[]
+          company_name?: string
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          invite_id?: string | null
+          rejection_reason?: string | null
+          service_zips?: string[]
+          status?: string
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partner_accounts_invite_id_fkey"
+            columns: ["invite_id"]
+            isOneToOne: false
+            referencedRelation: "partner_invites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partner_invites: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          categories: string[]
+          company_name: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          invited_by: string
+          invitee_email: string
+          service_zips: string[]
+          status: string
+          token: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          categories?: string[]
+          company_name?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invited_by: string
+          invitee_email: string
+          service_zips?: string[]
+          status?: string
+          token: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          categories?: string[]
+          company_name?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string
+          invitee_email?: string
+          service_zips?: string[]
+          status?: string
+          token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      partner_subscriptions: {
+        Row: {
+          created_at: string
+          current_period_end: string | null
+          external_subscription_id: string | null
+          id: string
+          partner_user_id: string
+          plan: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_period_end?: string | null
+          external_subscription_id?: string | null
+          id?: string
+          partner_user_id: string
+          plan?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_period_end?: string | null
+          external_subscription_id?: string | null
+          id?: string
+          partner_user_id?: string
+          plan?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payment_events: {
         Row: {
           amount_cents: number | null
@@ -7468,6 +7614,114 @@ export type Database = {
           },
         ]
       }
+      vendor_offer_responses: {
+        Row: {
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          contact_revealed_at: string | null
+          created_at: string
+          homeowner_user_id: string
+          id: string
+          offer_id: string
+          property_id: string
+          responded_at: string
+          response: string
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          contact_revealed_at?: string | null
+          created_at?: string
+          homeowner_user_id: string
+          id?: string
+          offer_id: string
+          property_id: string
+          responded_at?: string
+          response: string
+        }
+        Update: {
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          contact_revealed_at?: string | null
+          created_at?: string
+          homeowner_user_id?: string
+          id?: string
+          offer_id?: string
+          property_id?: string
+          responded_at?: string
+          response?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "vendor_offer_responses_offer_id_fkey"
+            columns: ["offer_id"]
+            isOneToOne: false
+            referencedRelation: "vendor_offers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vendor_offer_responses_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vendor_offers: {
+        Row: {
+          body: string
+          category: string
+          created_at: string
+          cta_text: string
+          estimated_value: string | null
+          expires_at: string
+          id: string
+          partner_user_id: string
+          published_at: string
+          status: string
+          system: string | null
+          title: string
+          updated_at: string
+          zip: string
+        }
+        Insert: {
+          body: string
+          category: string
+          created_at?: string
+          cta_text?: string
+          estimated_value?: string | null
+          expires_at?: string
+          id?: string
+          partner_user_id: string
+          published_at?: string
+          status?: string
+          system?: string | null
+          title: string
+          updated_at?: string
+          zip: string
+        }
+        Update: {
+          body?: string
+          category?: string
+          created_at?: string
+          cta_text?: string
+          estimated_value?: string | null
+          expires_at?: string
+          id?: string
+          partner_user_id?: string
+          published_at?: string
+          status?: string
+          system?: string | null
+          title?: string
+          updated_at?: string
+          zip?: string
+        }
+        Relationships: []
+      }
       verification_badges: {
         Row: {
           badge_type: string
@@ -8480,6 +8734,13 @@ export type Database = {
       }
     }
     Functions: {
+      accept_partner_invite: {
+        Args: { _company_name: string; _token: string }
+        Returns: {
+          partner_id: string
+          status: string
+        }[]
+      }
       claim_ai_credit: {
         Args: { _function_name: string; _limit?: number; _user_id: string }
         Returns: {
@@ -8521,6 +8782,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_approved_partner: { Args: { _user_id: string }; Returns: boolean }
       is_builder_company_admin: {
         Args: { _company_id: string; _user_id: string }
         Returns: boolean
@@ -8545,9 +8807,40 @@ export type Database = {
         Args: { _lot_specs: Json; _template_id: string }
         Returns: string[]
       }
+      partner_marketplace_for: {
+        Args: { _user_id: string }
+        Returns: {
+          category: string
+          property_count: number
+          system: string
+          zip: string
+        }[]
+      }
       property_consent_all_owners_opted_in: {
         Args: { _flag: string; _property_id: string }
         Returns: boolean
+      }
+      respond_to_vendor_offer: {
+        Args: { _accepted: boolean; _offer_id: string; _property_id: string }
+        Returns: {
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          contact_revealed_at: string | null
+          created_at: string
+          homeowner_user_id: string
+          id: string
+          offer_id: string
+          property_id: string
+          responded_at: string
+          response: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "vendor_offer_responses"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
     }
     Enums: {
