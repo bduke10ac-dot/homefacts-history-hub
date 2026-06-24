@@ -55,7 +55,10 @@ export default function PartnerDashboard() {
             <div className="flex items-center gap-2"><Store className="h-5 w-5 text-primary" /><h1 className="text-2xl font-bold">Partner dashboard</h1></div>
             <p className="mt-1 text-sm text-muted-foreground">{account?.company_name ?? "—"} · {account?.categories?.join(", ") || "no categories"}</p>
           </div>
-          <Button asChild disabled={!approved || !subActive}><Link to="/partner/offers/new"><Plus className="mr-2 h-4 w-4" />Post offer</Link></Button>
+          <div className="flex gap-2">
+            <Button asChild variant="outline"><Link to="/partner/billing">Billing</Link></Button>
+            <Button asChild disabled={!approved || !subActive}><Link to="/partner/offers/new"><Plus className="mr-2 h-4 w-4" />Post offer</Link></Button>
+          </div>
         </div>
 
         {!account && !loading && (
