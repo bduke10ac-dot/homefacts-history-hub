@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { useAuth } from "@/hooks/useAuth";
 
 export function Navbar() {
-  const { user, signOut, primaryRole } = useAuth();
+  const { user, signOut, primaryRole, hasRole } = useAuth();
   const navigate = useNavigate();
 
   const dashboardPath = () => {
