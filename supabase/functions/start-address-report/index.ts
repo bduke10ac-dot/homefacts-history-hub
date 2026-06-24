@@ -246,6 +246,21 @@ Deno.serve(async (req) => {
         const seed = hash(`${addressNormalized}|${place_id ?? ""}|${lat ?? ""}|${lng ?? ""}`);
         const stubs = buildStubs(seed, addressNormalized);
 
+        // === Real government data fetches (free; cache-backed; graceful fallback) ===
+        const censusKey = Deno.env.get("CENSUS_API_KEY");
+        const fbiKey = Deno.env.get("FBI_CRIME_API_KEY");
+
+        // Geocode first — everything else joins on FIPS.
+        const geo = await geocodeAddress(admin, addressNormalized);
+
+        const [realSchools, realAcs, realNri, realCrime, realWeather] = geo ? await Promise.all([
+          fetchSchoolsByCounty(admin, geo.county_fips_full).catch(() => null),
+          fetchAcsForTract(admin, geo.state_fips, geo.county_fips, geo.tract_fips, censusKey).catch(() => null),
+          fetchNriForTract(admin, geo.tract_fips_full).catch(() => null),
+          fetchCountyCrime(admin, geo.state_abbr ?? "", geo.county_fips_full, fbiKey).catch(() => null),
+          fetchWeatherEvents(admin, geo.lat, geo.lng).catch(() => null),
+        ]) : [null, null, null, null, null];
+
         // 1) Insert the normalized report_properties row + children
         const { data: rp } = await admin.from("report_properties").insert({
           report_id: report.id,
@@ -267,36 +282,87 @@ Deno.serve(async (req) => {
         if (rp?.id) {
           await admin.from("tax_history").insert(stubs.taxes.years.map((y) => ({ property_id: rp.id, ...y })));
         }
-        await admin.from("schools").insert(stubs.schools.schools.map((s) => ({ report_id: report.id, ...s })));
+
+        // === Schools: prefer real NCES data when available ===
+        const schoolsPayload = realSchools && realSchools.length
+          ? { schools: realSchools, source_note: "Real schools from NCES via Urban Institute Education Data Portal. GreatSchools 1-10 ratings unavailable on free tier." }
+          : stubs.schools;
+        const schoolsSource = realSchools && realSchools.length ? "verified:nces_urban_institute" : "modeled:stub";
+        await admin.from("schools").insert(schoolsPayload.schools.map((s: any) => ({
+          report_id: report.id,
+          level: s.level, name: s.name, district_name: s.district_name,
+          rating: s.rating ?? null, rating_source: s.rating_source ?? null,
+          distance_miles: s.distance_miles ?? null,
+          address: s.address ?? null, phone: s.phone ?? null,
+        })));
+
+        // === Risk: prefer FEMA NRI tract-level ratings + NOAA alerts ===
+        let riskPayload: any = stubs.risk;
+        let riskSource = "modeled:stub";
+        if (realNri || realWeather) {
+          riskPayload = {
+            flood_zone: stubs.risk.flood_zone, // FEMA FIRM zone requires separate MSC lookup; left modeled
+            flood_zone_description: stubs.risk.flood_zone_description,
+            fema_panel_url: "https://msc.fema.gov/portal/home",
+            storm_events: realWeather ?? stubs.risk.storm_events,
+            wildfire_risk_tier: realNri?.hazards.wildfire?.rating ?? stubs.risk.wildfire_risk_tier,
+            environmental_notes: stubs.risk.environmental_notes,
+            nri: realNri ?? null,
+            source_note: "Hazard ratings from FEMA National Risk Index (tract). Storm events from NOAA active alerts. FEMA flood zone still modeled — requires FEMA MSC integration.",
+          };
+          riskSource = realNri && realWeather ? "verified:fema_nri+noaa" : realNri ? "verified:fema_nri" : "verified:noaa";
+        }
         await admin.from("risk_indicators").insert({
           report_id: report.id,
-          flood_zone: stubs.risk.flood_zone,
-          flood_zone_description: stubs.risk.flood_zone_description,
-          fema_panel_url: stubs.risk.fema_panel_url,
-          storm_events: stubs.risk.storm_events,
-          wildfire_risk_tier: stubs.risk.wildfire_risk_tier,
-          environmental_notes: stubs.risk.environmental_notes,
+          flood_zone: riskPayload.flood_zone,
+          flood_zone_description: riskPayload.flood_zone_description,
+          fema_panel_url: riskPayload.fema_panel_url,
+          storm_events: riskPayload.storm_events,
+          wildfire_risk_tier: riskPayload.wildfire_risk_tier,
+          environmental_notes: riskPayload.environmental_notes,
         });
+
+        // Mirror NRI into hazard_intelligence + env_risk_scores keyed by report (not property) when no property_id yet.
+        // These tables key on property_id; we skip the insert when this is an anonymous address report with no property row.
+
         await admin.from("amenities").insert(stubs.amenities.places.map((p) => ({ report_id: report.id, ...p })));
         await admin.from("utilities").insert(stubs.utilities.providers.map((p) => ({ report_id: report.id, ...p })));
         await admin.from("civic_officials").insert(stubs.civic.officials.map((o) => ({ report_id: report.id, ...o })));
         await admin.from("voting_info").insert({ report_id: report.id, ...stubs.voting });
 
+        // Log data sources used (real vs modeled markers).
+        const reportRowId = report.id;
+        const dsRows: any[] = [
+          { table_name: "schools", record_id: reportRowId, source_name: schoolsSource, source_url: realSchools ? "https://educationdata.urban.org/" : null, data_license_status: realSchools ? "verified" : "modeled" },
+          { table_name: "risk_indicators", record_id: reportRowId, source_name: riskSource, source_url: realNri ? "https://hazards.fema.gov/nri/" : null, data_license_status: (realNri || realWeather) ? "verified" : "modeled" },
+          { table_name: "report_properties", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
+          { table_name: "tax_history", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
+          { table_name: "amenities", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
+          { table_name: "utilities", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
+          { table_name: "civic_officials", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
+        ];
+        if (geo) dsRows.push({ table_name: "reports", record_id: reportRowId, source_name: "verified:census_geocoder", source_url: "https://geocoding.geo.census.gov/", data_license_status: "verified" });
+        if (realCrime) dsRows.push({ table_name: "crime_reports", record_id: reportRowId, source_name: "verified:fbi_cde", source_url: "https://api.usa.gov/crime/fbi/cde/", data_license_status: "verified" });
+        if (realAcs) dsRows.push({ table_name: "neighborhood_trends", record_id: reportRowId, source_name: "verified:census_acs5", source_url: "https://api.census.gov/data/", data_license_status: "verified" });
+        await admin.from("data_source_log").insert(dsRows);
+
         // 2) Mark each data section as success with its payload
         const writes = [
-          { key: "overview", data: stubs.overview, source: "stub:assessor" },
-          { key: "taxes", data: stubs.taxes, source: "stub:tax_office" },
-          { key: "schools", data: stubs.schools, source: "stub:greatschools" },
-          { key: "risk", data: stubs.risk, source: "stub:fema_noaa" },
-          { key: "amenities", data: stubs.amenities, source: "stub:places" },
-          { key: "utilities", data: stubs.utilities, source: "stub:providers" },
-          { key: "civic", data: stubs.civic, source: "stub:google_civic" },
-          { key: "voting", data: stubs.voting, source: "stub:civic" },
+          { key: "overview", data: stubs.overview, source: "modeled:stub" },
+          { key: "taxes", data: stubs.taxes, source: "modeled:stub" },
+          { key: "schools", data: schoolsPayload, source: schoolsSource },
+          { key: "risk", data: riskPayload, source: riskSource },
+          { key: "amenities", data: stubs.amenities, source: "modeled:stub" },
+          { key: "utilities", data: stubs.utilities, source: "modeled:stub" },
+          { key: "civic", data: { ...stubs.civic, demographics: realAcs ?? null, demographics_source: realAcs ? "verified:census_acs5" : null, crime: realCrime ?? null, crime_source: realCrime ? "verified:fbi_cde" : null, crime_note: "Jurisdiction-level reported crime data (FBI). Not per-address incident pins — that requires a paid provider." }, source: realAcs || realCrime ? "verified:census+fbi" : "modeled:stub" },
+          { key: "voting", data: stubs.voting, source: "modeled:stub" },
         ];
         await Promise.all(writes.map((w) =>
           admin.from("report_sections").update({ status: "success", data: w.data, source: w.source, fetched_at: new Date().toISOString() })
             .eq("report_id", report.id).eq("section_key", w.key)
         ));
+
+
 
         // 3) Synthesize Living Outlook with Lovable AI
         const apiKey = Deno.env.get("LOVABLE_API_KEY");
