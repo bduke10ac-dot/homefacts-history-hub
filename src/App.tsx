@@ -143,6 +143,7 @@ const DashboardRouter = () => {
   switch (primaryRole) {
     case "admin": return <Navigate to="/admin" replace />;
     case "builder": return <Navigate to="/builder" replace />;
+    case "partner": return <Navigate to="/partner" replace />;
     case "contractor": return <Navigate to="/contractor" replace />;
     case "realtor": return <Navigate to="/realtor" replace />;
     default: return <HomeownerDashboard />;
