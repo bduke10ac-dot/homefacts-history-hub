@@ -13,6 +13,9 @@ export const PILOT_ROUTE_ALLOWLIST = new Set<string>([
   "/claim",
   "/privacy-controls",
   "/dashboard/revenue-intelligence",
+  "/admin/partners",
+  "/partner", "/partner/offers/new",
+  "/offers",
   // Legal + account recovery — always accessible
   "/privacy", "/terms", "/disclaimer",
   "/forgot-password", "/reset-password", "/unauthorized",
