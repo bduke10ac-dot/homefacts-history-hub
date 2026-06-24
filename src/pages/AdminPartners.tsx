@@ -49,20 +49,33 @@ export default function AdminPartners() {
     if (!user || !email.trim()) return;
     setCreating(true);
     const token = randomToken();
-    const { error } = await supabase.from("partner_invites").insert({
+    const { data: inserted, error } = await supabase.from("partner_invites").insert({
       token,
       invitee_email: email.trim().toLowerCase(),
       company_name: company.trim() || null,
       categories: categories.split(",").map((s) => s.trim()).filter(Boolean),
       service_zips: zips.split(",").map((s) => s.trim()).filter(Boolean),
       invited_by: user.id,
+    }).select("id").maybeSingle();
+    if (error || !inserted) { setCreating(false); toast.error(error?.message ?? "Failed to create invite"); return; }
+
+    const claimUrl = `${window.location.origin}/partners/claim/${token}`;
+    const { data: emailResp, error: emailErr } = await supabase.functions.invoke("send-partner-invite", {
+      body: { inviteId: inserted.id, claimUrl },
     });
     setCreating(false);
-    if (error) { toast.error(error.message); return; }
     setEmail(""); setCompany(""); setCategories(""); setZips("");
-    toast.success("Invite created");
+
+    if (emailErr || emailResp?.error) {
+      const msg = emailResp?.message ?? emailErr?.message ?? "Email could not be sent";
+      // Invite was still created — admin can copy the link from the list below.
+      toast.warning(`Invite created, but email not sent: ${msg}`, { duration: 8000 });
+    } else {
+      toast.success("Invite created and emailed");
+    }
     load();
   };
+
 
   const copyLink = (token: string) => {
     const url = `${window.location.origin}/partners/claim/${token}`;

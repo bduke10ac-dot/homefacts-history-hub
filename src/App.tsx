@@ -111,6 +111,7 @@ const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
 const PartnerClaimInvite = lazy(() => import("./pages/PartnerClaimInvite"));
+const PartnerBilling = lazy(() => import("./pages/PartnerBilling"));
 const HomeownerOffers = lazy(() => import("./pages/HomeownerOffers"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
@@ -241,6 +242,7 @@ const App = () => (
                 <Route path="/admin/partners" element={<ProtectedRoute requireRole="admin"><AdminPartners /></ProtectedRoute>} />
                 <Route path="/partner" element={<ProtectedRoute requireRole="partner"><PartnerDashboard /></ProtectedRoute>} />
                 <Route path="/partner/offers/new" element={<ProtectedRoute requireRole="partner"><PartnerOfferNew /></ProtectedRoute>} />
+                <Route path="/partner/billing" element={<ProtectedRoute requireRole="partner"><PartnerBilling /></ProtectedRoute>} />
                 <Route path="/partners/claim/:token" element={<ProtectedRoute><PartnerClaimInvite /></ProtectedRoute>} />
                 <Route path="/offers" element={<ProtectedRoute><HomeownerOffers /></ProtectedRoute>} />
 

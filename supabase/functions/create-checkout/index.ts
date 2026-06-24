@@ -40,6 +40,7 @@ async function createCheckoutSession(options: {
   userId?: string;
   returnUrl: string;
   environment: StripeEnv;
+  partnerUserId?: string;
 }) {
   if (!/^[a-zA-Z0-9_-]+$/.test(options.priceId)) throw new Error("Invalid priceId");
   const stripe = createStripeClient(options.environment);
@@ -60,6 +61,10 @@ async function createCheckoutSession(options: {
     productDescription = product.name;
   }
 
+  const baseMeta: Record<string, string> = {};
+  if (options.userId) baseMeta.userId = options.userId;
+  if (options.partnerUserId) baseMeta.partnerUserId = options.partnerUserId;
+
   const session = await stripe.checkout.sessions.create({
     line_items: [{ price: stripePrice.id, quantity: 1 }],
     mode: isRecurring ? "subscription" : "payment",
@@ -67,14 +72,15 @@ async function createCheckoutSession(options: {
     return_url: options.returnUrl,
     ...(customerId && { customer: customerId }),
     ...(!isRecurring && { payment_intent_data: { description: productDescription } }),
-    ...(options.userId && {
-      metadata: { userId: options.userId },
-      ...(isRecurring && { subscription_data: { metadata: { userId: options.userId } } }),
+    ...(Object.keys(baseMeta).length > 0 && {
+      metadata: baseMeta,
+      ...(isRecurring && { subscription_data: { metadata: baseMeta } }),
     }),
   });
 
   return session.client_secret;
 }
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
@@ -82,7 +88,7 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json();
-    const { priceId, customerEmail, userId, returnUrl, environment } = body ?? {};
+    const { priceId, customerEmail, userId, returnUrl, environment, partnerUserId } = body ?? {};
     if (!priceId || !returnUrl || !environment) {
       return new Response(JSON.stringify({ error: "Missing priceId, returnUrl, or environment" }), {
         status: 400,
@@ -95,7 +101,7 @@ Deno.serve(async (req) => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const clientSecret = await createCheckoutSession({ priceId, customerEmail, userId, returnUrl, environment });
+    const clientSecret = await createCheckoutSession({ priceId, customerEmail, userId, returnUrl, environment, partnerUserId });
     return new Response(JSON.stringify({ clientSecret }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
