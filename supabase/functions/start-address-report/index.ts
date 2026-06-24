@@ -5,7 +5,7 @@ import { createLovableAiGatewayProvider, corsHeaders } from "../_shared/ai-gatew
 import {
   geocodeAddress, fetchSchoolsByCounty, fetchWeatherEvents,
   fetchNriForTract, fetchCountyCrime, fetchAcsForTract,
-  nriRatingToRiskLevel,
+  fetchFloodZoneAtPoint, nriRatingToRiskLevel,
 } from "../_shared/govdata.ts";
 
 const SECTION_KEYS = ["overview", "taxes", "schools", "risk", "amenities", "utilities", "civic", "voting", "scorecard"] as const;
