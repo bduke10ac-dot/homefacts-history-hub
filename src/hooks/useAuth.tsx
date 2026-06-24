@@ -2,10 +2,10 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppRole = "homeowner" | "realtor" | "contractor" | "builder" | "admin";
+export type AppRole = "homeowner" | "realtor" | "contractor" | "builder" | "partner" | "admin";
 
 // Deterministic priority — highest privilege wins.
-const ROLE_PRIORITY: AppRole[] = ["admin", "builder", "contractor", "realtor", "homeowner"];
+const ROLE_PRIORITY: AppRole[] = ["admin", "builder", "partner", "contractor", "realtor", "homeowner"];
 
 interface AuthContextType {
   user: User | null;
