@@ -343,7 +343,7 @@ Deno.serve(async (req) => {
         const reportRowId = report.id;
         const dsRows: any[] = [
           { table_name: "schools", record_id: reportRowId, source_name: schoolsSource, source_url: realSchools ? "https://educationdata.urban.org/" : null, data_license_status: realSchools ? "verified" : "modeled" },
-          { table_name: "risk_indicators", record_id: reportRowId, source_name: riskSource, source_url: realNri ? "https://hazards.fema.gov/nri/" : null, data_license_status: (realNri || realWeather) ? "verified" : "modeled" },
+          { table_name: "risk_indicators", record_id: reportRowId, source_name: riskSource, source_url: realFlood ? "https://msc.fema.gov/" : realNri ? "https://hazards.fema.gov/nri/" : null, data_license_status: (realNri || realWeather || realFlood) ? "verified" : "modeled" },
           { table_name: "report_properties", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
           { table_name: "tax_history", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
           { table_name: "amenities", record_id: reportRowId, source_name: "modeled:stub", source_url: null, data_license_status: "modeled" },
