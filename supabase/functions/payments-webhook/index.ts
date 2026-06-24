@@ -264,6 +264,10 @@ async function handleInvoiceFailed(invoice: any, env: StripeEnv, eventId: string
       .update({ status: "past_due", updated_at: new Date().toISOString() })
       .eq("stripe_subscription_id", invoice.subscription)
       .eq("environment", env);
+    await getSupabase()
+      .from("partner_subscriptions")
+      .update({ status: "past_due", updated_at: new Date().toISOString() })
+      .eq("external_subscription_id", invoice.subscription);
   }
 }
 
