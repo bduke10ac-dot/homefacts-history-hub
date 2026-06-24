@@ -378,22 +378,36 @@ Deno.serve(async (req) => {
         let outlook: z.infer<typeof ScoreSchema> | null = null;
         if (apiKey) {
           const gateway = createLovableAiGatewayProvider(apiKey);
-          const prompt = `You are a real-estate intelligence analyst. Based on the data below for ${addressNormalized}, produce a "Living Outlook" composite score and sub-scores from 0-100 (higher is better). Also produce an A-F letter grade for the overall outlook, a one-line headline, a 3-4 sentence summary, top pros, top cons, and 2-4 lifestyle types this home is best for.
+          const prompt = `You are a real-estate intelligence analyst. Based on the data below for ${addressNormalized}, produce a "Living Outlook" scorecard.
 
-Sub-scores cover: schools (school quality), crime (lower crime = higher score), market (price trends/value), tax_burden (lower taxes = higher score), amenities (walkability/nearby places), risk (lower hazards = higher score), commute (transit/access).
+Return a single JSON object with EXACTLY these top-level keys (no nesting, no extra keys, no markdown):
+- living_outlook_score (number 0-100, overall composite, higher is better)
+- living_outlook_grade (one of "A","B","C","D","F")
+- schools_score (number 0-100)
+- crime_score (number 0-100, lower crime = higher score)
+- market_score (number 0-100, price trends/value)
+- tax_burden_score (number 0-100, lower taxes = higher score)
+- amenities_score (number 0-100, walkability/nearby places)
+- risk_score (number 0-100, lower hazards = higher score)
+- commute_score (number 0-100, transit/access)
+- headline (one-line string)
+- summary (3-4 sentence string)
+- pros (array of 2-5 strings)
+- cons (array of 2-5 strings)
+- best_for (array of 2-4 lifestyle-type strings)
 
 Data:
 ${JSON.stringify(stubs, null, 2)}
 
-Be specific. Reference real numbers. Tone: trustworthy and neutral, like an underwriter writing for a homebuyer.`;
+Be specific, reference real numbers, tone trustworthy and neutral.`;
           try {
             const { experimental_output } = await generateText({
-              model: gateway("google/gemini-3-flash-preview"),
+              model: gateway("google/gemini-2.5-flash"),
               experimental_output: Output.object({ schema: ScoreSchema }),
               prompt,
             });
             outlook = experimental_output;
-          } catch (aiErr) { console.error("outlook AI error", aiErr); }
+          } catch (aiErr) { console.error("outlook AI error", String((aiErr as Error)?.message ?? aiErr)); }
         }
 
         if (!outlook) {
