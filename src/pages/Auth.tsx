@@ -114,7 +114,13 @@ const Auth = () => {
             <TabsContent value="signin" className="mt-6">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2"><Label htmlFor="e">Email</Label><Input id="e" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-                <div className="space-y-2"><Label htmlFor="p">Password</Label><Input id="p" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="p">Password</Label>
+                    <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-foreground">Forgot password?</Link>
+                  </div>
+                  <Input id="p" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
+                </div>
                 <Button type="submit" className="w-full" disabled={loading}>{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Sign in</Button>
               </form>
             </TabsContent>
@@ -139,7 +145,10 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
         </div>
-        <p className="mt-4 text-center text-xs text-muted-foreground">By continuing you agree to our terms and privacy policy.</p>
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          By continuing you agree to our <Link to="/terms" className="underline underline-offset-2">Terms</Link> and{" "}
+          <Link to="/privacy" className="underline underline-offset-2">Privacy Policy</Link>.
+        </p>
       </div>
     </div>
   );
