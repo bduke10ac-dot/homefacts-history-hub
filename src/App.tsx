@@ -103,6 +103,10 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Disclaimer = lazy(() => import("./pages/Disclaimer"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const PrivacyControls = lazy(() => import("./pages/PrivacyControls"));
+const MyHomeOpportunities = lazy(() => import("./pages/MyHomeOpportunities"));
+const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
+const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
 import { useLocation } from "react-router-dom";
@@ -224,6 +228,10 @@ const App = () => (
                 <Route path="/investor" element={<ProtectedRoute><InvestorDashboard /></ProtectedRoute>} />
                 <Route path="/negotiate" element={<ProtectedRoute><NegotiationAssistant /></ProtectedRoute>} />
                 <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
+                <Route path="/privacy-controls" element={<ProtectedRoute><PrivacyControls /></ProtectedRoute>} />
+                <Route path="/property/:id/opportunities" element={<ProtectedRoute><MyHomeOpportunities /></ProtectedRoute>} />
+                <Route path="/property/:id/health-score" element={<ProtectedRoute><PropertyHealthScore /></ProtectedRoute>} />
+                <Route path="/dashboard/revenue-intelligence" element={<ProtectedRoute requireRole="admin"><RevenueIntelligence /></ProtectedRoute>} />
 
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
                 <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />

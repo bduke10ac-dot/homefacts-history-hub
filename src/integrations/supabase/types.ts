@@ -5410,6 +5410,47 @@ export type Database = {
           },
         ]
       }
+      property_data_consent: {
+        Row: {
+          allow_anonymized_data: boolean
+          allow_offer_matching: boolean
+          allow_partner_outreach: boolean
+          created_at: string
+          id: string
+          property_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allow_anonymized_data?: boolean
+          allow_offer_matching?: boolean
+          allow_partner_outreach?: boolean
+          created_at?: string
+          id?: string
+          property_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allow_anonymized_data?: boolean
+          allow_offer_matching?: boolean
+          allow_partner_outreach?: boolean
+          created_at?: string
+          id?: string
+          property_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_data_consent_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       property_easements: {
         Row: {
           created_at: string
@@ -5455,6 +5496,169 @@ export type Database = {
             foreignKeyName: "property_easements_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_health_scores: {
+        Row: {
+          computation_source: string
+          computed_at: string
+          created_at: string
+          electrical_score: number | null
+          exterior_score: number | null
+          foundation_score: number | null
+          grade: string
+          hvac_score: number | null
+          id: string
+          next_actions: string[]
+          overall_score: number
+          plumbing_score: number | null
+          property_id: string
+          risks: string[]
+          roof_score: number | null
+          strengths: string[]
+          updated_at: string
+          water_heater_score: number | null
+        }
+        Insert: {
+          computation_source?: string
+          computed_at?: string
+          created_at?: string
+          electrical_score?: number | null
+          exterior_score?: number | null
+          foundation_score?: number | null
+          grade: string
+          hvac_score?: number | null
+          id?: string
+          next_actions?: string[]
+          overall_score: number
+          plumbing_score?: number | null
+          property_id: string
+          risks?: string[]
+          roof_score?: number | null
+          strengths?: string[]
+          updated_at?: string
+          water_heater_score?: number | null
+        }
+        Update: {
+          computation_source?: string
+          computed_at?: string
+          created_at?: string
+          electrical_score?: number | null
+          exterior_score?: number | null
+          foundation_score?: number | null
+          grade?: string
+          hvac_score?: number | null
+          id?: string
+          next_actions?: string[]
+          overall_score?: number
+          plumbing_score?: number | null
+          property_id?: string
+          risks?: string[]
+          roof_score?: number | null
+          strengths?: string[]
+          updated_at?: string
+          water_heater_score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_health_scores_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_intelligence: {
+        Row: {
+          bathrooms: number | null
+          bedrooms: number | null
+          created_at: string
+          electrical_panel_year: number | null
+          exterior_material: string | null
+          flood_risk_level: string | null
+          foundation_type: string | null
+          hail_risk_level: string | null
+          hvac_install_year: number | null
+          hvac_type: string | null
+          id: string
+          last_recomputed_at: string | null
+          lot_size_sqft: number | null
+          plumbing_material: string | null
+          property_id: string
+          roof_install_year: number | null
+          roof_material: string | null
+          square_feet: number | null
+          stories: number | null
+          storm_risk_level: string | null
+          updated_at: string
+          water_heater_install_year: number | null
+          water_heater_type: string | null
+          wildfire_risk_level: string | null
+          wind_risk_level: string | null
+        }
+        Insert: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          created_at?: string
+          electrical_panel_year?: number | null
+          exterior_material?: string | null
+          flood_risk_level?: string | null
+          foundation_type?: string | null
+          hail_risk_level?: string | null
+          hvac_install_year?: number | null
+          hvac_type?: string | null
+          id?: string
+          last_recomputed_at?: string | null
+          lot_size_sqft?: number | null
+          plumbing_material?: string | null
+          property_id: string
+          roof_install_year?: number | null
+          roof_material?: string | null
+          square_feet?: number | null
+          stories?: number | null
+          storm_risk_level?: string | null
+          updated_at?: string
+          water_heater_install_year?: number | null
+          water_heater_type?: string | null
+          wildfire_risk_level?: string | null
+          wind_risk_level?: string | null
+        }
+        Update: {
+          bathrooms?: number | null
+          bedrooms?: number | null
+          created_at?: string
+          electrical_panel_year?: number | null
+          exterior_material?: string | null
+          flood_risk_level?: string | null
+          foundation_type?: string | null
+          hail_risk_level?: string | null
+          hvac_install_year?: number | null
+          hvac_type?: string | null
+          id?: string
+          last_recomputed_at?: string | null
+          lot_size_sqft?: number | null
+          plumbing_material?: string | null
+          property_id?: string
+          roof_install_year?: number | null
+          roof_material?: string | null
+          square_feet?: number | null
+          stories?: number | null
+          storm_risk_level?: string | null
+          updated_at?: string
+          water_heater_install_year?: number | null
+          water_heater_type?: string | null
+          wildfire_risk_level?: string | null
+          wind_risk_level?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_intelligence_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
             referencedRelation: "properties"
             referencedColumns: ["id"]
           },
@@ -5538,6 +5742,71 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "property_jurisdictions_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      property_opportunities: {
+        Row: {
+          computed_at: string
+          confidence: number
+          created_at: string
+          dismissed_at: string | null
+          estimated_cost_high: number | null
+          estimated_cost_low: number | null
+          expires_at: string | null
+          id: string
+          opportunity_type: string
+          property_id: string
+          rationale: string | null
+          recommended_action: string
+          source: string
+          system: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          computed_at?: string
+          confidence?: number
+          created_at?: string
+          dismissed_at?: string | null
+          estimated_cost_high?: number | null
+          estimated_cost_low?: number | null
+          expires_at?: string | null
+          id?: string
+          opportunity_type: string
+          property_id: string
+          rationale?: string | null
+          recommended_action: string
+          source?: string
+          system: string
+          updated_at?: string
+          urgency: string
+        }
+        Update: {
+          computed_at?: string
+          confidence?: number
+          created_at?: string
+          dismissed_at?: string | null
+          estimated_cost_high?: number | null
+          estimated_cost_low?: number | null
+          expires_at?: string | null
+          id?: string
+          opportunity_type?: string
+          property_id?: string
+          rationale?: string | null
+          recommended_action?: string
+          source?: string
+          system?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "property_opportunities_property_id_fkey"
             columns: ["property_id"]
             isOneToOne: false
             referencedRelation: "properties"
@@ -8275,6 +8544,10 @@ export type Database = {
       nb_clone_template: {
         Args: { _lot_specs: Json; _template_id: string }
         Returns: string[]
+      }
+      property_consent_all_owners_opted_in: {
+        Args: { _flag: string; _property_id: string }
+        Returns: boolean
       }
     }
     Enums: {
