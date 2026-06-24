@@ -109,6 +109,8 @@ const PropertyHealthScore = lazy(() => import("./pages/PropertyHealthScore"));
 const RevenueIntelligence = lazy(() => import("./pages/RevenueIntelligence"));
 const PropertyPassport = lazy(() => import("./pages/PropertyPassport"));
 const PropertyValueProtection = lazy(() => import("./pages/PropertyValueProtection"));
+const WarrantyTransferCenter = lazy(() => import("./pages/WarrantyTransferCenter"));
+const EstateVault = lazy(() => import("./pages/EstateVault"));
 const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
@@ -217,6 +219,8 @@ const App = () => (
                 <Route path="/property/:id/value-protection" element={<ProtectedRoute><HomeValueProtection /></ProtectedRoute>} />
                 <Route path="/property/:id/forecast" element={<ProtectedRoute><FutureCostForecast /></ProtectedRoute>} />
                 <Route path="/property/:id/protection-checklist" element={<ProtectedRoute><PropertyValueProtection /></ProtectedRoute>} />
+                <Route path="/property/:id/warranty-transfer" element={<ProtectedRoute><WarrantyTransferCenter /></ProtectedRoute>} />
+                <Route path="/property/:id/estate-vault" element={<ProtectedRoute><EstateVault /></ProtectedRoute>} />
                 <Route path="/property/:id/reminders" element={<ProtectedRoute><MaintenanceReminders /></ProtectedRoute>} />
                 <Route path="/property/:id/regional" element={<ProtectedRoute><RegionalEducation /></ProtectedRoute>} />
                 <Route path="/property/:id/buyer-report" element={<ProtectedRoute><BuyerDecisionReport /></ProtectedRoute>} />

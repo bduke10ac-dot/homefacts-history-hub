@@ -1974,6 +1974,62 @@ export type Database = {
           },
         ]
       }
+      estate_vaults: {
+        Row: {
+          beneficiary_notes: string | null
+          created_at: string
+          created_by: string | null
+          emergency_contact_email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          has_estate_documents: boolean
+          id: string
+          medical_emergency_notes: string | null
+          preferred_attorney: string | null
+          property_id: string
+          transfer_instructions: string | null
+          updated_at: string
+        }
+        Insert: {
+          beneficiary_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          emergency_contact_email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          has_estate_documents?: boolean
+          id?: string
+          medical_emergency_notes?: string | null
+          preferred_attorney?: string | null
+          property_id: string
+          transfer_instructions?: string | null
+          updated_at?: string
+        }
+        Update: {
+          beneficiary_notes?: string | null
+          created_at?: string
+          created_by?: string | null
+          emergency_contact_email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          has_estate_documents?: boolean
+          id?: string
+          medical_emergency_notes?: string | null
+          preferred_attorney?: string | null
+          property_id?: string
+          transfer_instructions?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "estate_vaults_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: true
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fraud_flags: {
         Row: {
           detail: string | null
