@@ -80,7 +80,7 @@ Return a JSON object: for each category provide the numeric score (use the numbe
       insurance_score: Math.round(insurance), insurance_level: band(insurance), insurance_ai: ai?.insurance?.ai ?? `${claimCount} claims on record affecting insurability.`, insurance_action: ai?.insurance?.action ?? "Review policy and consider a wind/hail rider.",
       environmental_score: Math.round(environmental), environmental_level: band(environmental), environmental_ai: ai?.environmental?.ai ?? "No major environmental flags detected.", environmental_action: ai?.environmental?.action ?? "Monitor regional advisories.",
       maintenance_score: Math.round(maintenance), maintenance_level: band(maintenance), maintenance_ai: ai?.maintenance?.ai ?? `${recCount} maintenance records on file.`, maintenance_action: ai?.maintenance?.action ?? "Upload receipts and service records.",
-      neighborhood_score: Math.round(neighborhood), neighborhood_level: band(neighborhood), neighborhood_ai: ai?.neighborhood?.ai ?? "Neighborhood profile within typical range.", neighborhood_action: ai?.neighborhood?.action ?? "Review crime and school trends.",
+      neighborhood_score: Math.round(neighborhood), neighborhood_level: band(neighborhood), neighborhood_ai: ai?.neighborhood?.ai ?? `Neighborhood profile (${neighborhoodSource}).`, neighborhood_action: ai?.neighborhood?.action ?? "Review crime and school trends.",
       appreciation_score: Math.round(appreciation), appreciation_level: band(appreciation), appreciation_ai: ai?.appreciation?.ai ?? "Stable appreciation outlook.", appreciation_action: ai?.appreciation?.action ?? "Track local comps quarterly.",
       computed_at: new Date().toISOString(),
     };
