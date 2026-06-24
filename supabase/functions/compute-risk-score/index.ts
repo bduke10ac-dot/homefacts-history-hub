@@ -42,7 +42,7 @@ Deno.serve(async (req) => {
     let neighborhood = 75; // fallback when NRI unavailable
     let neighborhoodSource = "modeled:default";
     try {
-      const addressStr = [prop?.address_line1, prop?.city, prop?.state, prop?.zip].filter(Boolean).join(", ");
+      const addressStr = [prop?.address_line, prop?.city, prop?.state, prop?.zip].filter(Boolean).join(", ");
       if (addressStr) {
         const geo = await geocodeAddress(supa, addressStr);
         if (geo) {
@@ -60,15 +60,15 @@ Deno.serve(async (req) => {
     if (key) {
       try {
         const gateway = createLovableAiGatewayProvider(key);
-        const { output } = await generateText({
-          model: gateway("google/gemini-3-flash-preview"),
-          output: Output.object({ schema: Schema }),
-          prompt: `Property: ${prop?.address_line1 ?? "(unknown)"}, ${prop?.city}, ${prop?.state}. Built ${prop?.year_built}. Records:${recCount}. High-risk hazards:${hazHigh}. Claims:${claimCount}.
+        const { experimental_output } = await generateText({
+          model: gateway("google/gemini-2.5-flash"),
+          experimental_output: Output.object({ schema: Schema }),
+          prompt: `Property: ${prop?.address_line ?? "(unknown)"}, ${prop?.city}, ${prop?.state}. Built ${prop?.year_built}. Records:${recCount}. High-risk hazards:${hazHigh}. Claims:${claimCount}.
 Numeric category scores (0-100, higher=healthier): structural=${Math.round(structural)}, weather=${Math.round(weather)}, insurance=${Math.round(insurance)}, environmental=${Math.round(environmental)}, maintenance=${Math.round(maintenance)}, neighborhood=${Math.round(neighborhood)}, appreciation=${Math.round(appreciation)}.
-Return a JSON object: for each category provide the numeric score (use the numbers given), level (low/medium/high RISK — low risk = healthy = score >=80), ai (1 sentence homeowner-friendly explanation), action (one concrete next step). Also overall_summary (1 sentence).`,
+Return a JSON object with EXACTLY these top-level keys: overall_summary (string), and for each of structural, weather, insurance, environmental, maintenance, neighborhood, appreciation — an object { score (number, use the value given), level ("low"|"medium"|"high" — low risk = healthy ≥80), ai (1 sentence homeowner-friendly), action (one concrete next step) }.`,
         });
-        ai = output;
-      } catch (_) { /* fall through to heuristic */ }
+        ai = experimental_output;
+      } catch (e) { console.warn("compute-risk-score AI failed", String((e as Error)?.message ?? e)); }
     }
 
     const row = {

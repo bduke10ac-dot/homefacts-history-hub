@@ -212,7 +212,8 @@ export async function fetchFloodZoneAtPoint(
   const cached = await cacheGet(admin, "fema_nfhl_point", key);
   if (cached) return cached as FloodZoneRecord;
 
-  const url = new URL("https://hazards.fema.gov/gis/nfhl/rest/services/public/NFHL/MapServer/28/query");
+  // FEMA migrated this service from `/gis/nfhl/rest/...` (404s) to `/arcgis/rest/...`.
+  const url = new URL("https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query");
   url.searchParams.set("geometry", JSON.stringify({ x: lng, y: lat, spatialReference: { wkid: 4326 } }));
   url.searchParams.set("geometryType", "esriGeometryPoint");
   url.searchParams.set("inSR", "4326");
@@ -283,9 +284,12 @@ export async function fetchNriForTract(admin: Admin, tractFipsFull: string): Pro
   const cached = await cacheGet(admin, "fema_nri_tract", tractFipsFull);
   if (cached) return cached as NriRecord;
 
-  const url = new URL("https://hazards.fema.gov/gis/nri/REST/services/public/NRI/MapServer/5/query");
+  // FEMA's old `/gis/nri/REST/...` MapServer 404s. Use the ArcGIS-hosted public
+  // FeatureServer mirror (layer 0 = National_Risk_Index_Census_Tracts).
+  const url = new URL("https://services.arcgis.com/XG15cJAlne2vxtgt/arcgis/rest/services/National_Risk_Index_Census_Tracts/FeatureServer/0/query");
   url.searchParams.set("where", `TRACTFIPS='${tractFipsFull}'`);
   url.searchParams.set("outFields", "*");
+  url.searchParams.set("returnGeometry", "false");
   url.searchParams.set("f", "json");
 
   const json = await fetchJson(url.toString(), undefined, 10000);
@@ -370,14 +374,18 @@ export async function fetchAcsForTract(
   const cached = await cacheGet(admin, "census_acs5_tract", key);
   if (cached) return cached as Record<string, number | null>;
 
+  // Build URL manually — URLSearchParams encodes the space in `state:XX county:YYY`
+  // as `+`, which Census's parser rejects (returns an HTML error page).
   const vars = ACS_VARS.map(([, v]) => v).join(",");
-  const url = new URL(`https://api.census.gov/data/${year}/acs/acs5`);
-  url.searchParams.set("get", vars);
-  url.searchParams.set("for", `tract:${tractFips}`);
-  url.searchParams.set("in", `state:${stateFips} county:${countyFips}`);
-  if (apiKey) url.searchParams.set("key", apiKey);
+  const params = [
+    `get=${vars}`,
+    `for=${encodeURIComponent(`tract:${tractFips}`)}`,
+    `in=${encodeURIComponent(`state:${stateFips} county:${countyFips}`)}`,
+  ];
+  if (apiKey) params.push(`key=${encodeURIComponent(apiKey)}`);
+  const url = `https://api.census.gov/data/${year}/acs/acs5?${params.join("&")}`;
 
-  const json = await fetchJson(url.toString(), undefined, 10000);
+  const json = await fetchJson(url, undefined, 10000);
   if (!Array.isArray(json) || json.length < 2) return null;
 
   const [headers, row] = json;
