@@ -4279,33 +4279,45 @@ export type Database = {
       }
       partner_subscriptions: {
         Row: {
+          cancel_at_period_end: boolean
           created_at: string
           current_period_end: string | null
+          current_period_start: string | null
           external_subscription_id: string | null
           id: string
           partner_user_id: string
           plan: string | null
+          price_id: string | null
           status: string
+          stripe_customer_id: string | null
           updated_at: string
         }
         Insert: {
+          cancel_at_period_end?: boolean
           created_at?: string
           current_period_end?: string | null
+          current_period_start?: string | null
           external_subscription_id?: string | null
           id?: string
           partner_user_id: string
           plan?: string | null
+          price_id?: string | null
           status?: string
+          stripe_customer_id?: string | null
           updated_at?: string
         }
         Update: {
+          cancel_at_period_end?: boolean
           created_at?: string
           current_period_end?: string | null
+          current_period_start?: string | null
           external_subscription_id?: string | null
           id?: string
           partner_user_id?: string
           plan?: string | null
+          price_id?: string | null
           status?: string
+          stripe_customer_id?: string | null
           updated_at?: string
         }
         Relationships: []
