@@ -2,6 +2,11 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { generateText, Output } from "npm:ai";
 import { z } from "npm:zod";
 import { createLovableAiGatewayProvider, corsHeaders } from "../_shared/ai-gateway.ts";
+import {
+  geocodeAddress, fetchSchoolsByCounty, fetchWeatherEvents,
+  fetchNriForTract, fetchCountyCrime, fetchAcsForTract,
+  nriRatingToRiskLevel,
+} from "../_shared/govdata.ts";
 
 const SECTION_KEYS = ["overview", "taxes", "schools", "risk", "amenities", "utilities", "civic", "voting", "scorecard"] as const;
 
