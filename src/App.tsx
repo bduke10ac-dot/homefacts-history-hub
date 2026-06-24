@@ -111,6 +111,7 @@ const PropertyPassport = lazy(() => import("./pages/PropertyPassport"));
 const PropertyValueProtection = lazy(() => import("./pages/PropertyValueProtection"));
 const WarrantyTransferCenter = lazy(() => import("./pages/WarrantyTransferCenter"));
 const EstateVault = lazy(() => import("./pages/EstateVault"));
+const BuilderCertification = lazy(() => import("./pages/BuilderCertification"));
 const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));

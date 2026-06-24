@@ -21,6 +21,7 @@ import { ReportsMenu } from "@/components/reports/ReportsMenu";
 import { PropertyMap } from "@/components/map/PropertyMap";
 import { EnvironmentalSection } from "@/components/environmental/EnvironmentalSection";
 import { RegionalSection } from "@/components/regional/RegionalSection";
+import { PropertyTrustPlatformCards } from "@/components/property/PropertyTrustPlatformCards";
 
 interface Property { id: string; address_line: string; city: string; state: string; zip: string; year_built: number | null; square_feet: number | null; bedrooms: number | null; bathrooms: number | null; property_type: string | null; claimed_by: string | null; latitude: number | null; longitude: number | null; }
 interface RecordRow { id: string; category: string; title: string; description: string | null; performed_by: string | null; cost: number | null; performed_at: string | null; verified: boolean; created_at: string; submitted_by: string | null; }
@@ -242,6 +243,9 @@ export function PropertyView({ shared = false }: { shared?: boolean }) {
 
           {/* Regional & Systems */}
           <RegionalSection propertyId={property.id} state={property.state} />
+
+          {/* Property Trust Platform — Phase 1–4 cards */}
+          {!shared && <PropertyTrustPlatformCards propertyId={property.id} />}
 
           {/* Unified Property Intelligence hub */}
           {!shared && (
