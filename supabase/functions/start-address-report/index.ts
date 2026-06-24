@@ -253,13 +253,14 @@ Deno.serve(async (req) => {
         // Geocode first — everything else joins on FIPS.
         const geo = await geocodeAddress(admin, addressNormalized);
 
-        const [realSchools, realAcs, realNri, realCrime, realWeather] = geo ? await Promise.all([
+        const [realSchools, realAcs, realNri, realCrime, realWeather, realFlood] = geo ? await Promise.all([
           fetchSchoolsByCounty(admin, geo.county_fips_full).catch(() => null),
           fetchAcsForTract(admin, geo.state_fips, geo.county_fips, geo.tract_fips, censusKey).catch(() => null),
           fetchNriForTract(admin, geo.tract_fips_full).catch(() => null),
           fetchCountyCrime(admin, geo.state_abbr ?? "", geo.county_fips_full, fbiKey).catch(() => null),
           fetchWeatherEvents(admin, geo.lat, geo.lng).catch(() => null),
-        ]) : [null, null, null, null, null];
+          fetchFloodZoneAtPoint(admin, geo.lat, geo.lng).catch(() => null),
+        ]) : [null, null, null, null, null, null];
 
         // 1) Insert the normalized report_properties row + children
         const { data: rp } = await admin.from("report_properties").insert({
