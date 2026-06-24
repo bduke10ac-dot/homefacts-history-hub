@@ -2,6 +2,7 @@ import { corsHeaders, createLovableAiGatewayProvider } from "../_shared/ai-gatew
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { generateText, Output } from "npm:ai";
 import { z } from "npm:zod";
+import { geocodeAddress, fetchNriForTract, nriRatingToHealthScore } from "../_shared/govdata.ts";
 
 const Cat = z.object({ score: z.number(), level: z.enum(["low","medium","high"]), ai: z.string(), action: z.string() });
 const Schema = z.object({
