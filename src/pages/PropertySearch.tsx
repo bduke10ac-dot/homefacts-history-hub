@@ -54,6 +54,7 @@ const PropertySearch = () => {
       bathrooms: bath ? parseFloat(bath) : null,
       property_type: type || null,
       created_by: user.id,
+      claimed_by: user.id,
     }).select("id").single();
     if (error) { toast.error(error.message); return; }
     toast.success("Property added");
