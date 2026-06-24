@@ -238,6 +238,11 @@ const App = () => (
                 <Route path="/property/:id/opportunities" element={<ProtectedRoute><MyHomeOpportunities /></ProtectedRoute>} />
                 <Route path="/property/:id/health-score" element={<ProtectedRoute><PropertyHealthScore /></ProtectedRoute>} />
                 <Route path="/dashboard/revenue-intelligence" element={<ProtectedRoute requireRole="admin"><RevenueIntelligence /></ProtectedRoute>} />
+                <Route path="/admin/partners" element={<ProtectedRoute requireRole="admin"><AdminPartners /></ProtectedRoute>} />
+                <Route path="/partner" element={<ProtectedRoute requireRole="partner"><PartnerDashboard /></ProtectedRoute>} />
+                <Route path="/partner/offers/new" element={<ProtectedRoute requireRole="partner"><PartnerOfferNew /></ProtectedRoute>} />
+                <Route path="/partners/claim/:token" element={<ProtectedRoute><PartnerClaimInvite /></ProtectedRoute>} />
+                <Route path="/offers" element={<ProtectedRoute><HomeownerOffers /></ProtectedRoute>} />
 
                 <Route path="/dashboard" element={<ProtectedRoute><DashboardRouter /></ProtectedRoute>} />
                 <Route path="/contractor" element={<ProtectedRoute requireRole="contractor"><ContractorDashboard /></ProtectedRoute>} />
