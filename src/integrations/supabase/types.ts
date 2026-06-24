@@ -1968,6 +1968,27 @@ export type Database = {
           },
         ]
       }
+      free_report_quota: {
+        Row: {
+          count: number
+          day: string
+          ip_hash: string
+          updated_at: string
+        }
+        Insert: {
+          count?: number
+          day: string
+          ip_hash: string
+          updated_at?: string
+        }
+        Update: {
+          count?: number
+          day?: string
+          ip_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       future_cost_forecasts: {
         Row: {
           category: string | null
@@ -8091,6 +8112,14 @@ export type Database = {
       }
     }
     Functions: {
+      claim_free_report: {
+        Args: { _ip_hash: string; _limit?: number }
+        Returns: {
+          allowed: boolean
+          remaining: number
+          used: number
+        }[]
+      }
       claim_property_invite: {
         Args: { _token: string }
         Returns: {

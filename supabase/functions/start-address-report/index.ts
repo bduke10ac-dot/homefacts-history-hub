@@ -154,6 +154,22 @@ const ScoreSchema = z.object({
   best_for: z.array(z.string()).min(2).max(4),
 });
 
+const FREE_DAILY_LIMIT = 3;
+
+async function hashIp(ip: string, salt: string): Promise<string> {
+  const buf = new TextEncoder().encode(`${salt}|${ip}`);
+  const digest = await crypto.subtle.digest("SHA-256", buf);
+  return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function clientIp(req: Request): string {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0].trim();
+  return req.headers.get("cf-connecting-ip")
+    ?? req.headers.get("x-real-ip")
+    ?? "unknown";
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
@@ -176,6 +192,26 @@ Deno.serve(async (req) => {
       address: string; formatted_address?: string; place_id?: string; lat?: number; lng?: number; anon_token?: string;
     };
     if (!address) return new Response("address required", { status: 400, headers: corsHeaders });
+
+    // IP-based daily quota for anonymous (signed-out) free reports
+    if (!userId) {
+      const ip = clientIp(req);
+      const salt = Deno.env.get("SUPABASE_JWT_SECRET") ?? serviceKey;
+      const ipHash = await hashIp(ip, salt);
+      const { data: quota, error: qErr } = await admin.rpc("claim_free_report", {
+        _ip_hash: ipHash, _limit: FREE_DAILY_LIMIT,
+      });
+      if (qErr) console.error("quota rpc error", qErr);
+      const row = Array.isArray(quota) ? quota[0] : quota;
+      if (row && row.allowed === false) {
+        return new Response(JSON.stringify({
+          error: "free_limit_reached",
+          message: `You've used your ${FREE_DAILY_LIMIT} free reports for today. Sign up to continue — get unlimited reports.`,
+          limit: FREE_DAILY_LIMIT,
+          remaining: 0,
+        }), { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+      }
+    }
 
     const addressNormalized = formatted_address ?? address;
     const parts = addressNormalized.split(",").map((s) => s.trim());
