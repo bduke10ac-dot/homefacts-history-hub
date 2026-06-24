@@ -111,6 +111,7 @@ const AdminPartners = lazy(() => import("./pages/AdminPartners"));
 const PartnerDashboard = lazy(() => import("./pages/PartnerDashboard"));
 const PartnerOfferNew = lazy(() => import("./pages/PartnerOfferNew"));
 const PartnerClaimInvite = lazy(() => import("./pages/PartnerClaimInvite"));
+const PartnerBilling = lazy(() => import("./pages/PartnerBilling"));
 const HomeownerOffers = lazy(() => import("./pages/HomeownerOffers"));
 
 import { PILOT_MODE, isPilotAllowedRoute } from "@/lib/featureFlags";
