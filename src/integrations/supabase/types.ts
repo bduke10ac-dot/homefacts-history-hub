@@ -1025,6 +1025,148 @@ export type Database = {
         }
         Relationships: []
       }
+      deal_analyses: {
+        Row: {
+          active_scenario_id: string | null
+          created_at: string
+          id: string
+          name: string | null
+          property_id: string
+          status: string
+          strategy: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active_scenario_id?: string | null
+          created_at?: string
+          id?: string
+          name?: string | null
+          property_id: string
+          status?: string
+          strategy?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active_scenario_id?: string | null
+          created_at?: string
+          id?: string
+          name?: string | null
+          property_id?: string
+          status?: string
+          strategy?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_analyses_active_scenario_fk"
+            columns: ["active_scenario_id"]
+            isOneToOne: false
+            referencedRelation: "deal_scenarios"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deal_analyses_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_reports: {
+        Row: {
+          created_at: string
+          deal_analysis_id: string
+          id: string
+          report_data_json: Json
+          report_type: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          deal_analysis_id: string
+          id?: string
+          report_data_json?: Json
+          report_type?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          deal_analysis_id?: string
+          id?: string
+          report_data_json?: Json
+          report_type?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_reports_deal_analysis_id_fkey"
+            columns: ["deal_analysis_id"]
+            isOneToOne: false
+            referencedRelation: "deal_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_scenarios: {
+        Row: {
+          after_repair_value: number | null
+          assumptions_json: Json
+          created_at: string
+          current_value: number | null
+          deal_analysis_id: string
+          expense_json: Json
+          financing_json: Json
+          id: string
+          monthly_rent: number | null
+          purchase_price: number | null
+          results_json: Json
+          scenario_name: string | null
+          updated_at: string
+        }
+        Insert: {
+          after_repair_value?: number | null
+          assumptions_json?: Json
+          created_at?: string
+          current_value?: number | null
+          deal_analysis_id: string
+          expense_json?: Json
+          financing_json?: Json
+          id?: string
+          monthly_rent?: number | null
+          purchase_price?: number | null
+          results_json?: Json
+          scenario_name?: string | null
+          updated_at?: string
+        }
+        Update: {
+          after_repair_value?: number | null
+          assumptions_json?: Json
+          created_at?: string
+          current_value?: number | null
+          deal_analysis_id?: string
+          expense_json?: Json
+          financing_json?: Json
+          id?: string
+          monthly_rent?: number | null
+          purchase_price?: number | null
+          results_json?: Json
+          scenario_name?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_scenarios_deal_analysis_id_fkey"
+            columns: ["deal_analysis_id"]
+            isOneToOne: false
+            referencedRelation: "deal_analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       deferred_maintenance_items: {
         Row: {
           created_at: string
@@ -7062,6 +7204,82 @@ export type Database = {
             columns: ["property_system_id"]
             isOneToOne: true
             referencedRelation: "regional_property_systems"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      renovation_items: {
+        Row: {
+          actual_cost: number | null
+          category: string | null
+          created_at: string
+          deal_analysis_id: string
+          description: string | null
+          estimated_cost: number | null
+          id: string
+          included: boolean
+          notes: string | null
+          property_id: string
+          property_record_id: string | null
+          scenario_id: string | null
+          source_reference: string | null
+          source_type: string | null
+          updated_at: string
+        }
+        Insert: {
+          actual_cost?: number | null
+          category?: string | null
+          created_at?: string
+          deal_analysis_id: string
+          description?: string | null
+          estimated_cost?: number | null
+          id?: string
+          included?: boolean
+          notes?: string | null
+          property_id: string
+          property_record_id?: string | null
+          scenario_id?: string | null
+          source_reference?: string | null
+          source_type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          actual_cost?: number | null
+          category?: string | null
+          created_at?: string
+          deal_analysis_id?: string
+          description?: string | null
+          estimated_cost?: number | null
+          id?: string
+          included?: boolean
+          notes?: string | null
+          property_id?: string
+          property_record_id?: string | null
+          scenario_id?: string | null
+          source_reference?: string | null
+          source_type?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "renovation_items_deal_analysis_id_fkey"
+            columns: ["deal_analysis_id"]
+            isOneToOne: false
+            referencedRelation: "deal_analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "renovation_items_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "renovation_items_scenario_id_fkey"
+            columns: ["scenario_id"]
+            isOneToOne: false
+            referencedRelation: "deal_scenarios"
             referencedColumns: ["id"]
           },
         ]
