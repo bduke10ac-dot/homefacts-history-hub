@@ -1,6 +1,7 @@
 /**
  * Pilot mode hides non-essential surfaces so Creekside Homes (and similar early builders)
- * see a focused MVP. Set `VITE_PILOT_MODE=false` to expose the full Intelligence suite.
+ * see a focused MVP. It is OFF by default, so the full Intelligence suite is visible.
+ * Set `VITE_PILOT_MODE=true` to restrict the app to the pilot allowlist.
  */
 export const PILOT_MODE = (import.meta.env.VITE_PILOT_MODE ?? "false") !== "false";
 
