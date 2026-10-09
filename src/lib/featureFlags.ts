@@ -2,7 +2,7 @@
  * Pilot mode hides non-essential surfaces so Creekside Homes (and similar early builders)
  * see a focused MVP. Set `VITE_PILOT_MODE=false` to expose the full Intelligence suite.
  */
-export const PILOT_MODE = (import.meta.env.VITE_PILOT_MODE ?? "true") !== "false";
+export const PILOT_MODE = (import.meta.env.VITE_PILOT_MODE ?? "false") !== "false";
 
 /** Pages that ship in the pilot. Everything else is hidden when PILOT_MODE is on. */
 export const PILOT_ROUTE_ALLOWLIST = new Set<string>([
